@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "standard_version": "0.1.0",
+  "profile": "baseline",
+  "principles": {
+    "read_before_editing": "required",
+    "smallest_complete_change": "required",
+    "evidence_before_claims": "required",
+    "explicit_uncertainty": "required",
+    "public_safe_output": "required"
+  },
+  "planning": {
+    "material_changes_require_plan": true,
+    "architecture_changes_require_decision_record": true,
+    "define_verification_before_implementation": true
+  },
+  "implementation": {
+    "unrelated_refactors_forbidden": true,
+    "silent_behavior_changes_forbidden": true,
+    "repository_patterns_preferred": true,
+    "exact_values_preserved": true
+  },
+  "verification": {
+    "claim_success_only_after_checks": true,
+    "behavior_changes_require_tests": true,
+    "test_deletion_requires_justification": true,
+    "lint_required_when_configured": true,
+    "typecheck_required_when_configured": true,
+    "build_required_when_configured": true
+  },
+  "security": {
+    "secrets_forbidden": true,
+    "credentials_in_examples_forbidden": true,
+    "destructive_actions_require_approval": true,
+    "security_gate_weakening_forbidden": true,
+    "private_data_externalization_forbidden": true
+  },
+  "github": {
+    "direct_push_to_protected_branch_forbidden": true,
+    "one_mission_per_branch": true,
+    "pull_request_required_for_material_changes": true,
+    "changelog_required_for_release_changes": true
+  },
+  "ai_development": {
+    "generated_code_requires_review": true,
+    "invented_repository_state_forbidden": true,
+    "invented_test_results_forbidden": true,
+    "invented_metrics_forbidden": true,
+    "instruction_conflicts_must_be_reported": true,
+    "completion_report_required": true
+  },
+  "exceptions": {
+    "documentation_path": "docs/standards-exceptions.md",
+    "undocumented_exceptions_forbidden": true
+  }
+}

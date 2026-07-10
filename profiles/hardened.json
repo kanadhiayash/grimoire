@@ -1,0 +1,16 @@
+{
+  "name": "hardened",
+  "inherits": "policies/baseline.json",
+  "purpose": "Security-sensitive, portfolio-critical, or release-bound repositories",
+  "required_checks": [
+    "policy",
+    "secrets",
+    "tests",
+    "lint",
+    "typecheck",
+    "build",
+    "dependency-audit",
+    "architecture-review",
+    "release-readiness"
+  ]
+}

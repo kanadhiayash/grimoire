@@ -1,0 +1,12 @@
+{
+  "name": "standard",
+  "inherits": "policies/baseline.json",
+  "purpose": "Maintained product repositories",
+  "required_checks": [
+    "policy",
+    "secrets",
+    "tests",
+    "lint",
+    "build"
+  ]
+}

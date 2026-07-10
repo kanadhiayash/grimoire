@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schema.json",
+  "title": "Engineering Standards Policy",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "standard_version",
+    "profile",
+    "principles",
+    "verification",
+    "security",
+    "github",
+    "ai_development",
+    "exceptions"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "standard_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "principles": {
+      "type": "object"
+    },
+    "planning": {
+      "type": "object"
+    },
+    "implementation": {
+      "type": "object"
+    },
+    "verification": {
+      "type": "object"
+    },
+    "security": {
+      "type": "object"
+    },
+    "github": {
+      "type": "object"
+    },
+    "ai_development": {
+      "type": "object"
+    },
+    "exceptions": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

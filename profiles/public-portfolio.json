@@ -1,0 +1,12 @@
+{
+  "name": "public-portfolio",
+  "inherits": "profiles/hardened.json",
+  "purpose": "Public repositories used as professional evidence",
+  "required_evidence": [
+    "screenshots_or_demo",
+    "ownership_disclosure",
+    "verified_setup_instructions",
+    "public_claims_evidence_map",
+    "known_limitations"
+  ]
+}

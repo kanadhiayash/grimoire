@@ -1,0 +1,9 @@
+{
+  "name": "minimal",
+  "inherits": "policies/baseline.json",
+  "purpose": "Low-risk experiments and disposable prototypes",
+  "required_checks": [
+    "policy",
+    "secrets"
+  ]
+}
