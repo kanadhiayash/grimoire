@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "standard_version": "0.1.0",
+  "standard_version": "0.2.0",
   "profile": "baseline",
   "principles": {
     "read_before_editing": "required",
@@ -48,6 +48,15 @@
     "invented_metrics_forbidden": true,
     "instruction_conflicts_must_be_reported": true,
     "completion_report_required": true
+  },
+  "ai_operations": {
+    "policy_path": "policies/ai-operations.json",
+    "schema_path": "policies/schemas/ai-operations.schema.json",
+    "bounded_autonomy_required": true,
+    "approval_binding_required": true,
+    "single_writer_memory_required": true,
+    "command_escalation_forbidden": true,
+    "honest_assurance_claims_required": true
   },
   "exceptions": {
     "documentation_path": "docs/standards-exceptions.md",
