@@ -14,6 +14,23 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 - Add consuming-project installation and synchronization commands
 - Add policy compatibility tests
 
+## [0.2.0] - 2026-07-21
+
+### Added
+
+- Provider-neutral AI operations governance standard
+- Machine-readable command, autonomy, approval, assurance, memory, and lifecycle policy
+- Mission, approval, run-report, escalation, and cross-harness handoff templates
+- AI operations adapter contract
+- Architecture decision for the AI operations control plane
+- Conformance checks for command grammar, autonomy levels, completion statuses, and memory lifecycle
+
+### Changed
+
+- Baseline policy now requires bounded AI operations controls
+- Policy schema now includes the AI operations section
+- JSON checks now include nested policy schemas
+
 ## [0.1.0] - 2026-07-09
 
 ### Added
