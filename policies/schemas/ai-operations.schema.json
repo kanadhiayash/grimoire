@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schemas/ai-operations.schema.json",
+  "title": "AI Operations Policy",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "standard_version",
+    "policy",
+    "execution_spine",
+    "commands",
+    "autonomy_levels",
+    "approval",
+    "assurance_modes",
+    "session_lifecycle",
+    "completion_statuses",
+    "memory",
+    "external_action_gate",
+    "stop_conditions",
+    "currentness"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "standard_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "policy": {
+      "const": "ai-operations"
+    },
+    "execution_spine": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "string"
+      }
+    },
+    "commands": {
+      "type": "object",
+      "required": [
+        "activate",
+        "ingest",
+        "resume",
+        "audit",
+        "council",
+        "plan",
+        "lock",
+        "approve",
+        "execute",
+        "verify",
+        "ship",
+        "handoff",
+        "park",
+        "promote_memory",
+        "halt"
+      ],
+      "additionalProperties": false
+    },
+    "autonomy_levels": {
+      "type": "object",
+      "required": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "additionalProperties": false
+    },
+    "approval": {
+      "type": "object",
+      "required": [
+        "plan_id_required",
+        "revision_required",
+        "approved_scope_required",
+        "material_revision_invalidates_approval",
+        "never_implicit"
+      ]
+    },
+    "assurance_modes": {
+      "type": "object",
+      "required": [
+        "lean",
+        "balanced",
+        "assured",
+        "experimental_council"
+      ]
+    },
+    "session_lifecycle": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "string"
+      }
+    },
+    "completion_statuses": {
+      "type": "array",
+      "const": [
+        "PASS",
+        "PARTIAL",
+        "BLOCKED",
+        "NOT_VERIFIED"
+      ]
+    },
+    "memory": {
+      "type": "object",
+      "required": [
+        "single_writer_required",
+        "lifecycle",
+        "alternate_states",
+        "promotion_fields",
+        "two_strikes_for_permanent_rules"
+      ]
+    },
+    "external_action_gate": {
+      "type": "object",
+      "required": [
+        "approval_required"
+      ]
+    },
+    "stop_conditions": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "string"
+      }
+    },
+    "currentness": {
+      "type": "object",
+      "required": [
+        "verify_unstable_claims",
+        "source_priority"
+      ]
+    }
+  },
+  "additionalProperties": false
+}
