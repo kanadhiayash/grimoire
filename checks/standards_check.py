@@ -27,10 +27,20 @@ REQUIRED_FILES = (
     "Makefile",
     "policies/schema.json",
     "policies/baseline.json",
+    "policies/ai-operations.json",
+    "policies/schemas/ai-operations.schema.json",
     "profiles/minimal.json",
     "profiles/standard.json",
     "profiles/hardened.json",
     "profiles/public-portfolio.json",
+    "standards/ai-development/ai-operations-governance.md",
+    "docs/architecture/0002-ai-operations-control-plane.md",
+    "docs/adapters/ai-operations-adapter-contract.md",
+    "templates/ai-operations/mission-packet.md",
+    "templates/ai-operations/approval-record.md",
+    "templates/ai-operations/run-report.md",
+    "templates/ai-operations/cross-harness-handoff.md",
+    "templates/ai-operations/escalation-packet.md",
     "scripts/doctor.sh",
     "scripts/test.sh",
     ".github/workflows/standards-ci.yml",
@@ -54,6 +64,39 @@ REQUIRED_ADAPTERS = (
     "adapters/gemini/GEMINI.overlay.md",
     "adapters/generic/SYSTEM_PROMPT.md",
 )
+
+AI_COMMANDS = {
+    "activate",
+    "ingest",
+    "resume",
+    "audit",
+    "council",
+    "plan",
+    "lock",
+    "approve",
+    "execute",
+    "verify",
+    "ship",
+    "handoff",
+    "park",
+    "promote_memory",
+    "halt",
+}
+
+AI_AUTONOMY_LEVELS = {"0", "1", "2", "3", "4", "5"}
+AI_COMPLETION_STATUSES = [
+    "PASS",
+    "PARTIAL",
+    "BLOCKED",
+    "NOT_VERIFIED",
+]
+AI_MEMORY_LIFECYCLE = [
+    "raw",
+    "candidate",
+    "validated",
+    "approved",
+    "canonical",
+]
 
 TEXT_SUFFIXES = {
     ".md",
@@ -110,6 +153,8 @@ def check_version() -> CheckResult:
 
     baseline = load_json("policies/baseline.json")
     policy_version = baseline.get("standard_version")
+    ai_operations = load_json("policies/ai-operations.json")
+    ai_version = ai_operations.get("standard_version")
 
     if policy_version != version:
         return CheckResult(
@@ -118,13 +163,19 @@ def check_version() -> CheckResult:
             f"VERSION is {version}, baseline is {policy_version!r}",
         )
 
+    if ai_version != version:
+        return CheckResult(
+            "semantic version",
+            False,
+            f"VERSION is {version}, ai operations is {ai_version!r}",
+        )
+
     return CheckResult("semantic version", True, version)
 
 
 def check_json_documents() -> CheckResult:
-    paths = sorted((ROOT / "policies").glob("*.json"))
-    paths += sorted((ROOT / "profiles").glob("*.json"))
-
+    paths = sorted((ROOT / "policies").rglob("*.json"))
+    paths += sorted((ROOT / "profiles").rglob("*.json"))
     errors: list[str] = []
 
     for path in paths:
@@ -148,25 +199,17 @@ def check_profiles() -> CheckResult:
 
     for path in sorted((ROOT / "profiles").glob("*.json")):
         data = load_json(str(path.relative_to(ROOT)))
-
         if data.get("name") != path.stem:
             errors.append(f"{path.name}: name must be {path.stem!r}")
 
         inherited = data.get("inherits")
-
         if not isinstance(inherited, str) or not (ROOT / inherited).is_file():
-            errors.append(
-                f"{path.name}: invalid inherits path {inherited!r}"
-            )
+            errors.append(f"{path.name}: invalid inherits path {inherited!r}")
 
     if errors:
         return CheckResult("profiles", False, "; ".join(errors))
 
-    return CheckResult(
-        "profiles",
-        True,
-        "inheritance paths resolve",
-    )
+    return CheckResult("profiles", True, "inheritance paths resolve")
 
 
 def check_standard_areas() -> CheckResult:
@@ -174,7 +217,6 @@ def check_standard_areas() -> CheckResult:
 
     for relative in REQUIRED_STANDARD_AREAS:
         directory = ROOT / relative
-
         if not directory.is_dir() or not any(directory.glob("*.md")):
             empty.append(relative)
 
@@ -189,11 +231,7 @@ def check_standard_areas() -> CheckResult:
 
 
 def check_adapters() -> CheckResult:
-    missing = [
-        path
-        for path in REQUIRED_ADAPTERS
-        if not (ROOT / path).is_file()
-    ]
+    missing = [path for path in REQUIRED_ADAPTERS if not (ROOT / path).is_file()]
 
     if missing:
         return CheckResult("harness adapters", False, ", ".join(missing))
@@ -202,6 +240,77 @@ def check_adapters() -> CheckResult:
         "harness adapters",
         True,
         f"{len(REQUIRED_ADAPTERS)} present",
+    )
+
+
+def check_ai_operations_policy() -> CheckResult:
+    policy = load_json("policies/ai-operations.json")
+    errors: list[str] = []
+
+    commands = policy.get("commands")
+    if not isinstance(commands, dict):
+        errors.append("commands must be an object")
+    else:
+        missing_commands = AI_COMMANDS - set(commands)
+        extra_commands = set(commands) - AI_COMMANDS
+        if missing_commands:
+            errors.append(
+                "missing commands: " + ", ".join(sorted(missing_commands))
+            )
+        if extra_commands:
+            errors.append(
+                "unknown commands: " + ", ".join(sorted(extra_commands))
+            )
+
+        escalating = [
+            name
+            for name, config in commands.items()
+            if isinstance(config, dict) and config.get("may_escalate") is True
+        ]
+        if escalating:
+            errors.append(
+                "commands may not silently escalate: "
+                + ", ".join(sorted(escalating))
+            )
+
+    autonomy = policy.get("autonomy_levels")
+    if not isinstance(autonomy, dict) or set(autonomy) != AI_AUTONOMY_LEVELS:
+        errors.append("autonomy levels must be exactly 0 through 5")
+
+    if policy.get("completion_statuses") != AI_COMPLETION_STATUSES:
+        errors.append("completion statuses do not match the canonical set")
+
+    memory = policy.get("memory")
+    if not isinstance(memory, dict):
+        errors.append("memory must be an object")
+    else:
+        if memory.get("single_writer_required") is not True:
+            errors.append("memory must require a single writer")
+        if memory.get("lifecycle") != AI_MEMORY_LIFECYCLE:
+            errors.append("memory lifecycle does not match the canonical order")
+        if memory.get("two_strikes_for_permanent_rules") is not True:
+            errors.append("Two-Strikes Rule must be enabled")
+
+    approval = policy.get("approval")
+    if not isinstance(approval, dict):
+        errors.append("approval must be an object")
+    else:
+        for key in (
+            "plan_id_required",
+            "revision_required",
+            "approved_scope_required",
+            "material_revision_invalidates_approval",
+        ):
+            if approval.get(key) is not True:
+                errors.append(f"approval.{key} must be true")
+
+    if errors:
+        return CheckResult("AI operations policy", False, "; ".join(errors))
+
+    return CheckResult(
+        "AI operations policy",
+        True,
+        f"{len(AI_COMMANDS)} commands, 6 autonomy levels",
     )
 
 
@@ -217,10 +326,8 @@ def iter_text_files() -> Iterable[Path]:
     for path in ROOT.rglob("*"):
         if not path.is_file():
             continue
-
         if any(part in excluded_parts for part in path.parts):
             continue
-
         if path.suffix.lower() in TEXT_SUFFIXES or path.name in {
             "VERSION",
             "Makefile",
@@ -232,28 +339,15 @@ def iter_text_files() -> Iterable[Path]:
 
 
 def secret_patterns() -> tuple[re.Pattern[str], ...]:
-    # Assemble markers so this checker does not match its own source text.
     aws = "A" + "KIA" + r"[0-9A-Z]{16}"
     github = "gh" + r"[pousr]_[A-Za-z0-9_]{30,}"
     openai = "s" + "k-" + r"[A-Za-z0-9_-]{20,}"
-    private_key = (
-        "-----BEGIN "
-        + r"(?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
-    )
-    mongodb = (
-        "mongodb"
-        + r"(?:\+srv)?://[^:\s/]+:[^@\s/]+@"
-    )
+    private_key = "-----BEGIN " + r"(?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
+    mongodb = "mongodb" + r"(?:\+srv)?://[^:\s/]+:[^@\s/]+@"
 
     return tuple(
         re.compile(pattern)
-        for pattern in (
-            aws,
-            github,
-            openai,
-            private_key,
-            mongodb,
-        )
+        for pattern in (aws, github, openai, private_key, mongodb)
     )
 
 
@@ -267,14 +361,9 @@ def check_secrets() -> CheckResult:
         except UnicodeDecodeError:
             continue
 
-        for line_number, line in enumerate(
-            text.splitlines(),
-            start=1,
-        ):
+        for line_number, line in enumerate(text.splitlines(), start=1):
             if any(pattern.search(line) for pattern in patterns):
-                findings.append(
-                    f"{path.relative_to(ROOT)}:{line_number}"
-                )
+                findings.append(f"{path.relative_to(ROOT)}:{line_number}")
 
     if findings:
         return CheckResult(
@@ -298,9 +387,9 @@ def run_checks() -> list[CheckResult]:
         check_profiles,
         check_standard_areas,
         check_adapters,
+        check_ai_operations_policy,
         check_secrets,
     )
-
     results: list[CheckResult] = []
 
     for check in checks:
@@ -333,10 +422,7 @@ def main() -> int:
     print()
 
     if failed:
-        print(
-            f"Engineering Standards Doctor: "
-            f"FAIL ({len(failed)} failed)"
-        )
+        print(f"Engineering Standards Doctor: FAIL ({len(failed)} failed)")
         return 1
 
     print("Engineering Standards Doctor: PASS")
