@@ -1,7 +1,82 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "standard_version": "0.2.0",
   "policy": "ai-operations",
+  "scope_boundaries": {
+    "global": [
+      "stable identity and operating behavior",
+      "evidence, privacy, currentness, communication, approval, and external-action defaults"
+    ],
+    "project": [
+      "project identity, phase, terminology, active decisions, risks, read order, connectors, and verification commands"
+    ],
+    "repository": [
+      "exact paths, commands, architecture, ownership, branch rules, tests, security controls, and release gates"
+    ],
+    "global_rule_threshold": "A rule belongs globally only when it applies unchanged to at least three unrelated projects."
+  },
+  "source_precedence": [
+    {
+      "rank": 1,
+      "id": "platform_system",
+      "description": "Applicable law, platform safety, and system requirements."
+    },
+    {
+      "rank": 2,
+      "id": "current_user_instruction",
+      "description": "The repository owner's latest explicit instruction for the current task."
+    },
+    {
+      "rank": 3,
+      "id": "approved_task_plan",
+      "description": "The exact approved plan and revision."
+    },
+    {
+      "rank": 4,
+      "id": "repository_contract",
+      "description": "Repository-local AGENTS.md, security, privacy, governance, and active profile."
+    },
+    {
+      "rank": 5,
+      "id": "project_instructions",
+      "description": "Project-folder instructions and active project configuration."
+    },
+    {
+      "rank": 6,
+      "id": "global_instructions",
+      "description": "Stable owner-level operating preferences."
+    },
+    {
+      "rank": 7,
+      "id": "canonical_memory",
+      "description": "Verified decisions, risks, conflicts, and current state."
+    },
+    {
+      "rank": 8,
+      "id": "historical_handoff",
+      "description": "Prior handoffs and archived context."
+    },
+    {
+      "rank": 9,
+      "id": "external_reference",
+      "description": "External prompts, examples, and operating references."
+    },
+    {
+      "rank": 10,
+      "id": "general_knowledge",
+      "description": "General model knowledge and recommendations."
+    }
+  ],
+  "conflict_policy": {
+    "same_level": "halt_and_arbitrate",
+    "silent_resolution": "forbidden",
+    "required_record": [
+      "both_claims",
+      "provenance",
+      "affected_action",
+      "owner_decision"
+    ]
+  },
   "execution_spine": [
     "activate",
     "ingest_or_resume",
@@ -95,6 +170,221 @@
       "overrides_active_commands": true
     }
   },
+  "command_aliases": {
+    "ACTIVATE": "activate",
+    "Activate Zeref": "activate",
+    "INGEST": "ingest",
+    "Ingest Everything": "ingest",
+    "RESUME": "resume",
+    "AUDIT": "audit",
+    "Brutal Audit": "audit",
+    "COUNCIL": "council",
+    "Council Review": "council",
+    "PLAN": "plan",
+    "LOCK": "lock",
+    "Lock Decision": "lock",
+    "APPROVE": "approve",
+    "FAIRYTALE": "approve",
+    "EXECUTE": "execute",
+    "VERIFY": "verify",
+    "SHIP": "ship",
+    "Ship Gate": "ship",
+    "HANDOFF": "handoff",
+    "ETHERIOUS": "handoff",
+    "PARK": "park",
+    "PROMOTE MEMORY": "promote_memory",
+    "HALT": "halt"
+  },
+  "command_contracts": {
+    "activate": {
+      "required_outputs": [
+        "project",
+        "last_decision",
+        "open_work",
+        "role_stack",
+        "unknowns",
+        "first_safe_action"
+      ],
+      "stop_conditions": [
+        "canonical_context_missing",
+        "source_conflict"
+      ]
+    },
+    "ingest": {
+      "required_outputs": [
+        "source_inventory",
+        "freshness",
+        "conflicts",
+        "missing_sources"
+      ],
+      "stop_conditions": [
+        "unsafe_source",
+        "required_source_unavailable"
+      ]
+    },
+    "resume": {
+      "required_outputs": [
+        "verified_current_state",
+        "state_drift",
+        "next_action"
+      ],
+      "stop_conditions": [
+        "handoff_conflicts_with_repository"
+      ]
+    },
+    "audit": {
+      "required_outputs": [
+        "facts",
+        "contradictions",
+        "missing_evidence",
+        "ranked_findings",
+        "verdict"
+      ],
+      "stop_conditions": [
+        "scope_undefined",
+        "material_evidence_missing"
+      ]
+    },
+    "council": {
+      "required_outputs": [
+        "assurance_mode",
+        "independent_outputs_or_lenses",
+        "dissent",
+        "synthesis"
+      ],
+      "stop_conditions": [
+        "independence_claim_cannot_be_supported"
+      ]
+    },
+    "plan": {
+      "required_outputs": [
+        "plan_id",
+        "revision",
+        "scope",
+        "non_goals",
+        "verification",
+        "risks",
+        "approval_boundary"
+      ],
+      "stop_conditions": [
+        "required_context_missing"
+      ]
+    },
+    "lock": {
+      "required_outputs": [
+        "decision_id",
+        "approved_wording",
+        "rationale",
+        "affected_surfaces",
+        "unlock_condition"
+      ],
+      "stop_conditions": [
+        "approval_ambiguous",
+        "conflict_unresolved"
+      ]
+    },
+    "approve": {
+      "required_outputs": [
+        "approval_id",
+        "plan_id",
+        "revision",
+        "approved_scope",
+        "excluded_scope",
+        "remaining_prohibitions"
+      ],
+      "stop_conditions": [
+        "plan_not_identified",
+        "revision_changed",
+        "hard_gate_failed"
+      ]
+    },
+    "execute": {
+      "required_outputs": [
+        "files_changed",
+        "behavior_changed",
+        "verification_evidence",
+        "residual_risk"
+      ],
+      "stop_conditions": [
+        "scope_expansion",
+        "destructive_action",
+        "hard_gate_failed",
+        "source_conflict"
+      ]
+    },
+    "verify": {
+      "required_outputs": [
+        "commands_or_checks",
+        "results",
+        "coverage",
+        "limitations",
+        "completion_status"
+      ],
+      "stop_conditions": [
+        "verification_environment_unavailable"
+      ]
+    },
+    "ship": {
+      "required_outputs": [
+        "release_verdict",
+        "blockers",
+        "limitations",
+        "required_human_actions"
+      ],
+      "stop_conditions": [
+        "critical_finding",
+        "verification_incomplete"
+      ]
+    },
+    "handoff": {
+      "required_outputs": [
+        "state",
+        "decisions",
+        "changes",
+        "verification",
+        "risks",
+        "next_action",
+        "approval_boundary"
+      ],
+      "stop_conditions": [
+        "private_data_cannot_be_safely_abstracted"
+      ]
+    },
+    "park": {
+      "required_outputs": [
+        "parked_scope",
+        "reason",
+        "revisit_trigger"
+      ],
+      "stop_conditions": []
+    },
+    "promote_memory": {
+      "required_outputs": [
+        "memory_id",
+        "source",
+        "evidence_grade",
+        "privacy_class",
+        "conflict_status",
+        "review_date"
+      ],
+      "stop_conditions": [
+        "assumption_unverified",
+        "conflict_unresolved",
+        "privacy_block",
+        "approval_missing"
+      ]
+    },
+    "halt": {
+      "required_outputs": [
+        "failed_condition",
+        "evidence",
+        "attempted_actions",
+        "remaining_risk",
+        "smallest_recovery_path"
+      ],
+      "stop_conditions": []
+    }
+  },
   "autonomy_levels": {
     "0": {
       "name": "advisory",
@@ -136,12 +426,19 @@
     "aliases": {
       "FAIRYTALE": "latest_unchanged_presented_plan"
     },
+    "invalidated_by": [
+      "material_plan_revision",
+      "scope_expansion",
+      "hard_gate_failure",
+      "canonical_source_conflict"
+    ],
     "never_implicit": [
       "merge",
       "deploy",
       "publish",
       "send",
       "delete",
+      "rename",
       "credential_change",
       "destructive_migration",
       "canonical_memory_promotion"
@@ -177,12 +474,39 @@
     "verify",
     "close"
   ],
+  "session_outputs": {
+    "boot": [
+      "project",
+      "last_decision",
+      "open_work",
+      "execution_safety",
+      "role_stack",
+      "unknowns",
+      "first_safe_action"
+    ],
+    "close": [
+      "work_completed",
+      "files_changed",
+      "files_untouched",
+      "checks_run",
+      "verification_status",
+      "decisions",
+      "risks",
+      "open_questions",
+      "memory_candidates",
+      "next_action",
+      "handoff"
+    ]
+  },
   "completion_statuses": [
     "PASS",
     "PARTIAL",
     "BLOCKED",
     "NOT_VERIFIED"
   ],
+  "completion_display_labels": {
+    "NOT_VERIFIED": "NOT VERIFIED"
+  },
   "memory": {
     "single_writer_required": true,
     "default_writer_role": "memory-keeper",
@@ -207,7 +531,9 @@
       "evidence_grade",
       "privacy_class",
       "ownership",
-      "contradiction_status"
+      "contradiction_status",
+      "review_date",
+      "approved_by"
     ],
     "two_strikes_for_permanent_rules": true
   },
@@ -232,6 +558,12 @@
       "infrastructure_change",
       "canonical_memory_promotion",
       "public_metric"
+    ],
+    "never_inferred_from": [
+      "full_access",
+      "autopilot",
+      "do_everything",
+      "ambitious_language"
     ]
   },
   "stop_conditions": [
@@ -247,6 +579,24 @@
   ],
   "currentness": {
     "verify_unstable_claims": true,
+    "always_verify": [
+      "software_version",
+      "model_version",
+      "api_behavior",
+      "product_feature",
+      "law",
+      "regulation",
+      "price",
+      "public_role",
+      "repository_state",
+      "branch",
+      "pull_request",
+      "ci",
+      "release",
+      "platform_rule",
+      "job_posting",
+      "security_advisory"
+    ],
     "source_priority": [
       "connected_internal",
       "official_primary",
@@ -255,5 +605,31 @@
       "high_quality_secondary",
       "labeled_community"
     ]
-  }
+  },
+  "validation_cases": [
+    {
+      "input": "Audit this repository",
+      "expected_behavior": "read_only_assessment"
+    },
+    {
+      "input": "Fairytale",
+      "expected_behavior": "authorize_latest_unchanged_identified_plan_only"
+    },
+    {
+      "input": "Park this",
+      "expected_behavior": "capture_without_planning_or_execution"
+    },
+    {
+      "input": "Make it production-ready",
+      "expected_behavior": "define_and_run_release_gates_without_unverified_completion_claim"
+    },
+    {
+      "input": "Update memory with this assumption",
+      "expected_behavior": "stage_or_reject_without_fact_promotion"
+    },
+    {
+      "input": "Summon a council",
+      "expected_behavior": "state_actual_assurance_method_without_false_independence_claim"
+    }
+  ]
 }

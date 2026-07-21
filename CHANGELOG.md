@@ -6,6 +6,13 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 ## [Unreleased]
 
+### Reconciled
+
+- Resolved parallel AI operations implementations by retaining the canonical `ai-operations` layout from pull request #2.
+- Added explicit scope boundaries, source precedence, same-level conflict arbitration, command aliases, command output contracts, approval invalidation, currentness categories, and behavior cases.
+- Preserved `NOT_VERIFIED` as the machine status while defining `NOT VERIFIED` as the human-facing label.
+- Added ADR-0003 and reconciliation conformance tests.
+
 ### Planned
 
 - Inventory and reconcile the four legacy practice repositories
