@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "standard_version": "0.2.0",
+  "policy": "ai-operations",
+  "execution_spine": [
+    "activate",
+    "ingest_or_resume",
+    "classify",
+    "verify",
+    "plan",
+    "approve_when_required",
+    "execute",
+    "test",
+    "review",
+    "package",
+    "handoff",
+    "promote_memory_when_eligible"
+  ],
+  "commands": {
+    "activate": {
+      "mode": "read_only",
+      "may_escalate": false,
+      "idempotent": true
+    },
+    "ingest": {
+      "mode": "read_only",
+      "may_escalate": false,
+      "idempotent": true
+    },
+    "resume": {
+      "mode": "read_only",
+      "may_escalate": false,
+      "idempotent": true
+    },
+    "audit": {
+      "mode": "read_only",
+      "may_escalate": false,
+      "idempotent": true
+    },
+    "council": {
+      "mode": "assurance",
+      "may_escalate": false,
+      "requires_independent_work_for_council_claim": true
+    },
+    "plan": {
+      "mode": "draft",
+      "may_escalate": false,
+      "idempotent": true
+    },
+    "lock": {
+      "mode": "decision_write",
+      "requires_approval": true,
+      "may_escalate": false
+    },
+    "approve": {
+      "mode": "authorization",
+      "requires_plan_id": true,
+      "requires_revision": true,
+      "may_escalate": false
+    },
+    "execute": {
+      "mode": "bounded_mutation",
+      "requires_scope": true,
+      "may_escalate": false
+    },
+    "verify": {
+      "mode": "non_destructive",
+      "may_escalate": false,
+      "idempotent": true
+    },
+    "ship": {
+      "mode": "release_assessment",
+      "merge_or_deploy_by_default": false,
+      "may_escalate": false
+    },
+    "handoff": {
+      "mode": "draft_or_local_write",
+      "may_escalate": false,
+      "idempotent": true
+    },
+    "park": {
+      "mode": "capture_only",
+      "planning_forbidden": true,
+      "implementation_forbidden": true,
+      "may_escalate": false
+    },
+    "promote_memory": {
+      "mode": "canonical_write",
+      "canonical_writer_only": true,
+      "may_escalate": false
+    },
+    "halt": {
+      "mode": "stop",
+      "further_mutation_forbidden": true,
+      "overrides_active_commands": true
+    }
+  },
+  "autonomy_levels": {
+    "0": {
+      "name": "advisory",
+      "external_writes": false,
+      "local_mutation": false
+    },
+    "1": {
+      "name": "read_only",
+      "external_writes": false,
+      "local_mutation": false
+    },
+    "2": {
+      "name": "local_reversible",
+      "external_writes": false,
+      "local_mutation": true
+    },
+    "3": {
+      "name": "reviewed_external",
+      "external_writes": "approval_required",
+      "local_mutation": true
+    },
+    "4": {
+      "name": "pre_approved_automation",
+      "external_writes": "stored_contract_only",
+      "local_mutation": true
+    },
+    "5": {
+      "name": "prohibited_unattended",
+      "external_writes": false,
+      "local_mutation": false
+    }
+  },
+  "approval": {
+    "plan_id_required": true,
+    "revision_required": true,
+    "approved_scope_required": true,
+    "excluded_scope_required": true,
+    "material_revision_invalidates_approval": true,
+    "aliases": {
+      "FAIRYTALE": "latest_unchanged_presented_plan"
+    },
+    "never_implicit": [
+      "merge",
+      "deploy",
+      "publish",
+      "send",
+      "delete",
+      "credential_change",
+      "destructive_migration",
+      "canonical_memory_promotion"
+    ]
+  },
+  "assurance_modes": {
+    "lean": {
+      "independent_candidates": 1,
+      "human_gate": false
+    },
+    "balanced": {
+      "independent_candidates": 1,
+      "specialist_review": true
+    },
+    "assured": {
+      "independent_candidates": 2,
+      "preserve_dissent": true,
+      "human_gate": true
+    },
+    "experimental_council": {
+      "independent_candidates": 2,
+      "preserve_dissent": true,
+      "measure_value": true,
+      "human_gate": true
+    }
+  },
+  "session_lifecycle": [
+    "boot",
+    "orient",
+    "classify",
+    "plan",
+    "execute",
+    "verify",
+    "close"
+  ],
+  "completion_statuses": [
+    "PASS",
+    "PARTIAL",
+    "BLOCKED",
+    "NOT_VERIFIED"
+  ],
+  "memory": {
+    "single_writer_required": true,
+    "default_writer_role": "memory-keeper",
+    "lifecycle": [
+      "raw",
+      "candidate",
+      "validated",
+      "approved",
+      "canonical"
+    ],
+    "alternate_states": [
+      "contested",
+      "superseded",
+      "expired",
+      "do_not_store"
+    ],
+    "promotion_fields": [
+      "claim",
+      "scope",
+      "source",
+      "provenance",
+      "evidence_grade",
+      "privacy_class",
+      "ownership",
+      "contradiction_status"
+    ],
+    "two_strikes_for_permanent_rules": true
+  },
+  "external_action_gate": {
+    "approval_required": [
+      "commit",
+      "push",
+      "issue_write",
+      "pull_request_write",
+      "merge",
+      "deploy",
+      "release",
+      "publish",
+      "send",
+      "schedule",
+      "delete",
+      "archive",
+      "rename",
+      "overwrite",
+      "migration",
+      "credential_change",
+      "infrastructure_change",
+      "canonical_memory_promotion",
+      "public_metric"
+    ]
+  },
+  "stop_conditions": [
+    "possible_secret_exposure",
+    "unapproved_destructive_or_external_action",
+    "canonical_source_conflict",
+    "required_evidence_missing",
+    "quality_or_security_gate_weakening",
+    "repository_state_conflict",
+    "retry_budget_exhausted",
+    "rubric_change_required_for_pass",
+    "tool_capability_missing"
+  ],
+  "currentness": {
+    "verify_unstable_claims": true,
+    "source_priority": [
+      "connected_internal",
+      "official_primary",
+      "original_documentation",
+      "research_or_standard",
+      "high_quality_secondary",
+      "labeled_community"
+    ]
+  }
+}
