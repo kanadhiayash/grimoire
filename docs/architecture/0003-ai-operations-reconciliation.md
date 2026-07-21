@@ -39,6 +39,10 @@ Reset the pull request #3 branch onto current `main`, discard duplicate files, a
 - behavioral validation cases;
 - a human-facing `NOT VERIFIED` label while retaining the stable `NOT_VERIFIED` machine key.
 
+## Verification requirement
+
+The reconciled branch must be based on current `main`, contain no duplicate policy tree, pass all repository unit tests, and pass the GitHub Actions `make check` workflow before merge.
+
 ## Consequences
 
 - One policy remains canonical.
