@@ -12,6 +12,7 @@
     "security",
     "github",
     "ai_development",
+    "ai_operations",
     "exceptions"
   ],
   "properties": {
@@ -47,6 +48,18 @@
     },
     "ai_development": {
       "type": "object"
+    },
+    "ai_operations": {
+      "type": "object",
+      "required": [
+        "policy_path",
+        "schema_path",
+        "bounded_autonomy_required",
+        "approval_binding_required",
+        "single_writer_memory_required",
+        "command_escalation_forbidden",
+        "honest_assurance_claims_required"
+      ]
     },
     "exceptions": {
       "type": "object"
