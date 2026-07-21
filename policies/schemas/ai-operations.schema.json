@@ -7,17 +7,25 @@
     "schema_version",
     "standard_version",
     "policy",
+    "scope_boundaries",
+    "source_precedence",
+    "conflict_policy",
     "execution_spine",
     "commands",
+    "command_aliases",
+    "command_contracts",
     "autonomy_levels",
     "approval",
     "assurance_modes",
     "session_lifecycle",
+    "session_outputs",
     "completion_statuses",
+    "completion_display_labels",
     "memory",
     "external_action_gate",
     "stop_conditions",
-    "currentness"
+    "currentness",
+    "validation_cases"
   ],
   "properties": {
     "schema_version": {
@@ -30,6 +38,96 @@
     },
     "policy": {
       "const": "ai-operations"
+    },
+    "scope_boundaries": {
+      "type": "object",
+      "required": [
+        "global",
+        "project",
+        "repository",
+        "global_rule_threshold"
+      ],
+      "properties": {
+        "global": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "project": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "repository": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "global_rule_threshold": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_precedence": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "rank",
+          "id",
+          "description"
+        ],
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "conflict_policy": {
+      "type": "object",
+      "required": [
+        "same_level",
+        "silent_resolution",
+        "required_record"
+      ],
+      "properties": {
+        "same_level": {
+          "const": "halt_and_arbitrate"
+        },
+        "silent_resolution": {
+          "const": "forbidden"
+        },
+        "required_record": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "execution_spine": {
       "type": "array",
@@ -59,6 +157,71 @@
       ],
       "additionalProperties": false
     },
+    "command_aliases": {
+      "type": "object",
+      "minProperties": 15,
+      "additionalProperties": {
+        "enum": [
+          "activate",
+          "ingest",
+          "resume",
+          "audit",
+          "council",
+          "plan",
+          "lock",
+          "approve",
+          "execute",
+          "verify",
+          "ship",
+          "handoff",
+          "park",
+          "promote_memory",
+          "halt"
+        ]
+      }
+    },
+    "command_contracts": {
+      "type": "object",
+      "required": [
+        "activate",
+        "ingest",
+        "resume",
+        "audit",
+        "council",
+        "plan",
+        "lock",
+        "approve",
+        "execute",
+        "verify",
+        "ship",
+        "handoff",
+        "park",
+        "promote_memory",
+        "halt"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "required_outputs",
+          "stop_conditions"
+        ],
+        "properties": {
+          "required_outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "stop_conditions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "autonomy_levels": {
       "type": "object",
       "required": [
@@ -77,7 +240,10 @@
         "plan_id_required",
         "revision_required",
         "approved_scope_required",
+        "excluded_scope_required",
         "material_revision_invalidates_approval",
+        "aliases",
+        "invalidated_by",
         "never_implicit"
       ]
     },
@@ -92,10 +258,39 @@
     },
     "session_lifecycle": {
       "type": "array",
-      "minItems": 7,
-      "items": {
-        "type": "string"
-      }
+      "const": [
+        "boot",
+        "orient",
+        "classify",
+        "plan",
+        "execute",
+        "verify",
+        "close"
+      ]
+    },
+    "session_outputs": {
+      "type": "object",
+      "required": [
+        "boot",
+        "close"
+      ],
+      "properties": {
+        "boot": {
+          "type": "array",
+          "minItems": 7,
+          "items": {
+            "type": "string"
+          }
+        },
+        "close": {
+          "type": "array",
+          "minItems": 10,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "completion_statuses": {
       "type": "array",
@@ -106,10 +301,23 @@
         "NOT_VERIFIED"
       ]
     },
+    "completion_display_labels": {
+      "type": "object",
+      "required": [
+        "NOT_VERIFIED"
+      ],
+      "properties": {
+        "NOT_VERIFIED": {
+          "const": "NOT VERIFIED"
+        }
+      },
+      "additionalProperties": false
+    },
     "memory": {
       "type": "object",
       "required": [
         "single_writer_required",
+        "default_writer_role",
         "lifecycle",
         "alternate_states",
         "promotion_fields",
@@ -119,7 +327,8 @@
     "external_action_gate": {
       "type": "object",
       "required": [
-        "approval_required"
+        "approval_required",
+        "never_inferred_from"
       ]
     },
     "stop_conditions": {
@@ -133,8 +342,31 @@
       "type": "object",
       "required": [
         "verify_unstable_claims",
+        "always_verify",
         "source_priority"
       ]
+    },
+    "validation_cases": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "input",
+          "expected_behavior"
+        ],
+        "properties": {
+          "input": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_behavior": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false
