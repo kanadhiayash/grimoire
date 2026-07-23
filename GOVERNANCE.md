@@ -2,9 +2,11 @@
 
 ## Canonical authority
 
-This repository is the canonical internal source for engineering standards used by Zeref OS projects.
+This repository is the canonical internal source for Engineering Standards and cross-surface activation policy used by Yash Kanadhia.
 
-Consuming repositories pin a released version. They must not silently follow an unversioned branch.
+Zeref Memory Engine remains the canonical owner of its own runtime, memory, agents, skills, permissions, and boot contract. This repository may detect, activate, simulate, or defer to Zeref but must not silently modify or duplicate Zeref internals.
+
+Consuming repositories and browser source packs pin a released version or exact reviewed commit. They must not silently follow an unversioned branch.
 
 ## Change classes
 
@@ -14,22 +16,45 @@ Clarifications, typo corrections, non-behavioral documentation changes, and comp
 
 ### Minor
 
-New optional standards, adapters, checks, or backward-compatible requirements.
+New optional standards, adapters, checks, source-pack formats, activation states, or backward-compatible requirements.
 
 ### Major
 
-Breaking policy changes, removed rules, changed instruction precedence, or requirements that invalidate existing project manifests.
+Breaking policy changes, removed rules, changed instruction precedence, changed command semantics, changed memory lifecycle, or requirements that invalidate existing project manifests or source packs.
 
 ## Required process for material changes
 
 1. Create a dedicated branch.
 2. Explain the problem and intended outcome.
-3. Record affected standards, policies, profiles, and adapters.
+3. Record affected standards, policies, profiles, adapters, templates, and surfaces.
 4. Update tests before or with implementation.
 5. Include migration guidance where compatibility changes.
-6. Open a pull request.
+6. Open a draft pull request.
 7. Run all required checks.
-8. Update `CHANGELOG.md` and `VERSION` when releasing.
+8. Verify that protected external repositories remain unchanged.
+9. Update `CHANGELOG.md` and `VERSION` only when releasing.
+
+## Cross-surface requirements
+
+A new or changed surface adapter must:
+
+- preserve the AI operations command meanings;
+- preserve the autonomy and approval model;
+- classify runtime versus simulation truthfully;
+- emit an activation receipt;
+- pin canonical sources;
+- preserve source-pack integrity and freshness metadata;
+- stage browser memory instead of claiming canonical promotion;
+- document unsupported capabilities;
+- pass adversarial conformance tests.
+
+An adapter must not:
+
+- create a second command registry;
+- claim Zeref runtime execution without evidence;
+- modify the Zeref repository;
+- silently refresh policy to a new revision;
+- weaken security, privacy, accessibility, approval, or verification controls.
 
 ## Exceptions
 
