@@ -12,4 +12,4 @@ test:
 >./scripts/test.sh
 
 compile:
->$(PYTHON) -m compileall -q checks tests
+>$(PYTHON) -m compileall -q checks scripts tests
