@@ -58,6 +58,14 @@
     "command_escalation_forbidden": true,
     "honest_assurance_claims_required": true
   },
+  "surface_activation": {
+    "policy_path": "policies/surface-activation.json",
+    "schema_path": "policies/schemas/surface-activation.schema.json",
+    "runtime_claims_require_verification": true,
+    "browser_simulation_must_be_labeled": true,
+    "source_pack_integrity_required": true,
+    "zeref_repository_modification_forbidden": true
+  },
   "exceptions": {
     "documentation_path": "docs/standards-exceptions.md",
     "undocumented_exceptions_forbidden": true
