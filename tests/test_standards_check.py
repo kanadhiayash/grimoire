@@ -20,17 +20,32 @@ class StandardsCheckTests(unittest.TestCase):
         ]
         self.assertEqual([], failures)
 
-    def test_baseline_version_matches_version_file(self) -> None:
+    def test_repository_and_component_versions_are_compatible(self) -> None:
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
         baseline = json.loads(
             (ROOT / "policies/baseline.json").read_text(encoding="utf-8")
         )
-        ai_operations = json.loads(
-            (ROOT / "policies/ai-operations.json").read_text(encoding="utf-8")
-        )
+        components = {
+            "ai_operations": json.loads(
+                (ROOT / "policies/ai-operations.json").read_text(encoding="utf-8")
+            ),
+            "surface_activation": json.loads(
+                (ROOT / "policies/surface-activation.json").read_text(encoding="utf-8")
+            ),
+        }
 
         self.assertEqual(version, baseline["standard_version"])
-        self.assertEqual(version, ai_operations["standard_version"])
+        root_version = standards_check.version_tuple(version)
+
+        for name, policy in components.items():
+            actual = policy["standard_version"]
+            declared = baseline[name]["policy_version"]
+            self.assertEqual(declared, actual, name)
+            self.assertLessEqual(
+                standards_check.version_tuple(actual),
+                root_version,
+                name,
+            )
 
     def test_profiles_have_resolvable_inheritance(self) -> None:
         for path in (ROOT / "profiles").glob("*.json"):
