@@ -24,27 +24,12 @@
     "surface_activation_policy": "policies/surface-activation.json",
     "governance": "GOVERNANCE.md",
     "security": "SECURITY.md",
+    "capability_map": "docs/operations/standards-orchestrator-capability-map.md",
     "legal_source_registry": "sources/legal/registry.json"
   },
   "entrypoints": {
-    "human": [
-      "README.md",
-      "docs/operations/quickstart.md",
-      "GOVERNANCE.md",
-      "SECURITY.md",
-      "CHANGELOG.md",
-      "docs/releases/0.4.0.md"
-    ],
-    "agent": [
-      "AGENTS.md",
-      "REPOSITORY_INDEX.json",
-      "docs/operations/agent-entrypoint.md",
-      "policies/baseline.json",
-      "policies/standards-orchestrator.json",
-      "policies/ai-operations.json",
-      "policies/surface-activation.json",
-      "instructions/global/GLOBAL_BASE.md"
-    ]
+    "human": ["README.md", "docs/operations/quickstart.md", "docs/operations/standards-orchestrator-capability-map.md", "GOVERNANCE.md", "SECURITY.md", "CHANGELOG.md", "docs/releases/0.4.0.md"],
+    "agent": ["AGENTS.md", "REPOSITORY_INDEX.json", "docs/operations/agent-entrypoint.md", "policies/baseline.json", "policies/standards-orchestrator.json", "policies/ai-operations.json", "policies/surface-activation.json", "instructions/global/GLOBAL_BASE.md"]
   },
   "commands": {
     "status": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "status", "--json"], "purpose": "Report version, entrypoints, commands, surfaces, and repository health."},
@@ -69,9 +54,14 @@
   "artifacts": {
     "project_manifest_template": "templates/project/project.json",
     "project_compiler": "scripts/project_orchestrator.py",
+    "standard_template": "templates/standards/STANDARD.md",
+    "record_templates": "templates/records",
+    "skill_catalog": "skills/standards-orchestrator/README.md",
+    "service_catalog": "services/standards-orchestrator/README.md",
     "neutral_instructions": "instructions/global",
     "personal_overlays": "instructions/personal",
     "legal_source_registry": "sources/legal/registry.json",
+    "benchmark_specification": "benchmarks/standards-orchestrator/README.md",
     "browser_pack_templates": "templates/browser-project",
     "browser_pack_compiler": "scripts/compile_surface_pack.py",
     "browser_pack_verifier": "scripts/verify_surface_pack.py",
