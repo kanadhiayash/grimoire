@@ -18,13 +18,20 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 - Safe local harness installer with dry-run planning, backups, idempotent managed blocks, verification, and uninstall.
 - Surface capability matrix, browser-pack standard, and ADR-0004.
 - Thirteen focused tests covering classification, compilation, tamper detection, provenance pins, installer preservation, uninstall, and idempotency.
+- `REPOSITORY_INDEX.json` and its schema as the machine-readable navigation contract for canonical sources, entrypoints, commands, and supported surfaces.
+- Dependency-free unified CLI at `scripts/standards.py` for status, catalog, doctor, tests, full checks, browser-pack workflows, and harness management.
+- Repository-index conformance checks and tests for path safety, missing files, machine status output, and command delegation.
+- Human quickstart and AI-agent entrypoint guides under `docs/operations/`.
 
 ### Changed
 
 - Baseline policy and schema now require surface activation controls.
-- Doctor now validates both the core Engineering Standards policy and cross-surface activation policy.
+- Doctor now validates the core Engineering Standards policy, cross-surface activation policy, and repository index.
 - Adapter contract now includes browser surfaces, activation receipts, and runtime-versus-simulation truthfulness.
-- README and governance now describe cross-surface activation ownership and release requirements.
+- Root `AGENTS.md` now provides exact boot, task-routing, implementation-stack, precedence, Zeref-boundary, and verification contracts.
+- README now provides distinct human and AI-agent start paths and documents the unified CLI.
+- Make targets and Standards CI now use the same operational Python command surface and can produce a JSON verification report.
+- Governance now describes cross-surface activation ownership and release requirements.
 
 ### Reconciled
 
