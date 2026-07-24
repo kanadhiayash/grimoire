@@ -6,6 +6,17 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 ## [Unreleased]
 
+### Planned
+
+- Inventory and reconcile the four legacy practice repositories.
+- Expand stack-specific overlays.
+- Generate all remaining adapters from machine-readable policy.
+- Add optional connector-backed source refresh after a separate approval.
+- Add policy compatibility tests across released source-pack versions.
+- Add signed source-pack manifests after a separate security review.
+
+## [0.3.0] - 2026-07-23
+
 ### Added
 
 - Cross-surface Zeref activation policy and JSON schema.
@@ -22,11 +33,13 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 - Dependency-free unified CLI at `scripts/standards.py` for status, catalog, doctor, tests, full checks, browser-pack workflows, and harness management.
 - Repository-index conformance checks and tests for path safety, missing files, machine status output, and command delegation.
 - Human quickstart and AI-agent entrypoint guides under `docs/operations/`.
+- Component policy-version declarations and compatibility validation.
+- Release notes and migration guidance for version `0.3.0`.
 
 ### Changed
 
-- Baseline policy and schema now require surface activation controls.
-- Doctor now validates the core Engineering Standards policy, cross-surface activation policy, and repository index.
+- Baseline policy and schema now require surface activation controls and explicit component policy versions.
+- Doctor now validates the core Engineering Standards policy, cross-surface activation policy, repository index, and component-version compatibility.
 - Adapter contract now includes browser surfaces, activation receipts, and runtime-versus-simulation truthfulness.
 - Root `AGENTS.md` now provides exact boot, task-routing, implementation-stack, precedence, Zeref-boundary, and verification contracts.
 - README now provides distinct human and AI-agent start paths and documents the unified CLI.
@@ -35,45 +48,37 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 ### Reconciled
 
-- Resolved parallel AI operations implementations by retaining the canonical `ai-operations` layout from pull request #2.
+- Retained the canonical `ai-operations` layout from pull request #2 while preserving the locked workflow semantics added in pull request #3.
 - Added explicit scope boundaries, source precedence, same-level conflict arbitration, command aliases, command output contracts, approval invalidation, currentness categories, and behavior cases.
 - Preserved `NOT_VERIFIED` as the machine status while defining `NOT VERIFIED` as the human-facing label.
-- Added ADR-0003 and reconciliation conformance tests.
-
-### Planned
-
-- Inventory and reconcile the four legacy practice repositories
-- Expand stack-specific overlays
-- Generate all remaining adapters from machine-readable policy
-- Add optional connector-backed source refresh after a separate approval
-- Add policy compatibility tests across released source-pack versions
+- Kept the stable AI Operations policy module at version `0.2.0` while releasing the repository and Surface Activation module as `0.3.0`.
 
 ## [0.2.0] - 2026-07-21
 
 ### Added
 
-- Provider-neutral AI operations governance standard
-- Machine-readable command, autonomy, approval, assurance, memory, and lifecycle policy
-- Mission, approval, run-report, escalation, and cross-harness handoff templates
-- AI operations adapter contract
-- Architecture decision for the AI operations control plane
-- Conformance checks for command grammar, autonomy levels, completion statuses, and memory lifecycle
+- Provider-neutral AI operations governance standard.
+- Machine-readable command, autonomy, approval, assurance, memory, and lifecycle policy.
+- Mission, approval, run-report, escalation, and cross-harness handoff templates.
+- AI operations adapter contract.
+- Architecture decision for the AI operations control plane.
+- Conformance checks for command grammar, autonomy levels, completion statuses, and memory lifecycle.
 
 ### Changed
 
-- Baseline policy now requires bounded AI operations controls
-- Policy schema now includes the AI operations section
-- JSON checks now include nested policy schemas
+- Baseline policy now requires bounded AI operations controls.
+- Policy schema now includes the AI operations section.
+- JSON checks now include nested policy schemas.
 
 ## [0.1.0] - 2026-07-09
 
 ### Added
 
-- Private canonical repository scaffold
-- Agent operating contract
-- Governance and security policies
-- Machine-readable baseline and profile definitions
-- Initial human-readable standards
-- Harness adapter contracts
-- Dependency-free doctor and conformance tests
-- GitHub Actions verification workflow
+- Private canonical repository scaffold.
+- Agent operating contract.
+- Governance and security policies.
+- Machine-readable baseline and profile definitions.
+- Initial human-readable standards.
+- Harness adapter contracts.
+- Dependency-free doctor and conformance tests.
+- GitHub Actions verification workflow.
