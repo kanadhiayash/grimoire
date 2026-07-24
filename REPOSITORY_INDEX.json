@@ -28,8 +28,8 @@
     "legal_source_registry": "sources/legal/registry.json"
   },
   "entrypoints": {
-    "human": ["README.md", "docs/operations/quickstart.md", "docs/operations/standards-orchestrator-capability-map.md", "GOVERNANCE.md", "SECURITY.md", "CHANGELOG.md", "docs/releases/0.4.0.md"],
-    "agent": ["AGENTS.md", "REPOSITORY_INDEX.json", "docs/operations/agent-entrypoint.md", "policies/baseline.json", "policies/standards-orchestrator.json", "policies/ai-operations.json", "policies/surface-activation.json", "instructions/global/GLOBAL_BASE.md"]
+    "human": ["README.md", "instructions/README.md", "docs/operations/quickstart.md", "docs/operations/standards-orchestrator-capability-map.md", "GOVERNANCE.md", "SECURITY.md", "CHANGELOG.md", "docs/releases/0.4.0.md"],
+    "agent": ["AGENTS.md", "REPOSITORY_INDEX.json", "instructions/README.md", "instructions/instructions-manifest.json", "docs/operations/agent-entrypoint.md", "policies/baseline.json", "policies/standards-orchestrator.json", "policies/ai-operations.json", "policies/surface-activation.json", "instructions/global/GLOBAL_BASE.md"]
   },
   "commands": {
     "status": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "status", "--json"], "purpose": "Report version, entrypoints, commands, surfaces, and repository health."},
@@ -60,6 +60,8 @@
     "service_catalog": "services/standards-orchestrator/README.md",
     "neutral_instructions": "instructions/global",
     "personal_overlays": "instructions/personal",
+    "personal_instruction_pack": "instructions",
+    "personal_instruction_manifest": "instructions/instructions-manifest.json",
     "legal_source_registry": "sources/legal/registry.json",
     "benchmark_specification": "benchmarks/standards-orchestrator/README.md",
     "browser_pack_templates": "templates/browser-project",
