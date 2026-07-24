@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "standard_version": "0.2.0",
+  "standard_version": "0.3.0",
   "policy": "surface-activation",
   "runtime_owner": "zeref-memory-engine",
   "activation_owner": "engineering-standards",

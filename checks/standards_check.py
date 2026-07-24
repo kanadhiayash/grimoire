@@ -132,6 +132,10 @@ def load_json(relative_path: str) -> dict:
     return value
 
 
+def version_tuple(value: str) -> tuple[int, int, int]:
+    return tuple(int(part) for part in value.split("."))
+
+
 def check_required_files() -> CheckResult:
     missing = [path for path in REQUIRED_FILES if not (ROOT / path).is_file()]
 
@@ -152,25 +156,48 @@ def check_version() -> CheckResult:
         )
 
     baseline = load_json("policies/baseline.json")
-    policy_version = baseline.get("standard_version")
-    ai_operations = load_json("policies/ai-operations.json")
-    ai_version = ai_operations.get("standard_version")
+    baseline_version = baseline.get("standard_version")
 
-    if policy_version != version:
+    if baseline_version != version:
         return CheckResult(
             "semantic version",
             False,
-            f"VERSION is {version}, baseline is {policy_version!r}",
+            f"VERSION is {version}, baseline is {baseline_version!r}",
         )
 
-    if ai_version != version:
-        return CheckResult(
-            "semantic version",
-            False,
-            f"VERSION is {version}, ai operations is {ai_version!r}",
-        )
+    components = {
+        "ai_operations": (
+            load_json("policies/ai-operations.json").get("standard_version"),
+            baseline.get("ai_operations", {}).get("policy_version"),
+        ),
+        "surface_activation": (
+            load_json("policies/surface-activation.json").get("standard_version"),
+            baseline.get("surface_activation", {}).get("policy_version"),
+        ),
+    }
+    errors: list[str] = []
+    root_version = version_tuple(version)
 
-    return CheckResult("semantic version", True, version)
+    for name, (actual, declared) in components.items():
+        if not isinstance(actual, str) or not SEMVER.fullmatch(actual):
+            errors.append(f"{name} has invalid version {actual!r}")
+            continue
+        if declared != actual:
+            errors.append(
+                f"baseline declares {name} {declared!r}, policy is {actual!r}"
+            )
+        if version_tuple(actual) > root_version:
+            errors.append(
+                f"{name} version {actual} cannot exceed repository version {version}"
+            )
+
+    if errors:
+        return CheckResult("semantic version", False, "; ".join(errors))
+
+    detail = ", ".join(
+        f"{name}={actual}" for name, (actual, _) in components.items()
+    )
+    return CheckResult("semantic version", True, f"repository={version}; {detail}")
 
 
 def check_json_documents() -> CheckResult:
