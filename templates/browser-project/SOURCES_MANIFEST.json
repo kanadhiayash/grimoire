@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "pack_version": "{{PACK_VERSION}}",
+  "project": "{{PROJECT_NAME}}",
+  "surface": "{{SURFACE}}",
+  "generated_at": "{{GENERATED_AT}}",
+  "freshness_max_age_days": 30,
+  "canonical_sources": {
+    "engineering_standards": {
+      "url": "https://github.com/kanadhiayash/engineering-standards",
+      "commit": "{{ENGINEERING_STANDARDS_COMMIT}}"
+    },
+    "zeref_memory_engine": {
+      "url": "https://github.com/kanadhiayash/zeref-memory-engine",
+      "commit": "{{ZEREF_COMMIT}}"
+    }
+  },
+  "required_read_order": [
+    "SURFACE_BOOT.md",
+    "SOURCES_MANIFEST.json",
+    "AGENTS.md",
+    "PROVIDER_ADAPTER.md",
+    "ZEREF_OPERATIONS_BRIDGE.md",
+    "PROJECT_STATE.md",
+    "MEMORY_STATE.md"
+  ],
+  "files": {},
+  "privacy_class": "internal",
+  "activation_mode": "{{ACTIVATION_MODE}}"
+}

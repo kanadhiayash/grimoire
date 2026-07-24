@@ -1,0 +1,133 @@
+{
+  "$schema": "policies/schemas/repository-index.schema.json",
+  "schema_version": 1,
+  "standard_version": "0.2.0",
+  "repository": "kanadhiayash/engineering-standards",
+  "visibility": "private",
+  "purpose": "Canonical, versioned engineering policy and cross-surface AI operations control plane for Yash Kanadhia projects.",
+  "implementation_stack": {
+    "orchestration": "Python 3.11+ standard library",
+    "machine_contracts": "JSON and JSON Schema draft 2020-12",
+    "human_and_agent_contracts": "Markdown",
+    "shell_automation": "Bash or Zsh thin launchers",
+    "continuous_integration": "GitHub Actions YAML"
+  },
+  "canonical_sources": {
+    "repository_contract": "AGENTS.md",
+    "repository_index": "REPOSITORY_INDEX.json",
+    "repository_index_schema": "policies/schemas/repository-index.schema.json",
+    "baseline_policy": "policies/baseline.json",
+    "ai_operations_policy": "policies/ai-operations.json",
+    "surface_activation_policy": "policies/surface-activation.json",
+    "governance": "GOVERNANCE.md",
+    "security": "SECURITY.md"
+  },
+  "entrypoints": {
+    "human": [
+      "README.md",
+      "docs/operations/quickstart.md",
+      "GOVERNANCE.md",
+      "SECURITY.md",
+      "CHANGELOG.md"
+    ],
+    "agent": [
+      "AGENTS.md",
+      "REPOSITORY_INDEX.json",
+      "docs/operations/agent-entrypoint.md",
+      "policies/baseline.json",
+      "policies/ai-operations.json",
+      "policies/surface-activation.json"
+    ]
+  },
+  "commands": {
+    "status": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "status", "--json"],
+      "purpose": "Report version, indexed entrypoints, command count, surface count, and repository health."
+    },
+    "catalog": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "catalog", "--json"],
+      "purpose": "Print this repository index for machine consumption."
+    },
+    "doctor": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "doctor"],
+      "purpose": "Run policy, surface activation, and repository-index checks."
+    },
+    "test": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "test"],
+      "purpose": "Run the dependency-free unit test suite."
+    },
+    "check": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "check"],
+      "purpose": "Run doctor checks, unit tests, and Python compilation."
+    },
+    "pack_compile": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "pack", "compile"],
+      "purpose": "Compile a pinned, integrity-recorded browser source pack."
+    },
+    "pack_verify": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "pack", "verify"],
+      "purpose": "Verify browser source-pack integrity, freshness, and runtime-claim boundaries."
+    },
+    "harness_manage": {
+      "entrypoint": "scripts/standards.py",
+      "argv": ["python3", "scripts/standards.py", "harness"],
+      "purpose": "Detect, plan, apply, verify, or uninstall managed global harness activation blocks."
+    }
+  },
+  "surfaces": {
+    "claude-code": {
+      "mode": "local_harness",
+      "adapter": "adapters/claude/ZEREF_ACTIVATION.global.md"
+    },
+    "codex": {
+      "mode": "local_harness",
+      "adapter": "adapters/codex/ZEREF_ACTIVATION.global.md"
+    },
+    "gemini-cli": {
+      "mode": "local_harness",
+      "adapter": "adapters/gemini/ZEREF_ACTIVATION.global.md"
+    },
+    "chatgpt-project": {
+      "mode": "browser_project",
+      "adapter": "adapters/chatgpt/CHATGPT.md"
+    },
+    "claude-project": {
+      "mode": "browser_project",
+      "adapter": "adapters/claude-project/CLAUDE.md"
+    },
+    "gemini-gem": {
+      "mode": "browser_project",
+      "adapter": "adapters/gemini-gem/GEMINI.md"
+    },
+    "generic-chat": {
+      "mode": "browser_chat",
+      "adapter": "adapters/generic-chat/PROVIDER_ADAPTER.md"
+    }
+  },
+  "artifacts": {
+    "browser_pack_templates": "templates/browser-project",
+    "browser_pack_compiler": "scripts/compile_surface_pack.py",
+    "browser_pack_verifier": "scripts/verify_surface_pack.py",
+    "harness_installer": "scripts/install_ai_harness_standards.py"
+  },
+  "verification": {
+    "required_commands": [
+      "python3 scripts/standards.py check"
+    ],
+    "ci_workflow": ".github/workflows/standards-ci.yml",
+    "completion_statuses": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]
+  },
+  "boundaries": {
+    "zeref_repository_modification": "forbidden unless separately approved",
+    "browser_runtime_claims": "simulation must never be represented as local runtime execution",
+    "external_actions": "explicit approval required",
+    "canonical_memory": "single-writer and approval-gated"
+  }
+}

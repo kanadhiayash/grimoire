@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schemas/repository-index.schema.json",
+  "title": "Engineering Standards Repository Index",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "standard_version",
+    "repository",
+    "canonical_sources",
+    "entrypoints",
+    "commands",
+    "surfaces",
+    "verification"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schema_version": {"type": "integer", "minimum": 1},
+    "standard_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "repository": {"type": "string", "minLength": 3},
+    "visibility": {"enum": ["private", "public", "internal"]},
+    "purpose": {"type": "string", "minLength": 1},
+    "implementation_stack": {"type": "object"},
+    "canonical_sources": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/repositoryPath"}
+    },
+    "entrypoints": {
+      "type": "object",
+      "required": ["human", "agent"],
+      "properties": {
+        "human": {"$ref": "#/$defs/pathList"},
+        "agent": {"$ref": "#/$defs/pathList"}
+      },
+      "additionalProperties": false
+    },
+    "commands": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["entrypoint", "argv", "purpose"],
+        "properties": {
+          "entrypoint": {"$ref": "#/$defs/repositoryPath"},
+          "argv": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string"}
+          },
+          "purpose": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "surfaces": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["mode", "adapter"],
+        "properties": {
+          "mode": {
+            "enum": ["local_harness", "browser_project", "browser_chat"]
+          },
+          "adapter": {"$ref": "#/$defs/repositoryPath"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "artifacts": {"type": "object"},
+    "verification": {
+      "type": "object",
+      "required": ["required_commands", "ci_workflow", "completion_statuses"]
+    },
+    "boundaries": {"type": "object"}
+  },
+  "$defs": {
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "pathList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/repositoryPath"}
+    }
+  },
+  "additionalProperties": true
+}

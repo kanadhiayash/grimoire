@@ -12,3 +12,5 @@ if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
 fi
 
 "$PYTHON_BIN" checks/standards_check.py
+"$PYTHON_BIN" checks/surface_activation_check.py
+"$PYTHON_BIN" checks/repository_index_check.py

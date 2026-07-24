@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schemas/surface-activation.schema.json",
+  "title": "Cross-Surface Activation Policy",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "standard_version",
+    "policy",
+    "runtime_owner",
+    "activation_owner",
+    "canonical_sources",
+    "surface_classes",
+    "activation_statuses",
+    "browser_source_pack",
+    "activation_receipt",
+    "freshness",
+    "browser_memory",
+    "rules",
+    "stop_conditions"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "minimum": 1},
+    "standard_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "policy": {"const": "surface-activation"},
+    "runtime_owner": {"const": "zeref-memory-engine"},
+    "activation_owner": {"const": "engineering-standards"},
+    "canonical_sources": {"type": "object", "required": ["engineering_standards", "zeref_memory_engine"]},
+    "surface_classes": {"type": "object", "required": ["local_harness", "browser_project", "browser_chat"]},
+    "activation_statuses": {
+      "type": "object",
+      "required": ["RUNTIME_FULL", "RUNTIME_PARTIAL", "PROJECT_SIMULATION", "CHAT_SIMULATION", "INSTRUCTION_ONLY", "UNAVAILABLE", "NOT_VERIFIED"]
+    },
+    "browser_source_pack": {"type": "object", "required": ["required_files", "required_read_order", "hash_algorithm", "pinned_commits_required"]},
+    "activation_receipt": {"type": "object", "required": ["required_fields", "display_format"]},
+    "freshness": {"type": "object", "required": ["default_max_age_days", "stale_pack_behavior", "live_refresh_requires_verification"]},
+    "browser_memory": {"type": "object", "required": ["mode", "canonical_promotion_forbidden", "persistence_claim_requires", "required_disclaimer"]},
+    "execution_receipts": {"type": "object"},
+    "rules": {"type": "object"},
+    "stop_conditions": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

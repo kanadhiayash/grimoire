@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "standard_version": "0.2.0",
+  "policy": "surface-activation",
+  "runtime_owner": "zeref-memory-engine",
+  "activation_owner": "engineering-standards",
+  "canonical_sources": {
+    "engineering_standards": "https://github.com/kanadhiayash/engineering-standards",
+    "zeref_memory_engine": "https://github.com/kanadhiayash/zeref-memory-engine"
+  },
+  "surface_classes": {
+    "local_harness": ["claude-code", "codex", "gemini-cli", "cursor", "windsurf", "github-copilot", "generic-agent"],
+    "browser_project": ["chatgpt-project", "claude-project", "gemini-gem", "generic-browser-project"],
+    "browser_chat": ["chatgpt-chat", "claude-chat", "gemini-chat", "generic-browser-chat"]
+  },
+  "activation_statuses": {
+    "RUNTIME_FULL": {"requires": ["runtime_capability_verified", "project_contract_verified"], "may_claim_local_runtime": true, "may_claim_canonical_memory": true},
+    "RUNTIME_PARTIAL": {"requires": ["at_least_one_runtime_or_project_signal"], "may_claim_local_runtime": false, "may_claim_canonical_memory": false},
+    "PROJECT_SIMULATION": {"requires": ["browser_project_surface", "complete_source_pack"], "may_claim_local_runtime": false, "may_claim_canonical_memory": false},
+    "CHAT_SIMULATION": {"requires": ["browser_chat_surface", "complete_source_pack"], "may_claim_local_runtime": false, "may_claim_canonical_memory": false},
+    "INSTRUCTION_ONLY": {"requires": ["some_operating_instructions", "runtime_or_pack_incomplete"], "may_claim_local_runtime": false, "may_claim_canonical_memory": false},
+    "UNAVAILABLE": {"requires": ["inspection_completed", "no_valid_activation_source"], "may_claim_local_runtime": false, "may_claim_canonical_memory": false},
+    "NOT_VERIFIED": {"requires": ["inspection_unavailable_or_inconclusive"], "may_claim_local_runtime": false, "may_claim_canonical_memory": false}
+  },
+  "project_signals": ["SOUL.md", "config/PROJECT.md", "memory/hot.md", "memory/index.md", "PRIVACY.md", "REDACT.md", "SHARING_POLICY.md", "applicable Zeref AGENTS.md"],
+  "runtime_signals": ["verified Zeref plugin", "verified Zeref CLI", "installed Zeref skills", "applicable Zeref runtime contract"],
+  "browser_source_pack": {
+    "required_files": ["SURFACE_BOOT.md", "SOURCES_MANIFEST.json", "AGENTS.md", "PROVIDER_ADAPTER.md", "ZEREF_OPERATIONS_BRIDGE.md", "PROJECT_STATE.md", "MEMORY_STATE.md"],
+    "required_read_order": ["SURFACE_BOOT.md", "SOURCES_MANIFEST.json", "AGENTS.md", "PROVIDER_ADAPTER.md", "ZEREF_OPERATIONS_BRIDGE.md", "PROJECT_STATE.md", "MEMORY_STATE.md"],
+    "hash_algorithm": "sha256",
+    "live_links_are_provenance_not_execution": true,
+    "pinned_commits_required": true
+  },
+  "activation_receipt": {
+    "required_fields": ["surface", "status", "source", "runtime", "policy_version", "source_pack_version", "freshness", "limitations"],
+    "display_format": "[zeref] status=<STATUS> source=<SOURCE> runtime=<RUNTIME>"
+  },
+  "freshness": {"default_max_age_days": 30, "stale_pack_behavior": "report_stale_and_continue_without_silent_refresh", "live_refresh_requires_verification": true},
+  "browser_memory": {
+    "mode": "staged_snapshot",
+    "canonical_promotion_forbidden": true,
+    "persistence_claim_requires": ["approved_writeback", "saved_or_reuploaded_source", "writeback_receipt"],
+    "required_disclaimer": "Browser project state is a source-backed snapshot, not proof that the local Zeref canonical writer ran."
+  },
+  "execution_receipts": {
+    "required_for": ["activation", "verification", "memory_writeback", "external_action"],
+    "fields": ["operation_id", "surface", "inputs", "result", "evidence", "limitations", "timestamp"]
+  },
+  "rules": {
+    "modify_zeref_repository": false,
+    "duplicate_zeref_boot_contract": false,
+    "duplicate_zeref_command_registry": false,
+    "duplicate_zeref_memory_internals": false,
+    "false_runtime_claims": false,
+    "fallback_to_engineering_standards": true,
+    "unsupported_surfaces_must_report_not_verified": true
+  },
+  "stop_conditions": ["required_source_missing", "manifest_hash_mismatch", "source_conflict", "private_source_unavailable", "runtime_claim_cannot_be_verified", "memory_persistence_cannot_be_verified"]
+}

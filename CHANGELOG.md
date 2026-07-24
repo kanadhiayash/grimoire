@@ -6,6 +6,33 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 ## [Unreleased]
 
+### Added
+
+- Cross-surface Zeref activation policy and JSON schema.
+- Explicit local runtime, browser project simulation, browser chat simulation, instruction-only, unavailable, and unverified states.
+- Activation, verification, writeback, and external-action receipts.
+- Browser source-pack compiler with pinned source commits and SHA-256 integrity records.
+- Browser source-pack verifier with tamper, stale-pack, and false-runtime-claim checks.
+- ChatGPT Project, Claude Project, Gemini Gem, and generic browser-chat adapters.
+- Claude Code, Codex, and Gemini CLI global activation fragments.
+- Safe local harness installer with dry-run planning, backups, idempotent managed blocks, verification, and uninstall.
+- Surface capability matrix, browser-pack standard, and ADR-0004.
+- Thirteen focused tests covering classification, compilation, tamper detection, provenance pins, installer preservation, uninstall, and idempotency.
+- `REPOSITORY_INDEX.json` and its schema as the machine-readable navigation contract for canonical sources, entrypoints, commands, and supported surfaces.
+- Dependency-free unified CLI at `scripts/standards.py` for status, catalog, doctor, tests, full checks, browser-pack workflows, and harness management.
+- Repository-index conformance checks and tests for path safety, missing files, machine status output, and command delegation.
+- Human quickstart and AI-agent entrypoint guides under `docs/operations/`.
+
+### Changed
+
+- Baseline policy and schema now require surface activation controls.
+- Doctor now validates the core Engineering Standards policy, cross-surface activation policy, and repository index.
+- Adapter contract now includes browser surfaces, activation receipts, and runtime-versus-simulation truthfulness.
+- Root `AGENTS.md` now provides exact boot, task-routing, implementation-stack, precedence, Zeref-boundary, and verification contracts.
+- README now provides distinct human and AI-agent start paths and documents the unified CLI.
+- Make targets and Standards CI now use the same operational Python command surface and can produce a JSON verification report.
+- Governance now describes cross-surface activation ownership and release requirements.
+
 ### Reconciled
 
 - Resolved parallel AI operations implementations by retaining the canonical `ai-operations` layout from pull request #2.
@@ -17,9 +44,9 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 - Inventory and reconcile the four legacy practice repositories
 - Expand stack-specific overlays
-- Generate adapters from machine-readable policy
-- Add consuming-project installation and synchronization commands
-- Add policy compatibility tests
+- Generate all remaining adapters from machine-readable policy
+- Add optional connector-backed source refresh after a separate approval
+- Add policy compatibility tests across released source-pack versions
 
 ## [0.2.0] - 2026-07-21
 
