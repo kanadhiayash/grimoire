@@ -23,5 +23,9 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run conformance checks
-        run: make check
+      - name: Run operational conformance checks
+        run: |
+          mkdir -p artifacts
+          python3 scripts/standards.py check \
+            --json-output artifacts/standards-check.json
+          cat artifacts/standards-check.json
