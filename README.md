@@ -147,7 +147,7 @@ python3 scripts/standards.py harness uninstall
 
 ## AI operations control plane
 
-Version `0.2.0` established the provider-neutral control plane for:
+AI Operations policy module version `0.2.0` defines the provider-neutral control plane for:
 
 - command grammar;
 - autonomy levels;
@@ -169,7 +169,7 @@ Canonical files:
 
 ## Cross-surface Zeref activation
 
-The unreleased cross-surface layer supports:
+Version `0.3.0` adds:
 
 - verified local Zeref activation on coding harnesses;
 - source-backed simulation on ChatGPT Projects, Claude Projects, Gemini Gems, and ordinary browser chats;
@@ -178,7 +178,9 @@ The unreleased cross-surface layer supports:
 - freshness budgets;
 - staged browser memory and writeback receipts;
 - provider adapters;
-- safe install, verify, and uninstall workflows.
+- safe install, verify, and uninstall workflows;
+- a machine-readable repository index;
+- one operational CLI for humans, agents, Make, and CI.
 
 Canonical files:
 
@@ -231,7 +233,9 @@ Projects must not silently consume an unversioned branch or silently refresh an 
 
 ## Status
 
-Version `0.2.0` is the current released baseline. Cross-surface Zeref activation and the operational repository interface are under review for the next minor release.
+Version `0.3.0` is the current released baseline. It includes the AI Operations control plane, cross-surface Zeref activation, browser source packs, harness adapters, the unified CLI, and machine-readable repository navigation.
+
+See the [0.3.0 release notes](docs/releases/0.3.0.md) for compatibility and migration guidance.
 
 The following public repositories remain migration sources until their content is inventoried, reconciled, imported, and verified:
 
