@@ -1,7 +1,7 @@
 {
   "$schema": "policies/schemas/repository-index.schema.json",
   "schema_version": 1,
-  "standard_version": "0.2.0",
+  "standard_version": "0.3.0",
   "repository": "kanadhiayash/engineering-standards",
   "visibility": "private",
   "purpose": "Canonical, versioned engineering policy and cross-surface AI operations control plane for Yash Kanadhia projects.",
