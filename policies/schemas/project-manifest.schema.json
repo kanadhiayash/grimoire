@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Standards Orchestrator Project Manifest",
+  "type": "object",
+  "required": ["schema_version", "project", "risk", "standards", "zeref"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "project": {
+      "type": "object",
+      "required": ["name", "lifecycle_stage", "product_types"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "lifecycle_stage": {"enum": ["DISCOVER", "DEFINE", "DESIGN", "VALIDATE", "DECISION_LOCKED", "BUILD_READY", "BUILDING", "VERIFYING", "RELEASE_READY", "SHIPPED", "OPERATING", "RETIRED"]},
+        "product_types": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "users": {"type": "array", "items": {"type": "string"}},
+    "markets": {"type": "array", "items": {"type": "string"}},
+    "platforms": {"type": "array", "items": {"type": "string"}},
+    "stack": {"type": "object"},
+    "data": {"type": "object"},
+    "ai": {"type": "object"},
+    "risk": {"type": "object", "required": ["level"], "properties": {"level": {"enum": ["low", "moderate", "high", "critical"]}}},
+    "standards": {"type": "object", "required": ["version"], "properties": {"version": {"type": "string"}}},
+    "zeref": {"type": "object", "required": ["mode"], "properties": {"mode": {"enum": ["advisory", "standard", "strict", "off"]}, "cost_ceiling": {"type": "string"}}},
+    "unknowns": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

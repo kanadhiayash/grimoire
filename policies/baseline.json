@@ -1,24 +1,28 @@
 {
   "schema_version": 1,
-  "standard_version": "0.3.0",
+  "standard_version": "0.4.0",
   "profile": "baseline",
   "principles": {
     "read_before_editing": "required",
     "smallest_complete_change": "required",
     "evidence_before_claims": "required",
     "explicit_uncertainty": "required",
-    "public_safe_output": "required"
+    "public_safe_output": "required",
+    "detailed_at_rest_selective_in_execution": "required",
+    "neutral_global_personal_overlay": "required"
   },
   "planning": {
     "material_changes_require_plan": true,
     "architecture_changes_require_decision_record": true,
-    "define_verification_before_implementation": true
+    "define_verification_before_implementation": true,
+    "approved_plan_revision_binding_required": true
   },
   "implementation": {
     "unrelated_refactors_forbidden": true,
     "silent_behavior_changes_forbidden": true,
     "repository_patterns_preferred": true,
-    "exact_values_preserved": true
+    "exact_values_preserved": true,
+    "minimum_correct_change_required": true
   },
   "verification": {
     "claim_success_only_after_checks": true,
@@ -26,7 +30,8 @@
     "test_deletion_requires_justification": true,
     "lint_required_when_configured": true,
     "typecheck_required_when_configured": true,
-    "build_required_when_configured": true
+    "build_required_when_configured": true,
+    "completion_statuses": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]
   },
   "security": {
     "secrets_forbidden": true,
@@ -67,6 +72,18 @@
     "browser_simulation_must_be_labeled": true,
     "source_pack_integrity_required": true,
     "zeref_repository_modification_forbidden": true
+  },
+  "standards_orchestrator": {
+    "policy_path": "policies/standards-orchestrator.json",
+    "schema_path": "policies/schemas/standards-orchestrator.schema.json",
+    "policy_version": "0.4.0",
+    "one_canonical_repository_required": true,
+    "one_project_manifest_required": true,
+    "one_compiled_context_pack_required": true,
+    "neutral_global_instructions_required": true,
+    "personal_overlays_must_be_explicit": true,
+    "automated_legal_compliance_claims_forbidden": true,
+    "zeref_boundary_required": true
   },
   "exceptions": {
     "documentation_path": "docs/standards-exceptions.md",

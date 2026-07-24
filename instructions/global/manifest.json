@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "canonical": true,
+  "neutral": true,
+  "modules": ["GLOBAL_BASE.md", "PRODUCT_AND_DESIGN.md", "ENGINEERING.md", "LEGAL_PRIVACY_ACCESSIBILITY.md", "AI_AND_AGENT_OPERATIONS.md", "COST_AND_EVIDENCE.md"],
+  "excluded_from_neutral_packs": ["../personal/"]
+}

@@ -1,149 +1,138 @@
-# Agent Operating Contract
+# Standards Orchestrator Agent Contract
 
-This file is the canonical bootstrap contract for every AI model, coding agent, autonomous workflow, and human-agent collaboration operating in this repository.
+This file is the canonical bootstrap contract for every human, AI model, coding agent, and autonomous workflow operating in this repository.
 
 ## Repository identity
 
-Engineering Standards is the canonical private control plane for reusable engineering policy, AI operations, cross-surface adapters, compiled project contracts, and verification used by Yash Kanadhia projects.
+This repository is a neutral, private, versioned Product Engineering Standards and Operations control plane. It will later be renamed Standards Orchestrator. It defines reusable product, design, engineering, legal, accessibility, AI, security, privacy, cloud, cost, Git, delivery, and operational standards.
 
-Zeref Memory Engine is a separate runtime. This repository may define how supported surfaces detect, activate, or simulate Zeref operations. It does not own or rewrite Zeref internals.
+Zeref Memory Engine is a separate execution and continuity runtime. This repository may compile execution profiles for Zeref but does not own or rewrite Zeref internals.
+
+## Core operating model
+
+Detailed at rest, selective during execution:
+
+```text
+Canonical standards + project manifest + approved project records
+    -> applicability and context compiler
+    -> one bounded AI context pack
+    -> Zeref-routed execution
+    -> fresh verification evidence
+```
 
 ## Boot order
 
-Before proposing or making material changes:
+Before material work:
 
-1. Read `README.md` for the human overview.
+1. Read `README.md`.
 2. Read `VERSION`.
-3. Read `REPOSITORY_INDEX.json` for the machine route map.
+3. Read `REPOSITORY_INDEX.json`.
 4. Read `GOVERNANCE.md` and `SECURITY.md`.
-5. Read `policies/baseline.json`.
-6. Read the active profile and only the standards, policies, adapters, templates, checks, and tests relevant to the task.
-7. Inspect existing repository patterns.
-8. State facts, assumptions, unknowns, risks, and conflicts when material.
+5. Read `policies/baseline.json`, `policies/standards-orchestrator.json`, and only the relevant policy modules.
+6. Read the active project manifest and compiled pack when working in a consuming project.
+7. Read only the standards, overlays, templates, skills, sources, checks, and tests relevant to the task.
+8. Inspect existing patterns before editing.
+9. State facts, assumptions, unknowns, risks, and conflicts when material.
 
-Do not scan the full repository when the index and task router identify a smaller sufficient source set.
+Do not scan or inject the full repository when the index and compiler identify a smaller sufficient set.
 
-## Fast operational commands
+## Fast commands
 
 ```bash
 python3 scripts/standards.py status --json
 python3 scripts/standards.py catalog --json
+python3 scripts/standards.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
 python3 scripts/standards.py check
 ```
 
-The machine-readable command and surface catalog is `REPOSITORY_INDEX.json`.
-
-## Task routing
-
-| Task | Start with |
-|---|---|
-| Universal engineering rule | Baseline policy, relevant standard, active profile, tests |
-| AI operations behavior | `policies/ai-operations.json`, schema, governance standard, adapter contract |
-| Cross-surface activation | `policies/surface-activation.json`, schema, activation standard, capability matrix |
-| Harness or browser adapter | Canonical policy, adapter contract, target adapter, tests |
-| Browser source pack | Source-pack standard, templates, compiler, verifier, tests |
-| Installer | Installer, activation policy, installer tests, safety boundaries |
-| Repository navigation or CLI | Repository index, schema, checker, CLI, operator guides |
-| Release | Governance, changelog, version, compatibility and migration evidence |
-
-See `docs/operations/agent-entrypoint.md` for the expanded route map.
-
-## Implementation stack
-
-Use the smallest portable stack that satisfies repository requirements:
-
-- Python 3.11+ standard library for executable control-plane logic
-- JSON and JSON Schema for machine contracts
-- Markdown for human and agent instructions
-- Bash or Zsh only for thin launchers
-- GitHub Actions YAML for CI
-
-Do not add a framework, database, service, or second implementation language without measured evidence that the existing stack cannot satisfy the requirement.
-
-## Non-negotiable behavior
-
-- Read before editing.
-- Work only within the requested scope.
-- Prefer the smallest complete change.
-- Do not invent files, commands, results, metrics, citations, repository state, runtime capability, or external state.
-- Do not claim success until relevant verification commands pass.
-- Do not weaken tests, lint rules, type checks, security controls, accessibility requirements, review gates, or CI to obtain a passing result.
-- Do not delete tests merely because they fail.
-- Do not expose secrets, credentials, personal information, or proprietary context.
-- Do not perform unrelated refactors during a bounded task.
-- Preserve exact paths, commands, configuration keys, and error messages.
-- Record architecture-impacting decisions.
-- Document justified exceptions instead of silently bypassing policy.
-- Do not create a second command registry, autonomy scale, memory lifecycle, or canonical policy source.
-
-## AI-generated changes
-
-AI-generated changes receive the same review standard as human-written changes.
-
-For material changes, the agent must:
-
-1. Explain intended behavior and non-goals.
-2. Identify affected files and boundaries.
-3. Define verification before implementation.
-4. Write or update tests before or with behavior changes.
-5. Implement in reviewable increments.
-6. Run applicable checks.
-7. Report exact results and remaining risk.
-
-## Instruction precedence
-
-Use the canonical order from `policies/ai-operations.json`:
+## Source-of-truth order
 
 1. Applicable law, platform safety, and system requirements
-2. The current explicit user instruction
-3. The exact approved plan and revision
-4. The repository contract: `AGENTS.md`, security, privacy, governance, active profile, and applicable architecture decisions
-5. Project instructions and configuration
-6. Stable global instructions
-7. Verified canonical memory
-8. Historical handoffs
-9. External references
-10. General knowledge
+2. Current explicit user instruction
+3. Exact approved plan and revision
+4. Repository contract, governance, security, privacy, active profile, and applicable architecture decisions
+5. Verified project facts, decisions, exceptions, and configuration
+6. Compiled Standards Orchestrator pack
+7. Neutral global instructions
+8. Explicit personal overlay
+9. Verified canonical memory
+10. Historical handoffs, external references, examples, and general knowledge
 
-Same-level conflicts must be surfaced and arbitrated. Never choose silently by recency, confidence, or convenience.
+Same-level conflicts must be surfaced. Never choose silently by confidence, recency, or convenience.
+
+## Human and AI equality
+
+Human-written and AI-generated changes receive the same requirements for scope, evidence, review, security, accessibility, testing, and verification.
+
+## Required behavior
+
+- Read before editing.
+- Work only within approved scope.
+- Prefer the smallest complete change.
+- Use official language and framework conventions through overlays.
+- Separate priority, severity, risk, evidence confidence, and gate effect.
+- Do not invent files, research, users, quotes, metrics, citations, legal applicability, repository state, runtime capability, or test results.
+- Do not claim success until relevant checks pass.
+- Do not weaken tests, security, privacy, accessibility, legal, data, review, or CI controls.
+- Record architecture-impacting decisions.
+- Record justified exceptions with owner and expiry.
+- Do not create a second command registry, lifecycle, completion vocabulary, or canonical policy source.
+
+## Standard authoring
+
+Normative standards must follow `standards/universal/standard-authoring.md` and `templates/standards/STANDARD.md`. Every standard defines expected outcomes, applicability, inputs, unknowns, actions, decisions, details, documents, document structure, acceptance, verification, evidence, failure conditions, risks, guards, exceptions, costs, dependencies, sources, ownership, Zeref behavior, examples, and anti-patterns.
+
+## Product and design work
+
+Do not begin with unsupported personas or screens. Establish need, evidence, actors, user groups, flows, interaction states, accessibility, content, risks, metrics, design-system mappings, validation status, and handoff requirements. Translate subjective terms such as “professional” into measurable criteria.
+
+## Engineering work
+
+During coding, apply `standards/engineering/minimum-correct-change.md`:
+
+1. Confirm approved plan and revision.
+2. Understand the actual code path.
+3. Reuse before creating.
+4. Prefer standard-library, framework-native, and platform-native capabilities.
+5. Change the correct ownership layer.
+6. Avoid unnecessary dependencies, files, abstractions, and configuration.
+7. Preserve safeguards.
+8. Add runnable verification.
+9. Stop when acceptance criteria pass.
+
+## Legal and compliance behavior
+
+Do not assume jurisdiction, law, industry, user age, data category, or compliance status. Distinguish binding authority from guidance, standards, best practices, trends, proposals, drafts, and superseded sources. Use official sources. Automated systems may report applicability and evidence status but must not issue a final legal-compliance certification.
 
 ## Zeref boundary
 
-- Do not modify `kanadhiayash/zeref-memory-engine` under this repository’s task scope.
-- Do not duplicate Zeref agents, skills, memory internals, model routing, permissions, or boot contract.
-- Browser source-backed simulation must never be described as verified local runtime execution.
-- Activation adapters must detect, classify, defer, and report truthfully.
+The Orchestrator defines requirements, outcomes, documents, gates, evidence, and limits. Zeref owns activation, roles, model and tool routing, skills, approvals, retries, memory, and execution receipts.
 
-## Public claims
+- Do not modify `kanadhiayash/zeref-memory-engine` without separate approval.
+- Do not duplicate Zeref internals.
+- Do not call browser simulation verified local runtime execution.
+- Do not let personal overlays weaken neutral standards.
 
-Any statement about performance, security, accessibility, reliability, adoption, test coverage, production readiness, runtime activation, or user outcomes must point to verifiable evidence.
+## External actions
 
-Self-assigned labels are not evidence.
+Explicit approval is required for merge, deploy, publish, external send, destructive changes, credentials, and canonical memory promotion.
 
-## Required completion report
+## Completion report
 
-Every completed implementation must report:
+Every material implementation reports:
 
 - Objective
+- Context used
 - Files changed
 - Behavior changed
 - Commands run
 - Verification results
-- Files or scope intentionally untouched
-- Remaining risks and unknowns
-- Recommended next step
+- Intentionally untouched scope
+- Facts, assumptions, unknowns, risks, and conflicts
+- Recommended next action
 
-Machine completion states are `PASS`, `PARTIAL`, `BLOCKED`, and `NOT_VERIFIED`.
+Completion statuses are `PASS`, `PARTIAL`, `BLOCKED`, and `NOT_VERIFIED`.
 
 ## Stop conditions
 
-Stop and surface the smallest recovery path when:
-
-- credentials or private data may be exposed;
-- a destructive or external action lacks explicit approval;
-- canonical sources conflict;
-- required evidence is missing;
-- a requested change weakens a security, accessibility, or quality gate;
-- repository state contradicts the requested operation;
-- retries are exhausted without new evidence;
-- the available tool cannot perform the claimed action.
+Stop and surface the smallest recovery path when credentials or private data may be exposed, destructive or external action lacks approval, canonical sources conflict, required evidence is missing, a safeguard would be weakened, repository state contradicts the operation, retries are exhausted without new evidence, or the available tool cannot perform the claimed action.

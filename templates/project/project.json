@@ -1,0 +1,19 @@
+{
+  "$schema": "../../policies/schemas/project-manifest.schema.json",
+  "schema_version": 1,
+  "project": {
+    "name": "Example Product",
+    "lifecycle_stage": "DISCOVER",
+    "product_types": ["consumer-mobile"]
+  },
+  "users": ["authenticated"],
+  "markets": [],
+  "platforms": ["web"],
+  "stack": {"languages": ["typescript"], "frameworks": [], "services": []},
+  "data": {"personal_data": false, "sensitive": []},
+  "ai": {"user_facing": false, "automated_decisions": false, "external_models": false},
+  "risk": {"level": "moderate"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "standard", "cost_ceiling": "bounded"},
+  "unknowns": []
+}

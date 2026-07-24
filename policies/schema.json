@@ -1,21 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schema.json",
-  "title": "Engineering Standards Policy",
+  "title": "Product Engineering Standards Policy",
   "type": "object",
-  "required": [
-    "schema_version",
-    "standard_version",
-    "profile",
-    "principles",
-    "verification",
-    "security",
-    "github",
-    "ai_development",
-    "ai_operations",
-    "surface_activation",
-    "exceptions"
-  ],
+  "required": ["schema_version", "standard_version", "profile", "principles", "verification", "security", "github", "ai_development", "ai_operations", "surface_activation", "standards_orchestrator", "exceptions"],
   "properties": {
     "schema_version": {"type": "integer", "minimum": 1},
     "standard_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
@@ -29,34 +17,18 @@
     "ai_development": {"type": "object"},
     "ai_operations": {
       "type": "object",
-      "required": [
-        "policy_path",
-        "schema_path",
-        "policy_version",
-        "bounded_autonomy_required",
-        "approval_binding_required",
-        "single_writer_memory_required",
-        "command_escalation_forbidden",
-        "honest_assurance_claims_required"
-      ],
-      "properties": {
-        "policy_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
-      }
+      "required": ["policy_path", "schema_path", "policy_version", "bounded_autonomy_required", "approval_binding_required", "single_writer_memory_required", "command_escalation_forbidden", "honest_assurance_claims_required"],
+      "properties": {"policy_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}}
     },
     "surface_activation": {
       "type": "object",
-      "required": [
-        "policy_path",
-        "schema_path",
-        "policy_version",
-        "runtime_claims_require_verification",
-        "browser_simulation_must_be_labeled",
-        "source_pack_integrity_required",
-        "zeref_repository_modification_forbidden"
-      ],
-      "properties": {
-        "policy_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
-      }
+      "required": ["policy_path", "schema_path", "policy_version", "runtime_claims_require_verification", "browser_simulation_must_be_labeled", "source_pack_integrity_required", "zeref_repository_modification_forbidden"],
+      "properties": {"policy_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}}
+    },
+    "standards_orchestrator": {
+      "type": "object",
+      "required": ["policy_path", "schema_path", "policy_version", "one_canonical_repository_required", "one_project_manifest_required", "one_compiled_context_pack_required", "neutral_global_instructions_required", "personal_overlays_must_be_explicit", "automated_legal_compliance_claims_forbidden", "zeref_boundary_required"],
+      "properties": {"policy_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}}
     },
     "exceptions": {"type": "object"}
   },
