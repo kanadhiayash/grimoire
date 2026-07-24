@@ -13,3 +13,4 @@ fi
 
 "$PYTHON_BIN" checks/standards_check.py
 "$PYTHON_BIN" checks/surface_activation_check.py
+"$PYTHON_BIN" checks/repository_index_check.py
