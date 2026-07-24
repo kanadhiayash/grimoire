@@ -6,6 +6,11 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 ## [Unreleased]
 
+### Added
+
+- Paste-ready personal instruction pack for Claude Global, Claude Cowork, Claude Projects, Claude Cowork project folders, ChatGPT Global, ChatGPT Projects, and Codex Global customization.
+- Character-budget manifest, cross-surface smoke tests, and repository-native unit tests for instruction precedence, Zeref truthfulness, cost routing, approval boundaries, and completion statuses.
+
 ### Planned
 
 - Inventory and reconcile the four legacy practice repositories.

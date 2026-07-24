@@ -25,6 +25,7 @@
   "entrypoints": {
     "human": [
       "README.md",
+      "instructions/README.md",
       "docs/operations/quickstart.md",
       "GOVERNANCE.md",
       "SECURITY.md",
@@ -33,6 +34,8 @@
     "agent": [
       "AGENTS.md",
       "REPOSITORY_INDEX.json",
+      "instructions/README.md",
+      "instructions/instructions-manifest.json",
       "docs/operations/agent-entrypoint.md",
       "policies/baseline.json",
       "policies/ai-operations.json",
@@ -115,7 +118,9 @@
     "browser_pack_templates": "templates/browser-project",
     "browser_pack_compiler": "scripts/compile_surface_pack.py",
     "browser_pack_verifier": "scripts/verify_surface_pack.py",
-    "harness_installer": "scripts/install_ai_harness_standards.py"
+    "harness_installer": "scripts/install_ai_harness_standards.py",
+    "personal_instruction_pack": "instructions",
+    "personal_instruction_manifest": "instructions/instructions-manifest.json"
   },
   "verification": {
     "required_commands": [
