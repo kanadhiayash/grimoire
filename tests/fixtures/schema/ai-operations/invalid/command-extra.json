@@ -1,0 +1,12 @@
+{
+  "case_id": "command_extra",
+  "operation": "add",
+  "path": ["commands", "unexpected"],
+  "value": {
+    "mode": "read_only",
+    "may_escalate": false,
+    "idempotent": true
+  },
+  "expected_path": ["commands"],
+  "expected_validator": "additionalProperties"
+}

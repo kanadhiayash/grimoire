@@ -1,0 +1,7 @@
+{
+  "case_id": "command_missing",
+  "operation": "remove",
+  "path": ["commands", "activate"],
+  "expected_path": ["commands"],
+  "expected_validator": "required"
+}

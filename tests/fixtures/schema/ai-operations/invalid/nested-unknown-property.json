@@ -1,0 +1,8 @@
+{
+  "case_id": "nested_unknown_property",
+  "operation": "add",
+  "path": ["memory", "unexpected"],
+  "value": true,
+  "expected_path": ["memory"],
+  "expected_validator": "additionalProperties"
+}

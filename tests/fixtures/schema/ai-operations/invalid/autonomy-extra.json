@@ -1,0 +1,12 @@
+{
+  "case_id": "autonomy_extra",
+  "operation": "add",
+  "path": ["autonomy_levels", "6"],
+  "value": {
+    "name": "unsupported",
+    "external_writes": false,
+    "local_mutation": false
+  },
+  "expected_path": ["autonomy_levels"],
+  "expected_validator": "additionalProperties"
+}

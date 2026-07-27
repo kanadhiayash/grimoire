@@ -1,0 +1,7 @@
+{
+  "case_id": "autonomy_missing",
+  "operation": "remove",
+  "path": ["autonomy_levels", "0"],
+  "expected_path": ["autonomy_levels"],
+  "expected_validator": "required"
+}
