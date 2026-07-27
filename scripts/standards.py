@@ -89,7 +89,19 @@ def check_steps() -> list[tuple[str, Sequence[str]]]:
         ("repository index", [python, "checks/repository_index_check.py"]),
         ("standards orchestrator", [python, "checks/standards_orchestrator_check.py"]),
         ("unit tests", [python, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", "-v"]),
-        ("compile", [python, "-m", "compileall", "-q", "checks", "scripts", "tests"]),
+        (
+            "compile",
+            [
+                python,
+                "-m",
+                "compileall",
+                "-q",
+                "checks",
+                "scripts",
+                "src",
+                "tests",
+            ],
+        ),
     ]
 
 

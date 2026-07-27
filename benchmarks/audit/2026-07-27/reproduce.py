@@ -26,7 +26,8 @@ PACKAGE_ROOT = ROOT / "docs" / "audits" / "2026-07-27" / "execution-package"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.project_orchestrator import compile_project  # noqa: E402
+CompileProject = Callable[[dict[str, Any], Path], dict[str, Any]]
+_COMPILE_PROJECT: CompileProject | None = None
 
 
 def _utc_now() -> str:
@@ -67,6 +68,19 @@ def _git(*args: str) -> str:
     if completed.returncode:
         raise RuntimeError(completed.stderr.strip() or "git command failed")
     return completed.stdout.strip()
+
+
+def _git_bytes(commit: str, path: str) -> bytes:
+    completed = subprocess.run(
+        ["git", "show", f"{commit}:{path}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode:
+        message = completed.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(message or f"could not read audited input: {path}")
+    return completed.stdout
 
 
 def _verify_audited_commit(expected_commit: str) -> dict[str, Any]:
@@ -125,17 +139,55 @@ def _verify_package(expected: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _verify_audited_inputs(expected: dict[str, Any]) -> dict[str, Any]:
+def _load_audited_inputs(
+    expected: dict[str, Any],
+    expected_commit: str,
+) -> tuple[dict[str, Any], dict[str, bytes]]:
     expected_hashes = expected["audited_input_sha256"]
+    inputs = {
+        path: _git_bytes(expected_commit, path) for path in sorted(expected_hashes)
+    }
     actual_hashes = {
-        path: _sha256_file(ROOT / path) for path in sorted(expected_hashes)
+        path: _sha256_bytes(content) for path, content in inputs.items()
     }
     if actual_hashes != expected_hashes:
         raise RuntimeError("audited production input hash mismatch")
-    return {
-        "status": "PASS",
-        "sha256": actual_hashes,
+    return (
+        {
+            "status": "PASS",
+            "source": "AUDITED_COMMIT",
+            "sha256": actual_hashes,
+        },
+        inputs,
+    )
+
+
+def _load_audited_compiler(source: bytes, expected_commit: str) -> CompileProject:
+    namespace: dict[str, Any] = {
+        "__name__": "grimoire_audited_project_orchestrator",
+        "__file__": (
+            f"{expected_commit}:scripts/project_orchestrator.py"
+        ),
     }
+    code = compile(
+        source,
+        namespace["__file__"],
+        "exec",
+    )
+    exec(code, namespace)
+    compiler = namespace.get("compile_project")
+    if not callable(compiler):
+        raise RuntimeError("audited compiler does not expose compile_project")
+    return compiler
+
+
+def _compile_project(
+    manifest: dict[str, Any],
+    output: Path,
+) -> dict[str, Any]:
+    if _COMPILE_PROJECT is None:
+        raise RuntimeError("audited compiler has not been loaded")
+    return _COMPILE_PROJECT(manifest, output)
 
 
 def _assert_no_symlink_components(path: Path) -> None:
@@ -194,7 +246,7 @@ def _base_manifest() -> dict[str, Any]:
 
 def _reproduce_false_readiness(scratch: Path) -> dict[str, Any]:
     output = scratch / "false-readiness"
-    receipt = compile_project(_base_manifest(), output)
+    receipt = _compile_project(_base_manifest(), output)
     project_status = _load_json(output / "PROJECT_STATUS.json")
     matrix = (output / "ACCEPTANCE_MATRIX.md").read_text(encoding="utf-8")
     rows = [
@@ -222,9 +274,10 @@ def _reproduce_false_readiness(scratch: Path) -> dict[str, Any]:
     )
 
 
-def _reproduce_schema_contradiction() -> dict[str, Any]:
-    schema = _load_json(ROOT / "policies" / "schemas" / "ai-operations.schema.json")
-    policy = _load_json(ROOT / "policies" / "ai-operations.json")
+def _reproduce_schema_contradiction(
+    schema: dict[str, Any],
+    policy: dict[str, Any],
+) -> dict[str, Any]:
     contradictions = []
     for name in ("commands", "autonomy_levels"):
         definition = schema["properties"][name]
@@ -276,7 +329,7 @@ def _set_manifest_value(manifest: dict[str, Any], mutation: str, value: Any) -> 
 
 def _classify_manifest(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
     try:
-        receipt = compile_project(manifest, output)
+        receipt = _compile_project(manifest, output)
     except ValueError as exc:
         return {
             "outcome": "controlled_rejection",
@@ -341,7 +394,7 @@ def _reproduce_malformed_manifests(scratch: Path) -> dict[str, Any]:
 def _reproduce_prompt_injection(scratch: Path) -> dict[str, Any]:
     fixture = _load_json(FIXTURE_ROOT / "prompt-injection.json")
     output = scratch / "prompt-injection"
-    compile_project(fixture["manifest"], output)
+    _compile_project(fixture["manifest"], output)
     context = (output / "AI_CONTEXT.md").read_text(encoding="utf-8")
     payload = fixture["payload"]
     observed = {
@@ -367,7 +420,7 @@ def _reproduce_symlink_overwrite(scratch: Path) -> dict[str, Any]:
     original = "AUDIT_SENTINEL\n"
     target.write_text(original, encoding="utf-8")
     (output / "AI_CONTEXT.md").symlink_to(target)
-    compile_project(_base_manifest(), output)
+    _compile_project(_base_manifest(), output)
     observed = {
         "target_changed": target.read_text(encoding="utf-8") != original,
         "target_within_temporary_boundary": target.parent == scratch,
@@ -385,7 +438,7 @@ def _reproduce_dirty_output(scratch: Path) -> dict[str, Any]:
     output.mkdir()
     stale = output / "stale-unrelated.txt"
     stale.write_text("AUDIT_SENTINEL\n", encoding="utf-8")
-    compile_project(_base_manifest(), output)
+    _compile_project(_base_manifest(), output)
     observed = {
         "stale_file_retained": stale.is_file(),
         "stale_content_unchanged": stale.read_text(encoding="utf-8")
@@ -555,6 +608,8 @@ def _write_evidence(
 
 
 def reproduce(expected_commit: str, seed: int, output: Path) -> int:
+    global _COMPILE_PROJECT
+
     started_at = _utc_now()
     expected = _load_json(EXPECTED_PATH)
     if expected_commit != expected["audited_subject"]["commit"]:
@@ -566,12 +621,30 @@ def reproduce(expected_commit: str, seed: int, output: Path) -> int:
     audited_subject = _verify_audited_commit(expected_commit)
     fixture_hashes = _verify_fixtures(expected)
     package_integrity = _verify_package(expected)
-    audited_inputs = _verify_audited_inputs(expected)
+    audited_inputs, audited_input_bytes = _load_audited_inputs(
+        expected,
+        expected_commit,
+    )
+    _COMPILE_PROJECT = _load_audited_compiler(
+        audited_input_bytes["scripts/project_orchestrator.py"],
+        expected_commit,
+    )
+    audited_ai_schema = json.loads(
+        audited_input_bytes[
+            "policies/schemas/ai-operations.schema.json"
+        ].decode("utf-8")
+    )
+    audited_ai_policy = json.loads(
+        audited_input_bytes["policies/ai-operations.json"].decode("utf-8")
+    )
     with tempfile.TemporaryDirectory(prefix="grimoire-audit-") as directory:
         scratch = Path(directory)
         findings = [
             _reproduce_false_readiness(scratch),
-            _reproduce_schema_contradiction(),
+            _reproduce_schema_contradiction(
+                audited_ai_schema,
+                audited_ai_policy,
+            ),
             _reproduce_malformed_manifests(scratch),
             _reproduce_prompt_injection(scratch),
             _reproduce_symlink_overwrite(scratch),
