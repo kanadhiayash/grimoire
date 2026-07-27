@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../policies/schemas/project-manifest.schema.json",
+  "schema_version": 1,
+  "project": {
+    "name": "Full Product",
+    "lifecycle_stage": "BUILD_READY",
+    "product_types": ["consumer-mobile", "ai-assistant"]
+  },
+  "users": ["authenticated", "accessibility-needs"],
+  "markets": ["Canada"],
+  "platforms": ["ios", "android"],
+  "stack": {
+    "languages": ["typescript"],
+    "frameworks": ["react-native"],
+    "services": []
+  },
+  "data": {
+    "personal_data": true,
+    "sensitive": ["location"]
+  },
+  "ai": {
+    "user_facing": true,
+    "automated_decisions": false,
+    "external_models": true
+  },
+  "risk": {"level": "high"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "strict", "cost_ceiling": "bounded"},
+  "unknowns": []
+}

@@ -44,6 +44,10 @@ jobs:
         shell: bash
         run: python3 benchmarks/manifest_validation/strict_500.py --cases 500 --seed 20260727 --output artifacts/manifest-validation/strict-500.json
 
+      - name: Run fast manifest fuzz subset
+        shell: bash
+        run: python3 benchmarks/fuzz/manifest_fuzz.py --cases 1000 --seed 20260727 --output artifacts/fuzz/fast
+
       - name: Run Grimoire conformance checks
         id: conformance
         shell: bash
@@ -65,5 +69,6 @@ jobs:
           path: |
             artifacts/grimoire-check.json
             artifacts/manifest-validation/strict-500.json
+            artifacts/fuzz/fast
           if-no-files-found: error
           retention-days: 14

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "Minimum Product",
+    "lifecycle_stage": "DISCOVER",
+    "product_types": ["web"]
+  },
+  "risk": {"level": "low"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "standard"}
+}

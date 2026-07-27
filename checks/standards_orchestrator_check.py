@@ -57,6 +57,11 @@ REQUIRED_FILES = [
     "docs/migrations/0.5.x-status-model.md",
     "docs/migrations/0.5.x-manifest-validation.md",
     "benchmarks/manifest_validation/strict_500.py",
+    "benchmarks/fuzz/README.md",
+    "benchmarks/fuzz/manifest_fuzz.py",
+    "benchmarks/fuzz/corpus/minimum.json",
+    "benchmarks/fuzz/corpus/full.json",
+    ".github/workflows/manifest-fuzz.yml",
 ]
 PERSONAL_TERMS = ("Yash", "Kanadhia", "Mavis", "Toronto")
 REQUIRED_STANDARD_HEADINGS = (
