@@ -1,0 +1,7 @@
+{
+  "operation": "replace",
+  "path": ["users"],
+  "value": "abc",
+  "expected_code": "type_mismatch",
+  "expected_path": "$.users"
+}

@@ -3,8 +3,16 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from grimoire.errors import ManifestValidationError  # noqa: E402
+from grimoire.models.manifest import RiskConfig, ValidatedManifest  # noqa: E402
 from scripts.project_orchestrator import compile_project, validate_manifest
 
 
@@ -25,8 +33,11 @@ class ProjectOrchestratorTests(unittest.TestCase):
             "unknowns": [],
         }
 
-    def test_valid_manifest_has_no_errors(self):
-        self.assertEqual(validate_manifest(self.valid_manifest()), [])
+    def test_valid_manifest_returns_immutable_normalized_model(self):
+        manifest = validate_manifest(self.valid_manifest())
+        self.assertIsInstance(manifest, ValidatedManifest)
+        self.assertEqual(manifest.project.name, "Example Product")
+        self.assertEqual(manifest.project.product_types, ("consumer-mobile", "ai-assistant"))
 
     def test_compile_writes_complete_one_read_pack(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -36,6 +47,15 @@ class ProjectOrchestratorTests(unittest.TestCase):
             self.assertEqual({path.name for path in output.iterdir()}, expected)
             self.assertEqual(receipt["pack_generation_status"], "PASS")
             self.assertEqual(receipt["status"], "NOT_VERIFIED")
+            self.assertEqual(
+                receipt["status_report"]["dimensions"][
+                    "MANIFEST_VALIDATION_STATUS"
+                ],
+                {
+                    "status": "PASS",
+                    "reason_codes": ["strict_manifest_validated"],
+                },
+            )
             self.assertEqual(
                 receipt["status_report"]["dimensions"][
                     "PROJECT_READINESS_STATUS"
@@ -68,8 +88,24 @@ class ProjectOrchestratorTests(unittest.TestCase):
     def test_invalid_lifecycle_is_rejected(self):
         manifest = self.valid_manifest()
         manifest["project"]["lifecycle_stage"] = "DONE"
-        errors = validate_manifest(manifest)
-        self.assertTrue(any("lifecycle_stage" in error for error in errors))
+        with self.assertRaises(ManifestValidationError) as raised:
+            validate_manifest(manifest)
+        self.assertTrue(
+            any(
+                issue.code == "unsupported_value"
+                and issue.path == "$.project.lifecycle_stage"
+                for issue in raised.exception.issues
+            )
+        )
+
+    def test_compile_revalidates_manually_constructed_models(self):
+        manifest = validate_manifest(self.valid_manifest())
+        invalid = replace(manifest, risk=RiskConfig(level="impossible"))
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "compiled"
+            with self.assertRaises(ManifestValidationError):
+                compile_project(invalid, output)
+            self.assertFalse(output.exists())
 
     def test_audited_false_pass_fixture_is_now_not_verified(self):
         root = Path(__file__).resolve().parents[1]

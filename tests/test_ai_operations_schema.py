@@ -18,6 +18,10 @@ except ImportError:  # The external validator is installed only in schema CI.
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / "policies" / "ai-operations.json"
 SCHEMA_PATH = ROOT / "policies" / "schemas" / "ai-operations.schema.json"
+PROJECT_TEMPLATE_PATH = ROOT / "templates" / "project" / "project.json"
+PROJECT_SCHEMA_PATH = (
+    ROOT / "policies" / "schemas" / "project-manifest.schema.json"
+)
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "schema" / "ai-operations"
 COMMANDS = {
     "activate",
@@ -117,6 +121,17 @@ class AIOperationsSchemaTests(unittest.TestCase):
     def test_current_policy_validates_under_draft_2020_12(self) -> None:
         Draft202012Validator.check_schema(self.schema)
         errors = list(Draft202012Validator(self.schema).iter_errors(self.policy))
+        self.assertEqual([], errors)
+
+    @unittest.skipUnless(
+        Draft202012Validator is not None,
+        "jsonschema is installed only for schema validation",
+    )
+    def test_project_template_validates_under_draft_2020_12(self) -> None:
+        schema = load_json(PROJECT_SCHEMA_PATH)
+        template = load_json(PROJECT_TEMPLATE_PATH)
+        Draft202012Validator.check_schema(schema)
+        errors = list(Draft202012Validator(schema).iter_errors(template))
         self.assertEqual([], errors)
 
     @unittest.skipUnless(

@@ -9,7 +9,7 @@ import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
@@ -22,12 +22,14 @@ from grimoire.status import (  # noqa: E402
     StatusReport,
     StatusResult,
 )
-
-LIFECYCLE_STAGES = (
-    "DISCOVER", "DEFINE", "DESIGN", "VALIDATE", "DECISION_LOCKED",
-    "BUILD_READY", "BUILDING", "VERIFYING", "RELEASE_READY",
-    "SHIPPED", "OPERATING", "RETIRED",
+from grimoire.errors import ManifestValidationError  # noqa: E402
+from grimoire.models.manifest import ValidatedManifest  # noqa: E402
+from grimoire.validation.manifest import (  # noqa: E402
+    load_and_validate_manifest as strict_load_and_validate_manifest,
+    supported_standards_versions,
+    validate_manifest as strict_validate_manifest,
 )
+
 BUILD_STAGES = {"BUILD_READY", "BUILDING", "VERIFYING", "RELEASE_READY"}
 COMPLETION_STATUSES = ("PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED")
 OUTPUT_FILES = (
@@ -46,38 +48,22 @@ def _write_json(path: Path, value: Any) -> None:
     path.write_text(_json(value), encoding="utf-8")
 
 
-def _bullets(values: list[str] | None) -> str:
+def _bullets(values: Sequence[str] | None) -> str:
     return "\n".join(f"- {item}" for item in (values or [])) or "- None declared"
 
 
-def load_manifest(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
-        raise ValueError("Project manifest must contain a JSON object")
-    return value
+def load_manifest(path: Path) -> ValidatedManifest:
+    return strict_load_and_validate_manifest(
+        path,
+        supported_standards_versions(ROOT),
+    )
 
 
-def validate_manifest(manifest: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
-    for key in ("schema_version", "project", "risk", "standards", "zeref"):
-        if key not in manifest:
-            errors.append(f"missing required field: {key}")
-    project = manifest.get("project")
-    if not isinstance(project, dict):
-        return errors + ["project must be an object"]
-    if not project.get("name"):
-        errors.append("project.name is required")
-    if project.get("lifecycle_stage") not in LIFECYCLE_STAGES:
-        errors.append("project.lifecycle_stage must be one of: " + ", ".join(LIFECYCLE_STAGES))
-    if not isinstance(project.get("product_types"), list) or not project.get("product_types"):
-        errors.append("project.product_types must be a non-empty array")
-    if manifest.get("risk", {}).get("level") not in {"low", "moderate", "high", "critical"}:
-        errors.append("risk.level must be low, moderate, high, or critical")
-    if not manifest.get("standards", {}).get("version"):
-        errors.append("standards.version is required")
-    if manifest.get("zeref", {}).get("mode") not in {"advisory", "standard", "strict", "off"}:
-        errors.append("zeref.mode must be advisory, standard, strict, or off")
-    return errors
+def validate_manifest(manifest: Any) -> ValidatedManifest:
+    return strict_validate_manifest(
+        manifest,
+        supported_standards_versions(ROOT),
+    )
 
 
 def required_documents(stage: str, manifest: dict[str, Any]) -> list[str]:
@@ -139,8 +125,8 @@ def build_status_report(unknowns: list[str]) -> StatusReport:
         ),
         StatusDimension.MANIFEST_VALIDATION_STATUS: StatusResult(
             StatusDimension.MANIFEST_VALIDATION_STATUS,
-            CompletionStatus.PARTIAL,
-            ("strict_manifest_validation_pending",),
+            CompletionStatus.PASS,
+            ("strict_manifest_validated",),
         ),
         StatusDimension.APPLICABILITY_STATUS: StatusResult(
             StatusDimension.APPLICABILITY_STATUS,
@@ -176,16 +162,22 @@ def build_status_report(unknowns: list[str]) -> StatusReport:
     return StatusReport(results)
 
 
-def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
-    errors = validate_manifest(manifest)
-    if errors:
-        raise ValueError("; ".join(errors))
+def compile_project(
+    manifest: dict[str, Any] | ValidatedManifest,
+    output: Path,
+) -> dict[str, Any]:
+    validated = validate_manifest(
+        manifest.to_dict()
+        if isinstance(manifest, ValidatedManifest)
+        else manifest
+    )
+    manifest_value = validated.to_dict()
     output.mkdir(parents=True, exist_ok=True)
-    project = manifest["project"]
+    project = manifest_value["project"]
     stage = project["lifecycle_stage"]
-    unknowns = manifest.get("unknowns", [])
-    docs = required_documents(stage, manifest)
-    gates = required_gates(stage, manifest)
+    unknowns = manifest_value["unknowns"]
+    docs = required_documents(stage, manifest_value)
+    gates = required_gates(stage, manifest_value)
     outcomes = expected_outcomes(stage)
     status_report = build_status_report(unknowns)
     status = status_report.aggregate.value
@@ -195,13 +187,16 @@ def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
     control = {
         "schema_version": 1,
         "project": project,
-        "standards_version": manifest["standards"]["version"],
+        "standards_version": manifest_value["standards"]["version"],
         "lifecycle_stage": stage,
-        "profiles": {key: manifest.get(key, []) for key in ("users", "markets", "platforms")},
-        "stack": manifest.get("stack", {}),
-        "risk": manifest.get("risk", {}),
-        "data": manifest.get("data", {}),
-        "ai": manifest.get("ai", {}),
+        "profiles": {
+            key: manifest_value[key]
+            for key in ("users", "markets", "platforms")
+        },
+        "stack": manifest_value["stack"],
+        "risk": manifest_value["risk"],
+        "data": manifest_value["data"],
+        "ai": manifest_value["ai"],
         "principles": [
             "read before editing", "evidence before assertion", "minimum correct change",
             "human and AI changes receive the same review standard",
@@ -216,16 +211,16 @@ def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
     status_doc = {
         "project": project["name"], "lifecycle_stage": stage, "status": status,
         "status_report": status_report_json,
-        "risk_level": manifest["risk"]["level"],
-        "standards_version": manifest["standards"]["version"],
+        "risk_level": manifest_value["risk"]["level"],
+        "standards_version": manifest_value["standards"]["version"],
         "unknown_count": len(unknowns),
         "blocking_gates": [] if not unknowns else ["Resolve declared unknowns"],
         "next_safe_action": "Execute the next approved gate" if not unknowns else "Resolve or explicitly accept declared unknowns",
     }
     zeref = {
         "schema_version": 1,
-        "mode": manifest["zeref"]["mode"],
-        "cost_ceiling": manifest["zeref"].get("cost_ceiling", "bounded"),
+        "mode": manifest_value["zeref"]["mode"],
+        "cost_ceiling": manifest_value["zeref"]["cost_ceiling"],
         "team": {"lead_roles": 1, "support_roles_max": 3, "quality_gate": "required only when material risk exists"},
         "execution": {
             "bind_to_approved_plan_revision": True,
@@ -245,9 +240,9 @@ def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
 
 - Name: {project['name']}
 - Lifecycle stage: {stage}
-- Risk: {manifest['risk']['level']}
-- Standards version: {manifest['standards']['version']}
-- Zeref mode: {manifest['zeref']['mode']}
+- Risk: {manifest_value['risk']['level']}
+- Standards version: {manifest_value['standards']['version']}
+- Zeref mode: {manifest_value['zeref']['mode']}
 
 ## Product types
 
@@ -255,11 +250,11 @@ def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
 
 ## Users
 
-{_bullets(manifest.get('users'))}
+{_bullets(manifest_value['users'])}
 
 ## Markets
 
-{_bullets(manifest.get('markets'))}
+{_bullets(manifest_value['markets'])}
 
 ## Expected outcomes
 
@@ -290,7 +285,7 @@ Read before editing. Remain bound to the approved plan and revision. During codi
     (output / "REQUIRED_GATES.md").write_text("# Required Gates\n\n" + _bullets(gates) + "\n", encoding="utf-8")
     (output / "ACCEPTANCE_MATRIX.md").write_text("# Acceptance Matrix\n\n| Outcome | Evidence | Status |\n|---|---|---|\n" + "\n".join(f"| {item} | Required | NOT_VERIFIED |" for item in outcomes) + "\n", encoding="utf-8")
     (output / "VERIFICATION_PLAN.md").write_text("# Verification Plan\n\n- Validate the manifest.\n- Verify every required document.\n- Run project tests and applicable quality gates.\n- Record exact commands and results.\n- Report PASS, PARTIAL, BLOCKED, or NOT_VERIFIED.\n", encoding="utf-8")
-    _write_json(output / "SOURCE_MANIFEST.json", {"generated_at": generated_at, "standards_version": manifest["standards"]["version"], "source_status": "PROJECT_DECLARED", "legal_compliance_claim": "FORBIDDEN_WITHOUT_QUALIFIED_REVIEW"})
+    _write_json(output / "SOURCE_MANIFEST.json", {"generated_at": generated_at, "standards_version": manifest_value["standards"]["version"], "source_status": "PROJECT_DECLARED", "legal_compliance_claim": "FORBIDDEN_WITHOUT_QUALIFIED_REVIEW"})
     _write_json(output / "ZEREF_EXECUTION_PROFILE.json", zeref)
 
     hashes = {name: hashlib.sha256((output / name).read_bytes()).hexdigest() for name in OUTPUT_FILES[:-1]}
@@ -312,7 +307,14 @@ def main() -> int:
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
-    receipt = compile_project(load_manifest(Path(args.manifest)), Path(args.output))
+    try:
+        receipt = compile_project(
+            load_manifest(Path(args.manifest)),
+            Path(args.output),
+        )
+    except ManifestValidationError as exc:
+        print(_json(exc.to_dict()), end="", file=sys.stderr)
+        return 2
     print(_json(receipt), end="")
     return 0
 

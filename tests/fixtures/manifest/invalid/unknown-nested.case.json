@@ -1,0 +1,7 @@
+{
+  "operation": "add",
+  "path": ["project", "unexpected"],
+  "value": true,
+  "expected_code": "unknown_property",
+  "expected_path": "$.project.unexpected"
+}

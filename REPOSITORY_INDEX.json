@@ -176,6 +176,9 @@
   "artifacts": {
     "project_manifest_template": "templates/project/project.json",
     "project_compiler": "scripts/project_orchestrator.py",
+    "project_manifest_model": "src/grimoire/models/manifest.py",
+    "project_manifest_validator": "src/grimoire/validation/manifest.py",
+    "strict_manifest_acceptance": "benchmarks/manifest_validation/strict_500.py",
     "project_status_model": "src/grimoire/status.py",
     "project_status_schema": "policies/schemas/project-status.schema.json",
     "execution_receipt_schema": "policies/schemas/execution-receipt.schema.json",

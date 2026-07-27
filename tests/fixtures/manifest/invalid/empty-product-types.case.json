@@ -1,0 +1,7 @@
+{
+  "operation": "replace",
+  "path": ["project", "product_types"],
+  "value": [],
+  "expected_code": "empty_collection",
+  "expected_path": "$.project.product_types"
+}

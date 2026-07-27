@@ -17,7 +17,12 @@ REQUIRED_FILES = [
     "policies/schemas/zeref-execution-profile.schema.json",
     "scripts/project_orchestrator.py",
     "src/grimoire/__init__.py",
+    "src/grimoire/errors.py",
+    "src/grimoire/models/__init__.py",
+    "src/grimoire/models/manifest.py",
     "src/grimoire/status.py",
+    "src/grimoire/validation/__init__.py",
+    "src/grimoire/validation/manifest.py",
     "standards/universal/standard-authoring.md",
     "standards/universal/naming-and-placement.md",
     "standards/universal/priority-severity-risk.md",
@@ -50,6 +55,8 @@ REQUIRED_FILES = [
     "benchmarks/standards-orchestrator/README.md",
     "docs/architecture/0009-multidimensional-status-model.md",
     "docs/migrations/0.5.x-status-model.md",
+    "docs/migrations/0.5.x-manifest-validation.md",
+    "benchmarks/manifest_validation/strict_500.py",
 ]
 PERSONAL_TERMS = ("Yash", "Kanadhia", "Mavis", "Toronto")
 REQUIRED_STANDARD_HEADINGS = (
@@ -130,6 +137,34 @@ def main() -> int:
             )
         if dimensions.get("additionalProperties") is not False:
             failures.append(f"{name} must reject unknown status dimensions")
+    manifest_schema = json.loads(
+        (
+            ROOT
+            / "policies"
+            / "schemas"
+            / "project-manifest.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    if manifest_schema.get("additionalProperties") is not False:
+        failures.append("project manifest schema must reject unknown fields")
+    for name in ("project", "stack", "data", "ai", "risk", "standards", "zeref"):
+        nested = manifest_schema.get("properties", {}).get(name, {})
+        if nested.get("additionalProperties") is not False:
+            failures.append(
+                f"project manifest schema must close nested object: {name}"
+            )
+    schema_policy_version = (
+        manifest_schema.get("properties", {})
+        .get("standards", {})
+        .get("properties", {})
+        .get("version", {})
+        .get("const")
+    )
+    if schema_policy_version != policy.get("module_version"):
+        failures.append(
+            "project manifest schema standards version must match "
+            "the active orchestrator policy"
+        )
     baseline = json.loads((ROOT / "policies/baseline.json").read_text(encoding="utf-8"))
     declared = baseline.get("standards_orchestrator", {}).get("policy_version")
     if declared != policy.get("module_version"):
