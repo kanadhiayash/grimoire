@@ -12,8 +12,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-START = "<!-- engineering-standards:zeref-activation:start -->"
-END = "<!-- engineering-standards:zeref-activation:end -->"
+START = "<!-- grimoire:zeref-activation:start -->"
+END = "<!-- grimoire:zeref-activation:end -->"
+LEGACY_START = "<!-- engineering-standards:zeref-activation:start -->"
+LEGACY_END = "<!-- engineering-standards:zeref-activation:end -->"
 SURFACES = {
     "claude": {
         "command": "claude",
@@ -38,19 +40,21 @@ def block(source: Path) -> str:
 
 
 def merge(text: str, managed: str) -> str:
-    if START in text and END in text:
-        before, rest = text.split(START, 1)
-        _, after = rest.split(END, 1)
-        return before.rstrip() + "\n\n" + managed + after
+    for start, end in ((START, END), (LEGACY_START, LEGACY_END)):
+        if start in text and end in text:
+            before, rest = text.split(start, 1)
+            _, after = rest.split(end, 1)
+            return before.rstrip() + "\n\n" + managed + after
     return text.rstrip() + ("\n\n" if text.strip() else "") + managed + "\n"
 
 
 def remove(text: str) -> str:
-    if START not in text or END not in text:
-        return text
-    before, rest = text.split(START, 1)
-    _, after = rest.split(END, 1)
-    return (before.rstrip() + "\n" + after.lstrip()).strip() + "\n"
+    for start, end in ((START, END), (LEGACY_START, LEGACY_END)):
+        if start in text and end in text:
+            before, rest = text.split(start, 1)
+            _, after = rest.split(end, 1)
+            return (before.rstrip() + "\n" + after.lstrip()).strip() + "\n"
+    return text
 
 
 def detect(home: Path) -> dict[str, dict[str, object]]:
@@ -62,7 +66,7 @@ def detect(home: Path) -> dict[str, dict[str, object]]:
             "target": str(target),
             "target_exists": target.exists(),
             "managed_block": target.exists()
-            and START in target.read_text(encoding="utf-8", errors="replace"),
+            and any(marker in target.read_text(encoding="utf-8", errors="replace") for marker in (START, LEGACY_START)),
         }
     return result
 
@@ -117,7 +121,7 @@ def main() -> int:
     parser.add_argument("--surface")
     parser.add_argument("--project-name")
     parser.add_argument("--output")
-    parser.add_argument("--engineering-standards-commit")
+    parser.add_argument("--grimoire-commit", "--engineering-standards-commit", dest="grimoire_commit")
     parser.add_argument("--zeref-commit")
     args = parser.parse_args()
     home = Path(args.home).expanduser().resolve()
@@ -144,13 +148,13 @@ def main() -> int:
         args.surface,
         args.project_name,
         args.output,
-        args.engineering_standards_commit,
+        args.grimoire_commit,
         args.zeref_commit,
     ]
     if not all(required):
         parser.error(
             "export-browser-pack requires --surface, --project-name, --output, "
-            "--engineering-standards-commit, and --zeref-commit"
+            "--grimoire-commit, and --zeref-commit"
         )
     command = [
         sys.executable,
@@ -161,8 +165,8 @@ def main() -> int:
         args.project_name,
         "--output",
         args.output,
-        "--engineering-standards-commit",
-        args.engineering_standards_commit,
+        "--grimoire-commit",
+        args.grimoire_commit,
         "--zeref-commit",
         args.zeref_commit,
     ]

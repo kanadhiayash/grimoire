@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schemas/ai-operations.schema.json",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/ai-operations.schema.json",
   "title": "AI Operations Policy",
   "type": "object",
   "required": [

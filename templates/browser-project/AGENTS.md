@@ -1,9 +1,9 @@
 # Project Agent Contract
 
-This project is governed by Engineering Standards and uses Zeref Memory Engine as the referenced continuity system.
+This project is governed by Grimoire and uses Zeref Memory Engine as the referenced continuity system.
 
 Canonical sources:
-- Engineering Standards: https://github.com/kanadhiayash/engineering-standards
+- Grimoire: https://github.com/kanadhiayash/grimoire
 - Zeref Memory Engine: https://github.com/kanadhiayash/zeref-memory-engine
 
 Use the pinned revisions and hashes in `SOURCES_MANIFEST.json`.

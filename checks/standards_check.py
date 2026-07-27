@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dependency-free conformance checks for Engineering Standards."""
+"""Dependency-free conformance checks for Grimoire."""
 
 from __future__ import annotations
 
@@ -437,7 +437,7 @@ def run_checks() -> list[CheckResult]:
 def main() -> int:
     results = run_checks()
 
-    print("Engineering Standards Doctor")
+    print("Grimoire Doctor")
     print("============================")
 
     for result in results:
@@ -449,10 +449,10 @@ def main() -> int:
     print()
 
     if failed:
-        print(f"Engineering Standards Doctor: FAIL ({len(failed)} failed)")
+        print(f"Grimoire Doctor: FAIL ({len(failed)} failed)")
         return 1
 
-    print("Engineering Standards Doctor: PASS")
+    print("Grimoire Doctor: PASS")
     return 0
 
 

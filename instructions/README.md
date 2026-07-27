@@ -4,7 +4,7 @@ Paste each numbered Markdown file into the matching surface. Copy the file body 
 
 ## Canonical provenance
 
-- Engineering Standards: https://github.com/kanadhiayash/engineering-standards
+- Grimoire: https://github.com/kanadhiayash/grimoire
 - Zeref Memory Engine: https://github.com/kanadhiayash/zeref-memory-engine
 
 ## Placement
@@ -53,7 +53,7 @@ The repository test suite validates file presence, character budgets, provenance
 Run:
 
 ```bash
-python3 scripts/standards.py check
+python3 scripts/grimoire.py check
 ```
 
 ## Live smoke test

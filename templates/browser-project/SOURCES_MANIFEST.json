@@ -6,9 +6,9 @@
   "generated_at": "{{GENERATED_AT}}",
   "freshness_max_age_days": 30,
   "canonical_sources": {
-    "engineering_standards": {
-      "url": "https://github.com/kanadhiayash/engineering-standards",
-      "commit": "{{ENGINEERING_STANDARDS_COMMIT}}"
+    "grimoire": {
+      "url": "https://github.com/kanadhiayash/grimoire",
+      "commit": "{{GRIMOIRE_COMMIT}}"
     },
     "zeref_memory_engine": {
       "url": "https://github.com/kanadhiayash/zeref-memory-engine",

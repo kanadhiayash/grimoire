@@ -1,6 +1,6 @@
 # AI Operations Adapter Contract
 
-Harness and browser-surface adapters translate Engineering Standards into the smallest instruction set a surface can reliably consume.
+Harness and browser-surface adapters translate Grimoire into the smallest instruction set a surface can reliably consume.
 
 ## Authority
 

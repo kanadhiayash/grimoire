@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Product Engineering Standards & Operations are recorded here.
+All notable changes to Grimoire are recorded here.
 
 The format follows Keep a Changelog principles. Versions follow Semantic Versioning.
 
@@ -19,6 +19,24 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 - Generate remaining adapters from machine-readable policy.
 - Add optional connector-backed source refresh after separate approval.
 - Add signed source-pack manifests after a separate security review.
+
+## [0.5.0] - 2026-07-27
+
+### Added
+
+- Grimoire repository identity, canonical URL, descriptor, migration guide, and release record.
+- Primary `scripts/grimoire.py` command entrypoint and repository-wide identity checks.
+- Backward-compatible browser-pack, CLI-flag, and harness-marker migration support.
+
+### Changed
+
+- Prompts, instructions, policies, schemas, adapters, templates, CI labels, doctor output, and metadata now use Grimoire.
+- Repository and baseline release versions advanced to 0.5.0.
+
+### Compatibility
+
+- Existing 0.4.0 project and browser packs remain readable during the 0.5.x migration window.
+- Zeref Memory Engine remains a separate, unchanged runtime.
 
 ## [0.4.0] - 2026-07-24
 

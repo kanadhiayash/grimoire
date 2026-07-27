@@ -33,7 +33,7 @@ def digest(path: Path) -> str:
 
 
 def compile_pack(args: argparse.Namespace) -> Path:
-    if not SHA.fullmatch(args.engineering_standards_commit):
+    if not SHA.fullmatch(args.grimoire_commit):
         raise ValueError("engineering standards commit must be a 40-character lowercase SHA")
     if not SHA.fullmatch(args.zeref_commit):
         raise ValueError("Zeref commit must be a 40-character lowercase SHA")
@@ -50,7 +50,7 @@ def compile_pack(args: argparse.Namespace) -> Path:
         "SURFACE": args.surface,
         "PACK_VERSION": args.pack_version,
         "GENERATED_AT": generated_at,
-        "ENGINEERING_STANDARDS_COMMIT": args.engineering_standards_commit,
+        "GRIMOIRE_COMMIT": args.grimoire_commit,
         "ZEREF_COMMIT": args.zeref_commit,
         "ACTIVATION_MODE": activation_mode,
     }
@@ -96,7 +96,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--surface", required=True, choices=sorted(SURFACES))
     value.add_argument("--project-name", required=True)
     value.add_argument("--output", required=True)
-    value.add_argument("--engineering-standards-commit", required=True)
+    value.add_argument("--grimoire-commit", "--engineering-standards-commit", dest="grimoire_commit", required=True, help="Pinned Grimoire commit SHA")
     value.add_argument("--zeref-commit", required=True)
     value.add_argument("--pack-version", default="1.0.0")
     value.add_argument("--generated-at")

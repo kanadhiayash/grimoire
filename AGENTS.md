@@ -1,10 +1,10 @@
-# Standards Orchestrator Agent Contract
+# Grimoire Agent Contract
 
 This file is the canonical bootstrap contract for every human, AI model, coding agent, and autonomous workflow operating in this repository.
 
 ## Repository identity
 
-This repository is a neutral, private, versioned Product Engineering Standards and Operations control plane. It will later be renamed Standards Orchestrator. It defines reusable product, design, engineering, legal, accessibility, AI, security, privacy, cloud, cost, Git, delivery, and operational standards.
+Grimoire is the neutral, private, versioned Global Product Engineering Standards Orchestrator. It defines reusable product, design, engineering, legal, accessibility, AI, security, privacy, cloud, cost, Git, delivery, and operational standards.
 
 Zeref Memory Engine is a separate execution and continuity runtime. This repository may compile execution profiles for Zeref but does not own or rewrite Zeref internals.
 
@@ -39,10 +39,10 @@ Do not scan or inject the full repository when the index and compiler identify a
 ## Fast commands
 
 ```bash
-python3 scripts/standards.py status --json
-python3 scripts/standards.py catalog --json
-python3 scripts/standards.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
-python3 scripts/standards.py check
+python3 scripts/grimoire.py status --json
+python3 scripts/grimoire.py catalog --json
+python3 scripts/grimoire.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
+python3 scripts/grimoire.py check
 ```
 
 ## Source-of-truth order

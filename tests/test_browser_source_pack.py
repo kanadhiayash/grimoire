@@ -29,7 +29,7 @@ class BrowserSourcePackTests(unittest.TestCase):
             surface="chatgpt-project",
             project_name="Example Project",
             output=str(output),
-            engineering_standards_commit="5b637c471dd36af8b7c680352885804b649908eb",
+            grimoire_commit="5b637c471dd36af8b7c680352885804b649908eb",
             zeref_commit="833afca7392e268fcaf72ee4ae36ce9aa303eae5",
             pack_version="1.0.0",
             generated_at="2026-07-23T12:00:00+00:00",
@@ -54,7 +54,7 @@ class BrowserSourcePackTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "pack"
             args = self.args(output)
-            args.engineering_standards_commit = "main"
+            args.grimoire_commit = "main"
             with self.assertRaises(ValueError):
                 compiler.compile_pack(args)
 

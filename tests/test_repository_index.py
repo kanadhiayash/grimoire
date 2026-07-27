@@ -18,7 +18,7 @@ class RepositoryIndexTests(unittest.TestCase):
             "policies/baseline.json",
             "policies/ai-operations.json",
             "policies/surface-activation.json",
-            "scripts/standards.py",
+            "scripts/grimoire.py",
             "docs/operations/quickstart.md",
             "docs/operations/agent-entrypoint.md",
             "adapters/claude/ZEREF_ACTIVATION.global.md",
@@ -35,7 +35,7 @@ class RepositoryIndexTests(unittest.TestCase):
         return {
             "schema_version": 1,
             "standard_version": "0.2.0",
-            "repository": "kanadhiayash/engineering-standards",
+            "repository": "kanadhiayash/grimoire",
             "canonical_sources": {
                 "repository_contract": "AGENTS.md",
                 "baseline_policy": "policies/baseline.json",
@@ -48,10 +48,10 @@ class RepositoryIndexTests(unittest.TestCase):
             },
             "commands": {
                 "status": {
-                    "entrypoint": "scripts/standards.py",
+                    "entrypoint": "scripts/grimoire.py",
                     "argv": [
                         "python3",
-                        "scripts/standards.py",
+                        "scripts/grimoire.py",
                         "status",
                         "--json",
                     ],
@@ -65,7 +65,7 @@ class RepositoryIndexTests(unittest.TestCase):
                 }
             },
             "verification": {
-                "commands": ["python3 scripts/standards.py check"]
+                "commands": ["python3 scripts/grimoire.py check"]
             },
         }
 

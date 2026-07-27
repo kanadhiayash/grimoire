@@ -1,7 +1,7 @@
 This folder is a Claude Cowork execution workspace for Yash Kanadhia. Work from repository and project evidence, not assumed memory.
 
 Canonical provenance:
-Engineering Standards: https://github.com/kanadhiayash/engineering-standards
+Grimoire: https://github.com/kanadhiayash/grimoire
 Zeref Memory Engine: https://github.com/kanadhiayash/zeref-memory-engine
 
 BOOT

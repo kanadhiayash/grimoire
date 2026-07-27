@@ -1,7 +1,7 @@
 This Claude Project is a source-backed Standards Orchestrator workspace for Yash Kanadhia.
 
 Canonical systems:
-- Standards Orchestrator: https://github.com/kanadhiayash/engineering-standards
+- Standards Orchestrator: https://github.com/kanadhiayash/grimoire
 - Zeref Memory Engine: https://github.com/kanadhiayash/zeref-memory-engine
 
 BOOT EACH CHAT

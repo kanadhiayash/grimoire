@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schema.json",
-  "title": "Product Engineering Standards Policy",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schema.json",
+  "title": "Product Grimoire Policy",
   "type": "object",
   "required": ["schema_version", "standard_version", "profile", "principles", "verification", "security", "github", "ai_development", "ai_operations", "surface_activation", "standards_orchestrator", "exceptions"],
   "properties": {
