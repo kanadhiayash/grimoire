@@ -31,56 +31,6 @@ jobs:
           mkdir -p artifacts
           python3 scripts/migrate_to_grimoire.py --apply \
             --report artifacts/grimoire-migration.json
-
-          cat > .github/workflows/standards-ci.yml <<'YAML'
-          name: Grimoire CI
-
-          on:
-            pull_request:
-            push:
-              branches:
-                - main
-
-          permissions:
-            contents: read
-
-          jobs:
-            conformance:
-              runs-on: ubuntu-latest
-              timeout-minutes: 10
-
-              steps:
-                - name: Check out repository
-                  uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
-                - name: Set up Python
-                  uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-                  with:
-                    python-version: "3.12"
-
-                - name: Run Grimoire conformance checks
-                  id: conformance
-                  shell: bash
-                  run: |
-                    mkdir -p artifacts
-                    set +e
-                    python3 scripts/grimoire.py check \
-                      --json-output artifacts/grimoire-check.json
-                    status=$?
-                    set -e
-                    cat artifacts/grimoire-check.json
-                    exit "$status"
-
-                - name: Upload Grimoire conformance report
-                  if: always()
-                  uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-                  with:
-                    name: grimoire-check
-                    path: artifacts/grimoire-check.json
-                    if-no-files-found: error
-                    retention-days: 14
-          YAML
-
           zip -qr artifacts/grimoire-transformed.zip . \
             -x '.git/*' 'artifacts/*' '__pycache__/*'
           cat artifacts/grimoire-migration.json
@@ -101,6 +51,7 @@ jobs:
         if: success() && github.event_name == 'pull_request'
         shell: bash
         run: |
+          git restore --source=HEAD -- .github/workflows/standards-ci.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
