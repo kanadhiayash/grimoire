@@ -48,10 +48,16 @@ def verify_pack(directory: Path) -> list[str]:
         return [f"invalid manifest: {exc}"]
 
     commits = manifest.get("canonical_sources", {})
-    for source in ("engineering_standards", "zeref_memory_engine"):
-        commit = commits.get(source, {}).get("commit")
+    grimoire_record = commits.get("grimoire") or commits.get("engineering_standards")
+    if not isinstance(grimoire_record, dict):
+        errors.append("grimoire commit is not pinned")
+    else:
+        commit = grimoire_record.get("commit")
         if not isinstance(commit, str) or not SHA.fullmatch(commit):
-            errors.append(f"{source} commit is not pinned")
+            errors.append("grimoire commit is not pinned")
+    zeref_commit = commits.get("zeref_memory_engine", {}).get("commit")
+    if not isinstance(zeref_commit, str) or not SHA.fullmatch(zeref_commit):
+        errors.append("zeref_memory_engine commit is not pinned")
 
     if manifest.get("activation_mode") not in ALLOWED_MODES:
         errors.append("browser pack must use PROJECT_SIMULATION or CHAT_SIMULATION")

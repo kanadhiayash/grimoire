@@ -3,9 +3,9 @@
   "schema_version": 1,
   "module_version": "0.4.0",
   "identity": {
-    "display_name": "Product Engineering Standards & Operations",
+    "display_name": "Grimoire",
     "future_name": "Standards Orchestrator",
-    "repository": "kanadhiayash/engineering-standards"
+    "repository": "kanadhiayash/grimoire"
   },
   "principles": [
     "detailed_at_rest_selective_in_execution",

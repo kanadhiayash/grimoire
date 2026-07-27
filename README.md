@@ -1,4 +1,4 @@
-# Product Engineering Standards & Operations
+# Grimoire
 
 Private, neutral, versioned standards and an executable control plane for human and AI product work. The repository will later be renamed **Standards Orchestrator**.
 
@@ -19,8 +19,8 @@ Standards -> policies and profiles -> project manifest -> compiled pack -> Zeref
 ### Human operator
 
 ```bash
-python3 scripts/standards.py status
-python3 scripts/standards.py check
+python3 scripts/grimoire.py status
+python3 scripts/grimoire.py check
 ```
 
 ### AI agent
@@ -33,7 +33,7 @@ python3 scripts/standards.py check
 ### Compile a project pack
 
 ```bash
-python3 scripts/standards.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
+python3 scripts/grimoire.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
 ```
 
 The compiler emits:
@@ -158,6 +158,6 @@ Generated packs are artifacts, not alternate canonical standards. They must reco
 
 ## Status
 
-Version `0.4.0` establishes the Standards Orchestrator foundation, one-call project compiler, structured standard and document contracts, neutral instructions, private Yash overlay, legal source governance, Minimum Correct Change, Zeref execution profiles, checks, templates, and benchmarks.
+Version `0.5.0` establishes the Standards Orchestrator foundation, one-call project compiler, structured standard and document contracts, neutral instructions, private Yash overlay, legal source governance, Minimum Correct Change, Zeref execution profiles, checks, templates, and benchmarks.
 
 Private internal policy. Do not publish repository content without explicit review and redaction.

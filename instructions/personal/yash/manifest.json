@@ -2,7 +2,7 @@
   "schema_version": 1,
   "private": true,
   "owner": "Yash Kanadhia",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "files": {
     "01_Claude_Global_Instructions.md": 3500,
     "02_Claude_Cowork_Instructions.md": 3500,
@@ -13,5 +13,9 @@
     "07_Codex_Global_Instructions.md": 4000,
     "08_Standards_Orchestrator_Bootstrap.md": 2500
   },
-  "neutral_policy_can_be_weakened": false
+  "neutral_policy_can_be_weakened": false,
+  "canonical_sources": {
+    "grimoire": "https://github.com/kanadhiayash/grimoire",
+    "zeref_memory_engine": "https://github.com/kanadhiayash/zeref-memory-engine"
+  }
 }

@@ -1,12 +1,11 @@
 {
   "$schema": "policies/schemas/repository-index.schema.json",
   "schema_version": 1,
-  "standard_version": "0.4.0",
-  "repository": "kanadhiayash/engineering-standards",
-  "display_name": "Product Engineering Standards & Operations",
-  "future_name": "Standards Orchestrator",
+  "standard_version": "0.5.0",
+  "repository": "kanadhiayash/grimoire",
+  "display_name": "Grimoire",
   "visibility": "private",
-  "purpose": "Neutral, versioned product engineering standards and a one-entrypoint control plane for human and AI product work.",
+  "purpose": "Neutral, versioned global product engineering standards and a one-entrypoint control plane for human, AI, and Zeref-assisted product work.",
   "implementation_stack": {
     "orchestration": "Python 3.11+ standard library",
     "machine_contracts": "JSON and JSON Schema draft 2020-12",
@@ -28,28 +27,150 @@
     "legal_source_registry": "sources/legal/registry.json"
   },
   "entrypoints": {
-    "human": ["README.md", "instructions/README.md", "docs/operations/quickstart.md", "docs/operations/standards-orchestrator-capability-map.md", "GOVERNANCE.md", "SECURITY.md", "CHANGELOG.md", "docs/releases/0.4.0.md"],
-    "agent": ["AGENTS.md", "REPOSITORY_INDEX.json", "instructions/README.md", "instructions/instructions-manifest.json", "docs/operations/agent-entrypoint.md", "policies/baseline.json", "policies/standards-orchestrator.json", "policies/ai-operations.json", "policies/surface-activation.json", "instructions/global/GLOBAL_BASE.md"]
+    "human": [
+      "README.md",
+      "instructions/README.md",
+      "docs/operations/quickstart.md",
+      "docs/operations/standards-orchestrator-capability-map.md",
+      "GOVERNANCE.md",
+      "SECURITY.md",
+      "CHANGELOG.md",
+      "docs/releases/0.4.0.md"
+    ],
+    "agent": [
+      "AGENTS.md",
+      "REPOSITORY_INDEX.json",
+      "instructions/README.md",
+      "instructions/instructions-manifest.json",
+      "docs/operations/agent-entrypoint.md",
+      "policies/baseline.json",
+      "policies/standards-orchestrator.json",
+      "policies/ai-operations.json",
+      "policies/surface-activation.json",
+      "instructions/global/GLOBAL_BASE.md"
+    ]
   },
   "commands": {
-    "status": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "status", "--json"], "purpose": "Report version, entrypoints, commands, surfaces, and repository health."},
-    "catalog": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "catalog", "--json"], "purpose": "Print the machine repository index."},
-    "doctor": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "doctor"], "purpose": "Run policy, activation, index, and Orchestrator checks."},
-    "test": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "test"], "purpose": "Run dependency-free unit tests."},
-    "check": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "check"], "purpose": "Run all checks, tests, and Python compilation."},
-    "project_boot": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "project", "boot", "--manifest", ".standards/project.json", "--output", ".standards/compiled"], "purpose": "Validate project facts and compile one bounded context pack."},
-    "pack_compile": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "pack", "compile"], "purpose": "Compile a pinned browser source pack."},
-    "pack_verify": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "pack", "verify"], "purpose": "Verify browser pack integrity and freshness."},
-    "harness_manage": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "harness"], "purpose": "Detect, plan, apply, verify, or uninstall harness adapters."}
+    "status": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "status",
+        "--json"
+      ],
+      "purpose": "Report version, entrypoints, commands, surfaces, and repository health."
+    },
+    "catalog": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "catalog",
+        "--json"
+      ],
+      "purpose": "Print the machine repository index."
+    },
+    "doctor": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "doctor"
+      ],
+      "purpose": "Run policy, activation, index, and Orchestrator checks."
+    },
+    "test": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "test"
+      ],
+      "purpose": "Run dependency-free unit tests."
+    },
+    "check": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "check"
+      ],
+      "purpose": "Run all checks, tests, and Python compilation."
+    },
+    "project_boot": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "project",
+        "boot",
+        "--manifest",
+        ".standards/project.json",
+        "--output",
+        ".standards/compiled"
+      ],
+      "purpose": "Validate project facts and compile one bounded context pack."
+    },
+    "pack_compile": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "pack",
+        "compile"
+      ],
+      "purpose": "Compile a pinned browser source pack."
+    },
+    "pack_verify": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "pack",
+        "verify"
+      ],
+      "purpose": "Verify browser pack integrity and freshness."
+    },
+    "harness_manage": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "harness"
+      ],
+      "purpose": "Detect, plan, apply, verify, or uninstall harness adapters."
+    }
   },
   "surfaces": {
-    "claude-code": {"mode": "local_harness", "adapter": "adapters/claude/ZEREF_ACTIVATION.global.md"},
-    "codex": {"mode": "local_harness", "adapter": "adapters/codex/ZEREF_ACTIVATION.global.md"},
-    "gemini-cli": {"mode": "local_harness", "adapter": "adapters/gemini/ZEREF_ACTIVATION.global.md"},
-    "chatgpt-project": {"mode": "browser_project", "adapter": "adapters/chatgpt/CHATGPT.md"},
-    "claude-project": {"mode": "browser_project", "adapter": "adapters/claude-project/CLAUDE.md"},
-    "gemini-gem": {"mode": "browser_project", "adapter": "adapters/gemini-gem/GEMINI.md"},
-    "generic-chat": {"mode": "browser_chat", "adapter": "adapters/generic-chat/PROVIDER_ADAPTER.md"}
+    "claude-code": {
+      "mode": "local_harness",
+      "adapter": "adapters/claude/ZEREF_ACTIVATION.global.md"
+    },
+    "codex": {
+      "mode": "local_harness",
+      "adapter": "adapters/codex/ZEREF_ACTIVATION.global.md"
+    },
+    "gemini-cli": {
+      "mode": "local_harness",
+      "adapter": "adapters/gemini/ZEREF_ACTIVATION.global.md"
+    },
+    "chatgpt-project": {
+      "mode": "browser_project",
+      "adapter": "adapters/chatgpt/CHATGPT.md"
+    },
+    "claude-project": {
+      "mode": "browser_project",
+      "adapter": "adapters/claude-project/CLAUDE.md"
+    },
+    "gemini-gem": {
+      "mode": "browser_project",
+      "adapter": "adapters/gemini-gem/GEMINI.md"
+    },
+    "generic-chat": {
+      "mode": "browser_chat",
+      "adapter": "adapters/generic-chat/PROVIDER_ADAPTER.md"
+    }
   },
   "artifacts": {
     "project_manifest_template": "templates/project/project.json",
@@ -70,9 +191,16 @@
     "harness_installer": "scripts/install_ai_harness_standards.py"
   },
   "verification": {
-    "required_commands": ["python3 scripts/standards.py check"],
+    "required_commands": [
+      "python3 scripts/grimoire.py check"
+    ],
     "ci_workflow": ".github/workflows/standards-ci.yml",
-    "completion_statuses": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]
+    "completion_statuses": [
+      "PASS",
+      "PARTIAL",
+      "BLOCKED",
+      "NOT_VERIFIED"
+    ]
   },
   "boundaries": {
     "zeref_repository_modification": "forbidden unless separately approved",
@@ -81,5 +209,7 @@
     "canonical_memory": "single-writer and approval-gated",
     "automated_legal_compliance": "forbidden",
     "personal_identity_in_neutral_packs": "forbidden"
-  }
+  },
+  "descriptor": "Global Product Engineering Standards Orchestrator",
+  "canonical_url": "https://github.com/kanadhiayash/grimoire"
 }

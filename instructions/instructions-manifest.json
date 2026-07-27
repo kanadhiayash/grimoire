@@ -1,19 +1,53 @@
 {
   "schema_version": 1,
-  "pack_version": "3.0.0",
+  "pack_version": "4.0.0",
   "canonical_sources": {
-    "engineering_standards": "https://github.com/kanadhiayash/engineering-standards",
+    "grimoire": "https://github.com/kanadhiayash/grimoire",
     "zeref_memory_engine": "https://github.com/kanadhiayash/zeref-memory-engine"
   },
   "files": {
-    "01_Claude_Global_Instructions.md": {"surface": "claude-profile", "max_characters": 3500},
-    "02_Claude_Cowork_Instructions.md": {"surface": "claude-cowork-global", "max_characters": 3500},
-    "03_Claude_Chat_Project_Folder_Instructions.md": {"surface": "claude-project", "max_characters": 4000},
-    "04_Claude_Cowork_Project_Folder_Instructions.md": {"surface": "claude-cowork-project", "max_characters": 4000},
-    "05_ChatGPT_Global_Instructions.md": {"surface": "chatgpt-global", "max_characters": 5000},
-    "06_ChatGPT_Project_Folder_Instructions.md": {"surface": "chatgpt-project", "max_characters": 4000},
-    "07_Codex_Global_Instructions_Customization.md": {"surface": "codex-global", "max_characters": 4000}
+    "01_Claude_Global_Instructions.md": {
+      "surface": "claude-profile",
+      "max_characters": 3500
+    },
+    "02_Claude_Cowork_Instructions.md": {
+      "surface": "claude-cowork-global",
+      "max_characters": 3500
+    },
+    "03_Claude_Chat_Project_Folder_Instructions.md": {
+      "surface": "claude-project",
+      "max_characters": 4000
+    },
+    "04_Claude_Cowork_Project_Folder_Instructions.md": {
+      "surface": "claude-cowork-project",
+      "max_characters": 4000
+    },
+    "05_ChatGPT_Global_Instructions.md": {
+      "surface": "chatgpt-global",
+      "max_characters": 5000
+    },
+    "06_ChatGPT_Project_Folder_Instructions.md": {
+      "surface": "chatgpt-project",
+      "max_characters": 4000
+    },
+    "07_Codex_Global_Instructions_Customization.md": {
+      "surface": "codex-global",
+      "max_characters": 4000
+    }
   },
-  "completion_statuses": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"],
-  "activation_states": ["RUNTIME_FULL", "RUNTIME_PARTIAL", "PROJECT_SIMULATION", "CHAT_SIMULATION", "INSTRUCTION_ONLY", "UNAVAILABLE", "NOT_VERIFIED"]
+  "completion_statuses": [
+    "PASS",
+    "PARTIAL",
+    "BLOCKED",
+    "NOT_VERIFIED"
+  ],
+  "activation_states": [
+    "RUNTIME_FULL",
+    "RUNTIME_PARTIAL",
+    "PROJECT_SIMULATION",
+    "CHAT_SIMULATION",
+    "INSTRUCTION_ONLY",
+    "UNAVAILABLE",
+    "NOT_VERIFIED"
+  ]
 }

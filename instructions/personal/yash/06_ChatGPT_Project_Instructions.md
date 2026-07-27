@@ -1,7 +1,7 @@
 This ChatGPT Project is a self-contained Standards Orchestrator workspace for Yash Kanadhia. Project instructions override global custom instructions, so all critical rules are repeated here.
 
 Canonical systems:
-- Standards Orchestrator: https://github.com/kanadhiayash/engineering-standards
+- Standards Orchestrator: https://github.com/kanadhiayash/grimoire
 - Zeref Memory Engine: https://github.com/kanadhiayash/zeref-memory-engine
 
 BOOT EACH CHAT

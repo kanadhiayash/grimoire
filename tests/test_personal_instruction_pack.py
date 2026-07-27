@@ -9,7 +9,7 @@ PACK = ROOT / "instructions"
 MANIFEST = json.loads(
     (PACK / "instructions-manifest.json").read_text(encoding="utf-8")
 )
-ES = MANIFEST["canonical_sources"]["engineering_standards"]
+ES = MANIFEST["canonical_sources"]["grimoire"]
 ZEREF = MANIFEST["canonical_sources"]["zeref_memory_engine"]
 STATUSES = set(MANIFEST["completion_statuses"])
 

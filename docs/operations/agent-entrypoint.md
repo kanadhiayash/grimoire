@@ -1,6 +1,6 @@
 # AI Agent Entrypoint
 
-This document routes AI agents through Engineering Standards without requiring a full-repository scan.
+This document routes AI agents through Grimoire without requiring a full-repository scan.
 
 ## Boot protocol
 
@@ -8,7 +8,7 @@ Before material work:
 
 1. Read root `AGENTS.md`.
 2. Read `REPOSITORY_INDEX.json`.
-3. Run `python3 scripts/standards.py status --json` when command execution is available.
+3. Run `python3 scripts/grimoire.py status --json` when command execution is available.
 4. Read only the canonical sources and task-specific files selected below.
 5. Inspect existing implementation patterns before editing.
 6. Define verification before changing behavior.
@@ -50,19 +50,19 @@ Same-level conflicts require arbitration. Never resolve them silently.
 Machine status:
 
 ```bash
-python3 scripts/standards.py status --json
+python3 scripts/grimoire.py status --json
 ```
 
 Machine catalog:
 
 ```bash
-python3 scripts/standards.py catalog --json
+python3 scripts/grimoire.py catalog --json
 ```
 
 Full verification:
 
 ```bash
-python3 scripts/standards.py check
+python3 scripts/grimoire.py check
 ```
 
 Use `REPOSITORY_INDEX.json` for the complete command catalog and supported-surface map.
@@ -76,7 +76,7 @@ Use `REPOSITORY_INDEX.json` for the complete command catalog and supported-surfa
 - Do not add another policy source, command registry, autonomy scale, or memory lifecycle.
 - Do not claim a council ran unless independent work actually ran.
 - Do not claim browser simulation is local runtime execution.
-- Do not modify `kanadhiayash/zeref-memory-engine` under an Engineering Standards task unless the user separately approves that repository and scope.
+- Do not modify `kanadhiayash/zeref-memory-engine` under an Grimoire task unless the user separately approves that repository and scope.
 
 ## Required completion evidence
 

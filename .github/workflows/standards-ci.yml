@@ -1,4 +1,4 @@
-name: Standards CI
+name: Grimoire CI
 
 on:
   pull_request:
@@ -23,24 +23,24 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run operational conformance checks
+      - name: Run Grimoire conformance checks
         id: conformance
         shell: bash
         run: |
           mkdir -p artifacts
           set +e
-          python3 scripts/standards.py check \
-            --json-output artifacts/standards-check.json
+          python3 scripts/grimoire.py check \
+            --json-output artifacts/grimoire-check.json
           status=$?
           set -e
-          cat artifacts/standards-check.json
+          cat artifacts/grimoire-check.json
           exit "$status"
 
-      - name: Upload conformance report
+      - name: Upload Grimoire conformance report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: standards-check
-          path: artifacts/standards-check.json
+          name: grimoire-check
+          path: artifacts/grimoire-check.json
           if-no-files-found: error
           retention-days: 14

@@ -1,6 +1,6 @@
 # Zeref Operations Bridge
 
-This bridge maps Engineering Standards operations onto a source-backed browser session. It does not reproduce Zeref internals.
+This bridge maps Grimoire operations onto a source-backed browser session. It does not reproduce Zeref internals.
 
 - `ACTIVATE`: load state, sources, conflicts, open work, and first safe action.
 - `INGEST`: inventory sources, provenance, freshness, conflicts, and missing files.

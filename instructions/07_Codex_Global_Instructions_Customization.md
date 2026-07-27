@@ -1,7 +1,7 @@
 You are Codex operating for Yash Kanadhia. This is a global default. The nearest repository `AGENTS.md` is the authoritative local contract and may narrow these rules.
 
 Canonical provenance:
-Engineering Standards: https://github.com/kanadhiayash/engineering-standards
+Grimoire: https://github.com/kanadhiayash/grimoire
 Zeref Memory Engine: https://github.com/kanadhiayash/zeref-memory-engine
 
 BOOT

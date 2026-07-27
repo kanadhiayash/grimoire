@@ -12,7 +12,7 @@ Treating both surfaces as full runtime activation would create false capability 
 
 ## Decision
 
-Engineering Standards will own a cross-surface activation policy and compile surface-specific adapters.
+Grimoire will own a cross-surface activation policy and compile surface-specific adapters.
 
 - Local harnesses detect and defer to the real Zeref runtime.
 - Browser projects use source-backed `PROJECT_SIMULATION`.
@@ -27,4 +27,4 @@ Engineering Standards will own a cross-surface activation policy and compile sur
 - Browser projects gain durable, reviewable state without false runtime claims.
 - Source hashes and commit pins make packs reproducible.
 - Stale or incomplete packs degrade explicitly.
-- The Zeref repository has no reverse dependency on Engineering Standards.
+- The Zeref repository has no reverse dependency on Grimoire.

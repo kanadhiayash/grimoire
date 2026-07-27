@@ -18,7 +18,7 @@ Project instructions must name this read order. File names alone do not create p
 
 Each pack records:
 
-- Engineering Standards live URL and pinned commit;
+- Grimoire live URL and pinned commit;
 - Zeref Memory Engine live URL and pinned commit;
 - generation timestamp;
 - surface and project identifier;

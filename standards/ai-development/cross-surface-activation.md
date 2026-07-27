@@ -1,12 +1,12 @@
 # Cross-Surface Zeref Activation
 
-Engineering Standards owns activation portability. Zeref Memory Engine owns its runtime, memory, agents, skills, permissions, and canonical boot contract.
+Grimoire owns activation portability. Zeref Memory Engine owns its runtime, memory, agents, skills, permissions, and canonical boot contract.
 
 ## One-way dependency
 
 ```text
-Engineering Standards detects, activates, or simulates Zeref.
-Zeref does not depend on Engineering Standards.
+Grimoire detects, activates, or simulates Zeref.
+Zeref does not depend on Grimoire.
 ```
 
 Do not modify the Zeref repository from this control plane.
@@ -51,7 +51,7 @@ Every session reports an activation receipt:
 4. Validate source-pack completeness and hashes on browser surfaces.
 5. Classify one activation state.
 6. Defer to Zeref only when the real runtime contract is applicable.
-7. Fall back to Engineering Standards without inventing Zeref state.
+7. Fall back to Grimoire without inventing Zeref state.
 
 ## Power controls
 

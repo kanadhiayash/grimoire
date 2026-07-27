@@ -1,7 +1,7 @@
 This Claude Project is a source-backed operating workspace for Yash Kanadhia.
 
 Canonical provenance:
-Engineering Standards: https://github.com/kanadhiayash/engineering-standards
+Grimoire: https://github.com/kanadhiayash/grimoire
 Zeref Memory Engine: https://github.com/kanadhiayash/zeref-memory-engine
 
 BOOT EACH NEW CHAT

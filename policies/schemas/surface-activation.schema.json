@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/kanadhiayash/engineering-standards/policies/schemas/surface-activation.schema.json",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/surface-activation.schema.json",
   "title": "Cross-Surface Activation Policy",
   "type": "object",
   "required": [
@@ -25,7 +25,7 @@
     "policy": {"const": "surface-activation"},
     "runtime_owner": {"const": "zeref-memory-engine"},
     "activation_owner": {"const": "engineering-standards"},
-    "canonical_sources": {"type": "object", "required": ["engineering_standards", "zeref_memory_engine"]},
+    "canonical_sources": {"type": "object", "required": ["grimoire", "zeref_memory_engine"]},
     "surface_classes": {"type": "object", "required": ["local_harness", "browser_project", "browser_chat"]},
     "activation_statuses": {
       "type": "object",

@@ -62,7 +62,7 @@ class StandardsCliTests(unittest.TestCase):
             surface="chatgpt-project",
             project_name="Example",
             output="dist/example",
-            engineering_standards_commit="a" * 40,
+            grimoire_commit="a" * 40,
             zeref_commit="b" * 40,
         )
         self.assertIn("scripts/compile_surface_pack.py", command)

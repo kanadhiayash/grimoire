@@ -7,7 +7,7 @@
 
 ## Context
 
-Engineering Standards already centralizes human-readable standards, machine policy, harness adapters, and verification. It does not yet define the operational lifecycle used across Zeref-assisted work: command semantics, bounded autonomy, approval scope, memory promotion, session lifecycle, assurance modes, or cross-harness handoffs.
+Grimoire already centralizes human-readable standards, machine policy, harness adapters, and verification. It does not yet define the operational lifecycle used across Zeref-assisted work: command semantics, bounded autonomy, approval scope, memory promotion, session lifecycle, assurance modes, or cross-harness handoffs.
 
 Duplicating these rules inside every global or project instruction would create drift. Treating ambitious phrases as permission would create unsafe autonomy. Treating a single model as a multi-model council would create false assurance.
 

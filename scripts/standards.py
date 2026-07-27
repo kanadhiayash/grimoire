@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unified human and agent command surface for Product Engineering Standards."""
+"""Unified human and agent command surface for Product Grimoire."""
 
 from __future__ import annotations
 
@@ -42,7 +42,8 @@ def build_status(root: Path = ROOT) -> dict[str, Any]:
     return {
         "repository": index.get("repository"),
         "display_name": index.get("display_name"),
-        "future_name": index.get("future_name"),
+        "descriptor": index.get("descriptor"),
+        "canonical_url": index.get("canonical_url"),
         "standard_version": version,
         "index_version": index_version,
         "index_matches_version": index_version == version,
@@ -62,8 +63,8 @@ def run_steps(steps: Sequence[tuple[str, Sequence[str]]], root: Path = ROOT) -> 
     return results
 
 
-def build_pack_command(*, surface: str, project_name: str, output: str, engineering_standards_commit: str, zeref_commit: str, overwrite: bool = False) -> list[str]:
-    command = [sys.executable, "scripts/compile_surface_pack.py", "--surface", surface, "--project-name", project_name, "--output", output, "--engineering-standards-commit", engineering_standards_commit, "--zeref-commit", zeref_commit]
+def build_pack_command(*, surface: str, project_name: str, output: str, grimoire_commit: str, zeref_commit: str, overwrite: bool = False) -> list[str]:
+    command = [sys.executable, "scripts/compile_surface_pack.py", "--surface", surface, "--project-name", project_name, "--output", output, "--grimoire-commit", grimoire_commit, "--zeref-commit", zeref_commit]
     if overwrite:
         command.append("--overwrite")
     return command
@@ -83,7 +84,7 @@ def build_project_command(*, manifest: str, output: str) -> list[str]:
 def check_steps() -> list[tuple[str, Sequence[str]]]:
     python = sys.executable
     return [
-        ("standards doctor", [python, "checks/standards_check.py"]),
+        ("grimoire doctor", [python, "checks/standards_check.py"]),
         ("surface activation", [python, "checks/surface_activation_check.py"]),
         ("repository index", [python, "checks/repository_index_check.py"]),
         ("standards orchestrator", [python, "checks/standards_orchestrator_check.py"]),
@@ -96,7 +97,7 @@ def print_status(status: dict[str, Any], as_json: bool) -> None:
     if as_json:
         print(json.dumps(status, indent=2))
         return
-    print(status.get("display_name") or "Product Engineering Standards")
+    print(status.get("display_name") or "Product Grimoire")
     print(f"Repository: {status['repository']}")
     print(f"Version: {status['standard_version']}")
     print(f"Health: {status['health']}")
@@ -132,7 +133,7 @@ def parser() -> argparse.ArgumentParser:
     pack_compile.add_argument("--surface", required=True)
     pack_compile.add_argument("--project-name", required=True)
     pack_compile.add_argument("--output", required=True)
-    pack_compile.add_argument("--engineering-standards-commit", required=True)
+    pack_compile.add_argument("--grimoire-commit", "--engineering-standards-commit", dest="grimoire_commit", required=True, help="Pinned Grimoire commit SHA")
     pack_compile.add_argument("--zeref-commit", required=True)
     pack_compile.add_argument("--overwrite", action="store_true")
     pack_verify = pack_subparsers.add_parser("verify")
@@ -157,7 +158,7 @@ def main() -> int:
         return subprocess.run(command, cwd=ROOT, check=False).returncode
     if args.command == "pack":
         if args.pack_action == "compile":
-            command = build_pack_command(surface=args.surface, project_name=args.project_name, output=args.output, engineering_standards_commit=args.engineering_standards_commit, zeref_commit=args.zeref_commit, overwrite=args.overwrite)
+            command = build_pack_command(surface=args.surface, project_name=args.project_name, output=args.output, grimoire_commit=args.grimoire_commit, zeref_commit=args.zeref_commit, overwrite=args.overwrite)
         else:
             command = [sys.executable, "scripts/verify_surface_pack.py", args.directory]
         return subprocess.run(command, cwd=ROOT, check=False).returncode

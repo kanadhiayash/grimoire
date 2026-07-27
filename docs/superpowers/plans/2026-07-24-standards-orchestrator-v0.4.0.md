@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox syntax for tracking.
 
-**Goal:** Upgrade Engineering Standards into a neutral, one-entrypoint Standards Orchestrator that compiles product-specific controls, documents, gates, evidence requirements, and Zeref execution metadata.
+**Goal:** Upgrade Grimoire into a neutral, one-entrypoint Standards Orchestrator that compiles product-specific controls, documents, gates, evidence requirements, and Zeref execution metadata.
 
 **Architecture:** Keep one canonical repository and one project-local JSON manifest. Human-readable standards and machine policies remain modular at rest. The project compiler emits one bounded AI context pack for execution.
 
@@ -54,4 +54,4 @@
 - [ ] Add the Orchestrator checker and unit tests.
 - [ ] Add benchmark scenarios and hard safety targets.
 - [ ] Update README, AGENTS, GOVERNANCE, REPOSITORY_INDEX, VERSION, CHANGELOG, and release notes.
-- [ ] Run `python3 scripts/standards.py check` and record exact results.
+- [ ] Run `python3 scripts/grimoire.py check` and record exact results.

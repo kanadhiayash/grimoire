@@ -1,10 +1,10 @@
-# Engineering Standards Quickstart
+# Grimoire Quickstart
 
 This guide is the shortest human path from repository checkout to a verified operation.
 
 ## Technology choices
 
-Engineering Standards deliberately uses a small, portable stack:
+Grimoire deliberately uses a small, portable stack:
 
 - **Python 3.11+ standard library** for policy checks, compilation, installers, and the unified CLI
 - **JSON and JSON Schema** for machine-readable contracts
@@ -17,25 +17,25 @@ Do not introduce TypeScript, Go, Rust, a database, or a web framework unless a m
 ## 1. Inspect repository state
 
 ```bash
-python3 scripts/standards.py status
+python3 scripts/grimoire.py status
 ```
 
 Machine-readable output:
 
 ```bash
-python3 scripts/standards.py status --json
+python3 scripts/grimoire.py status --json
 ```
 
 Read the full machine catalog:
 
 ```bash
-python3 scripts/standards.py catalog --json
+python3 scripts/grimoire.py catalog --json
 ```
 
 ## 2. Run verification
 
 ```bash
-python3 scripts/standards.py check
+python3 scripts/grimoire.py check
 ```
 
 Equivalent convenience command:
@@ -49,18 +49,18 @@ A valid completion claim requires all reported steps to pass.
 Write a JSON check report:
 
 ```bash
-python3 scripts/standards.py check \
-  --json-output artifacts/standards-check.json
+python3 scripts/grimoire.py check \
+  --json-output artifacts/grimoire-check.json
 ```
 
 ## 3. Compile a browser project pack
 
 ```bash
-python3 scripts/standards.py pack compile \
+python3 scripts/grimoire.py pack compile \
   --surface chatgpt-project \
   --project-name "Example Project" \
   --output ./dist/example-project \
-  --engineering-standards-commit <40-character-sha> \
+  --grimoire-commit <40-character-sha> \
   --zeref-commit <40-character-sha>
 ```
 
@@ -74,7 +74,7 @@ Supported browser surfaces:
 Verify the generated pack:
 
 ```bash
-python3 scripts/standards.py pack verify ./dist/example-project
+python3 scripts/grimoire.py pack verify ./dist/example-project
 ```
 
 ## 4. Manage local harness adapters
@@ -82,36 +82,36 @@ python3 scripts/standards.py pack verify ./dist/example-project
 Detect current state:
 
 ```bash
-python3 scripts/standards.py harness detect
+python3 scripts/grimoire.py harness detect
 ```
 
 Preview changes:
 
 ```bash
-python3 scripts/standards.py harness plan
+python3 scripts/grimoire.py harness plan
 ```
 
 Apply managed blocks:
 
 ```bash
-python3 scripts/standards.py harness apply
+python3 scripts/grimoire.py harness apply
 ```
 
 Verify installation:
 
 ```bash
-python3 scripts/standards.py harness verify
+python3 scripts/grimoire.py harness verify
 ```
 
 Remove only managed blocks:
 
 ```bash
-python3 scripts/standards.py harness uninstall
+python3 scripts/grimoire.py harness uninstall
 ```
 
 ## Operating boundaries
 
-- Engineering Standards may detect, activate, or simulate Zeref operations.
+- Grimoire may detect, activate, or simulate Zeref operations.
 - It does not own or rewrite Zeref runtime internals.
 - Browser project simulation is not proof that a local Zeref runtime executed.
 - Merge, deploy, publish, send, delete, rename, credentials, and canonical memory promotion require explicit approval.
