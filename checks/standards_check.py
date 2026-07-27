@@ -368,7 +368,7 @@ def iter_text_files() -> Iterable[Path]:
 def secret_patterns() -> tuple[re.Pattern[str], ...]:
     aws = "A" + "KIA" + r"[0-9A-Z]{16}"
     github = "gh" + r"[pousr]_[A-Za-z0-9_]{30,}"
-    openai = "s" + "k-" + r"[A-Za-z0-9_-]{20,}"
+    openai = r"(?<![A-Za-z0-9])" + "s" + "k-" + r"[A-Za-z0-9_-]{20,}"
     private_key = "-----BEGIN " + r"(?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
     mongodb = "mongodb" + r"(?:\+srv)?://[^:\s/]+:[^@\s/]+@"
 

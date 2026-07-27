@@ -1,0 +1,8 @@
+{
+  "setup": {
+    "boundary": "temporary_directory_only",
+    "stale_file": "stale-unrelated.txt"
+  },
+  "expected_observation": "stale_file_retained",
+  "product_status": "FAIL"
+}

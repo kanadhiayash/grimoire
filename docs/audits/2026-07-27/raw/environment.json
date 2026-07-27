@@ -1,0 +1,13 @@
+{
+  "machine": "arm64",
+  "os": "Darwin",
+  "os_release": "25.3.0",
+  "python_implementation": "CPython",
+  "python_version": "3.14.4",
+  "runtime_dependencies": 0,
+  "safe_environment": {
+    "LANG": "C.UTF-8",
+    "TZ": "NOT_SET"
+  },
+  "schema_version": 1
+}

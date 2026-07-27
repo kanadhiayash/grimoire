@@ -1,0 +1,473 @@
+{
+  "audit_id": "grimoire-2026-07-27",
+  "audited_inputs": {
+    "sha256": {
+      "policies/ai-operations.json": "afb6ba4597ca9f9f1bd03c95e97d981b7511328254e239b42e33411233c88c81",
+      "policies/schemas/ai-operations.schema.json": "adc1e78f8329a3bd14abfcf69fb87c2e0eb13c493074233f65998b354c8869fc",
+      "scripts/project_orchestrator.py": "26b02418d0bf651e524411de98caca1566ce80c5f72a538bd0d12418eee5d776"
+    },
+    "status": "PASS"
+  },
+  "audited_subject": {
+    "commit": "72015acac8a57146ad8b00a6c7b4725b8d86a9c8",
+    "current_head": "72015acac8a57146ad8b00a6c7b4725b8d86a9c8",
+    "relationship": "AUDITED_COMMIT_IS_ANCESTOR_OR_HEAD"
+  },
+  "findings": [
+    {
+      "fixture_sha256": {
+        "ai-schema-contradiction.json": "d07c36ef4d4206dc035ba11133b258a16313769c48cbfa16a9bc9356b30523a9"
+      },
+      "fixtures": [
+        "ai-schema-contradiction.json"
+      ],
+      "id": "ai_operations_schema_contradiction",
+      "observed": {
+        "contradictions": [
+          {
+            "additional_properties": false,
+            "object": "commands",
+            "policy_keys": 15,
+            "properties_defined": 0,
+            "required_keys": 15,
+            "required_keys_forbidden": [
+              "activate",
+              "approve",
+              "audit",
+              "council",
+              "execute",
+              "halt",
+              "handoff",
+              "ingest",
+              "lock",
+              "park",
+              "plan",
+              "promote_memory",
+              "resume",
+              "ship",
+              "verify"
+            ]
+          },
+          {
+            "additional_properties": false,
+            "object": "autonomy_levels",
+            "policy_keys": 6,
+            "properties_defined": 0,
+            "required_keys": 6,
+            "required_keys_forbidden": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ]
+      },
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "fixture_sha256": {
+        "dirty-output.json": "8e20cabe999bcbf46d0900e47ffa7393f6b942baa4d26696447f3ee4f4ee0f8e"
+      },
+      "fixtures": [
+        "dirty-output.json"
+      ],
+      "id": "dirty_output_retention",
+      "observed": {
+        "stale_content_unchanged": true,
+        "stale_file_retained": true
+      },
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "fixture_sha256": {
+        "false-project-readiness.json": "4e0f44ffebb3ed6b468cfb7c9d71349490b5dd0adf87ff33d7f6bfad9d59fa9f"
+      },
+      "fixtures": [
+        "false-project-readiness.json"
+      ],
+      "id": "false_project_readiness",
+      "observed": {
+        "acceptance_items": 7,
+        "acceptance_items_not_verified": 7,
+        "evidence_inputs_supplied": 0,
+        "execution_receipt_status": "PASS",
+        "project_status": "PASS"
+      },
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "fixture_sha256": {
+        "manifest-personal-data-string.json": "bef32495c235d2363982160b1b2e13dc407a2d9ed57ffff1429538abce47e717",
+        "manifest-risk-string.json": "10c2e4a6f7e10351477d65f40263835bf434e539890809ed0c60a504cc01ba17",
+        "manifest-unknown-property.json": "c2a55a34a79349537c08eba9b1fabcbef29d1965d29335bef4144ca5412734f5",
+        "manifest-unknowns-string.json": "6b742369c02c058f6cff8c9a5cf47bcb1b60c2de2f792487611ff7842b56d257",
+        "manifest-unsupported-version.json": "40ab23dda683d232accd9053bf725af3c1ec2db33c2b6242b78c1e4b41f8329b",
+        "manifest-users-string.json": "3ec2bc5c0d589dc9d9324b86dab171dc39aa12d5bfb0f9920ee1c79ff7abd63a"
+      },
+      "fixtures": [
+        "manifest-users-string.json",
+        "manifest-risk-string.json",
+        "manifest-unknowns-string.json",
+        "manifest-personal-data-string.json",
+        "manifest-unsupported-version.json",
+        "manifest-unknown-property.json"
+      ],
+      "id": "malformed_manifest_handling",
+      "observed": {
+        "cases": [
+          {
+            "expected": "accepted",
+            "fixture": "manifest-users-string.json",
+            "matches": true,
+            "observed": {
+              "outcome": "accepted",
+              "receipt_status": "PASS",
+              "unknown_count": 0
+            }
+          },
+          {
+            "expected": "unhandled_exception",
+            "fixture": "manifest-risk-string.json",
+            "matches": true,
+            "observed": {
+              "diagnostic_hash": "42f53d009f8f1715a6937185089f6a478bbc72f938f304905e74755c479ca84d",
+              "exception_type": "AttributeError",
+              "outcome": "unhandled_exception"
+            }
+          },
+          {
+            "expected": "accepted",
+            "fixture": "manifest-unknowns-string.json",
+            "matches": true,
+            "observed": {
+              "outcome": "accepted",
+              "receipt_status": "PARTIAL",
+              "unknown_count": 4
+            }
+          },
+          {
+            "expected": "accepted",
+            "fixture": "manifest-personal-data-string.json",
+            "matches": true,
+            "observed": {
+              "outcome": "accepted",
+              "receipt_status": "PASS",
+              "unknown_count": 0
+            }
+          },
+          {
+            "expected": "accepted",
+            "fixture": "manifest-unsupported-version.json",
+            "matches": true,
+            "observed": {
+              "outcome": "accepted",
+              "receipt_status": "PASS",
+              "unknown_count": 0
+            }
+          },
+          {
+            "expected": "accepted",
+            "fixture": "manifest-unknown-property.json",
+            "matches": true,
+            "observed": {
+              "outcome": "accepted",
+              "receipt_status": "PASS",
+              "unknown_count": 0
+            }
+          }
+        ]
+      },
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "fixture_sha256": {
+        "prompt-injection.json": "9e92e81d01f72fff0e468fd3cad6645b785c4319797a43c75ce43d4b6a608478"
+      },
+      "fixtures": [
+        "prompt-injection.json"
+      ],
+      "id": "prompt_injection_rendering",
+      "observed": {
+        "payload_rendered_verbatim": true,
+        "untrusted_data_label_present": false
+      },
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "fixture_sha256": {
+        "symlink-overwrite.json": "55b20b5a4e853b22197c9ba7991f71da1a6d96388a2c4ef22afe48d283227ebe"
+      },
+      "fixtures": [
+        "symlink-overwrite.json"
+      ],
+      "id": "symlink_overwrite",
+      "observed": {
+        "target_changed": true,
+        "target_within_temporary_boundary": true
+      },
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    }
+  ],
+  "fixture_sha256": {
+    "ai-schema-contradiction.json": "d07c36ef4d4206dc035ba11133b258a16313769c48cbfa16a9bc9356b30523a9",
+    "dirty-output.json": "8e20cabe999bcbf46d0900e47ffa7393f6b942baa4d26696447f3ee4f4ee0f8e",
+    "false-project-readiness.json": "4e0f44ffebb3ed6b468cfb7c9d71349490b5dd0adf87ff33d7f6bfad9d59fa9f",
+    "manifest-personal-data-string.json": "bef32495c235d2363982160b1b2e13dc407a2d9ed57ffff1429538abce47e717",
+    "manifest-risk-string.json": "10c2e4a6f7e10351477d65f40263835bf434e539890809ed0c60a504cc01ba17",
+    "manifest-unknown-property.json": "c2a55a34a79349537c08eba9b1fabcbef29d1965d29335bef4144ca5412734f5",
+    "manifest-unknowns-string.json": "6b742369c02c058f6cff8c9a5cf47bcb1b60c2de2f792487611ff7842b56d257",
+    "manifest-unsupported-version.json": "40ab23dda683d232accd9053bf725af3c1ec2db33c2b6242b78c1e4b41f8329b",
+    "manifest-users-string.json": "3ec2bc5c0d589dc9d9324b86dab171dc39aa12d5bfb0f9920ee1c79ff7abd63a",
+    "prompt-injection.json": "9e92e81d01f72fff0e468fd3cad6645b785c4319797a43c75ce43d4b6a608478",
+    "symlink-overwrite.json": "55b20b5a4e853b22197c9ba7991f71da1a6d96388a2c4ef22afe48d283227ebe"
+  },
+  "fresh_fuzz": {
+    "cases": 500,
+    "classification": "FRESH_DETERMINISTIC_BASELINE",
+    "corpus_sha256": "cc67f1ee239f7c332c89389077f05efcbcb18b90f87ab622a365af9ca5bff3f6",
+    "generator": "grimoire-audit-mutations-v1",
+    "historical_counts_reproduced": false,
+    "outcomes": {
+      "accepted": 169,
+      "controlled_rejection": 160,
+      "unhandled_exception": 171
+    },
+    "seed": 20260727
+  },
+  "invocation": {
+    "argv": [
+      "python3",
+      "benchmarks/audit/2026-07-27/reproduce.py",
+      "--expected-commit",
+      "72015acac8a57146ad8b00a6c7b4725b8d86a9c8",
+      "--seed",
+      "20260727",
+      "--output",
+      "<requested-output>"
+    ],
+    "cwd": ".",
+    "exit_code": 0,
+    "finished_at": "2026-07-27T20:00:26.284108+00:00",
+    "started_at": "2026-07-27T20:00:25.904960+00:00",
+    "stderr_file": "stderr.txt",
+    "stdout_file": "stdout.txt"
+  },
+  "limitations": [
+    "The original 500-case fuzz generator, seed, raw corpus, and logs were not supplied.",
+    "The fresh seed-20260727 run is a new deterministic baseline and does not reproduce historical 171/214/115 counts.",
+    "This Phase 0 runner records current failures and does not implement production fixes.",
+    "Zeref end-to-end consumption remains NOT_VERIFIED."
+  ],
+  "normalized_results": {
+    "findings": [
+      {
+        "id": "ai_operations_schema_contradiction",
+        "observed": {
+          "contradictions": [
+            {
+              "additional_properties": false,
+              "object": "commands",
+              "policy_keys": 15,
+              "properties_defined": 0,
+              "required_keys": 15,
+              "required_keys_forbidden": [
+                "activate",
+                "approve",
+                "audit",
+                "council",
+                "execute",
+                "halt",
+                "handoff",
+                "ingest",
+                "lock",
+                "park",
+                "plan",
+                "promote_memory",
+                "resume",
+                "ship",
+                "verify"
+              ]
+            },
+            {
+              "additional_properties": false,
+              "object": "autonomy_levels",
+              "policy_keys": 6,
+              "properties_defined": 0,
+              "required_keys": 6,
+              "required_keys_forbidden": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
+            }
+          ]
+        },
+        "product_status": "FAIL",
+        "reproduction_status": "MATCH"
+      },
+      {
+        "id": "dirty_output_retention",
+        "observed": {
+          "stale_content_unchanged": true,
+          "stale_file_retained": true
+        },
+        "product_status": "FAIL",
+        "reproduction_status": "MATCH"
+      },
+      {
+        "id": "false_project_readiness",
+        "observed": {
+          "acceptance_items": 7,
+          "acceptance_items_not_verified": 7,
+          "evidence_inputs_supplied": 0,
+          "execution_receipt_status": "PASS",
+          "project_status": "PASS"
+        },
+        "product_status": "FAIL",
+        "reproduction_status": "MATCH"
+      },
+      {
+        "id": "malformed_manifest_handling",
+        "observed": {
+          "cases": [
+            {
+              "expected": "accepted",
+              "fixture": "manifest-users-string.json",
+              "matches": true,
+              "observed": {
+                "outcome": "accepted",
+                "receipt_status": "PASS",
+                "unknown_count": 0
+              }
+            },
+            {
+              "expected": "unhandled_exception",
+              "fixture": "manifest-risk-string.json",
+              "matches": true,
+              "observed": {
+                "diagnostic_hash": "42f53d009f8f1715a6937185089f6a478bbc72f938f304905e74755c479ca84d",
+                "exception_type": "AttributeError",
+                "outcome": "unhandled_exception"
+              }
+            },
+            {
+              "expected": "accepted",
+              "fixture": "manifest-unknowns-string.json",
+              "matches": true,
+              "observed": {
+                "outcome": "accepted",
+                "receipt_status": "PARTIAL",
+                "unknown_count": 4
+              }
+            },
+            {
+              "expected": "accepted",
+              "fixture": "manifest-personal-data-string.json",
+              "matches": true,
+              "observed": {
+                "outcome": "accepted",
+                "receipt_status": "PASS",
+                "unknown_count": 0
+              }
+            },
+            {
+              "expected": "accepted",
+              "fixture": "manifest-unsupported-version.json",
+              "matches": true,
+              "observed": {
+                "outcome": "accepted",
+                "receipt_status": "PASS",
+                "unknown_count": 0
+              }
+            },
+            {
+              "expected": "accepted",
+              "fixture": "manifest-unknown-property.json",
+              "matches": true,
+              "observed": {
+                "outcome": "accepted",
+                "receipt_status": "PASS",
+                "unknown_count": 0
+              }
+            }
+          ]
+        },
+        "product_status": "FAIL",
+        "reproduction_status": "MATCH"
+      },
+      {
+        "id": "prompt_injection_rendering",
+        "observed": {
+          "payload_rendered_verbatim": true,
+          "untrusted_data_label_present": false
+        },
+        "product_status": "FAIL",
+        "reproduction_status": "MATCH"
+      },
+      {
+        "id": "symlink_overwrite",
+        "observed": {
+          "target_changed": true,
+          "target_within_temporary_boundary": true
+        },
+        "product_status": "FAIL",
+        "reproduction_status": "MATCH"
+      }
+    ],
+    "fresh_fuzz": {
+      "cases": 500,
+      "classification": "FRESH_DETERMINISTIC_BASELINE",
+      "corpus_sha256": "cc67f1ee239f7c332c89389077f05efcbcb18b90f87ab622a365af9ca5bff3f6",
+      "generator": "grimoire-audit-mutations-v1",
+      "historical_counts_reproduced": false,
+      "outcomes": {
+        "accepted": 169,
+        "controlled_rejection": 160,
+        "unhandled_exception": 171
+      },
+      "seed": 20260727
+    },
+    "package_integrity": {
+      "checksum_ledger_sha256": "f13730c67915095d8c2488cfb30236661200a5839218a2d13353efb1e7bd6264",
+      "listed_files_verified": 18,
+      "status": "PASS",
+      "total_files": 19
+    }
+  },
+  "normalized_results_sha256": "09db83759d95950f181547368891b30c7e6bbe7a864ec7b14b6bdedcb01c93b1",
+  "package_integrity": {
+    "checksum_ledger_sha256": "f13730c67915095d8c2488cfb30236661200a5839218a2d13353efb1e7bd6264",
+    "listed_files_verified": 18,
+    "status": "PASS",
+    "total_files": 19
+  },
+  "reproduction_status": "MATCH",
+  "schema_version": 1,
+  "score_claim": {
+    "audited_score": 5.4,
+    "classification": "HISTORICAL_AUDITED_BASELINE",
+    "current_rescore": "NOT_PERFORMED",
+    "scale": 10
+  },
+  "source_fuzz_evidence": {
+    "accepted": 115,
+    "classification": "HISTORICAL_REPORTED",
+    "controlled_rejections": 171,
+    "raw_corpus": "NOT_SUPPLIED",
+    "seed": "NOT_SUPPLIED",
+    "unhandled_exceptions": 214,
+    "verification_status": "NOT_VERIFIED"
+  }
+}

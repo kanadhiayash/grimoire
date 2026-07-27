@@ -1,0 +1,11 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "environment.json": "473b354a8b3d3ed2b28d20868381c17d9382a94cfc93bd0a16a8ca61b9b628ed",
+    "fresh-fuzz-cases.json": "41b4a8b7df124c4e67c888dca4c0253719d48b2136504d001795ebdce0367e24",
+    "reproduction-summary.json": "4477907f32e340afe63e2468cee0ced278e590fff792dddb33b877b8e2f6720a",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.txt": "56568d641ad88cc56f3324bc0d53b3d2c1f9a2a645be60060b1837f8ba937206"
+  },
+  "schema_version": 1
+}

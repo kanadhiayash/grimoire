@@ -1,0 +1,20 @@
+{
+  "schema_path": "policies/schemas/ai-operations.schema.json",
+  "policy_path": "policies/ai-operations.json",
+  "objects": [
+    {
+      "path": "$.properties.commands",
+      "required_keys": 15,
+      "properties_defined": 0,
+      "additional_properties": false
+    },
+    {
+      "path": "$.properties.autonomy_levels",
+      "required_keys": 6,
+      "properties_defined": 0,
+      "additional_properties": false
+    }
+  ],
+  "expected_observation": "declared_policy_rejected_by_draft_2020_12",
+  "product_status": "FAIL"
+}

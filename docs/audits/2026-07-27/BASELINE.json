@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "audit_id": "grimoire-2026-07-27",
+  "plan_id": "GRM-1.0-P0P1-2026-07-27",
+  "plan_revision": 1,
+  "audited_subject": {
+    "repository": "kanadhiayash/grimoire",
+    "commit": "72015acac8a57146ad8b00a6c7b4725b8d86a9c8",
+    "release": "0.5.0"
+  },
+  "audited_inputs": {
+    "status": "PASS",
+    "sha256": {
+      "policies/ai-operations.json": "afb6ba4597ca9f9f1bd03c95e97d981b7511328254e239b42e33411233c88c81",
+      "policies/schemas/ai-operations.schema.json": "adc1e78f8329a3bd14abfcf69fb87c2e0eb13c493074233f65998b354c8869fc",
+      "scripts/project_orchestrator.py": "26b02418d0bf651e524411de98caca1566ce80c5f72a538bd0d12418eee5d776"
+    }
+  },
+  "audited_score": 5.4,
+  "audited_score_scale": 10,
+  "score_classification": "HISTORICAL_AUDITED_BASELINE",
+  "current_rescore": "NOT_PERFORMED",
+  "release_assurance": "NOT_VERIFIED",
+  "package_integrity": {
+    "status": "PASS",
+    "path": "docs/audits/2026-07-27/execution-package",
+    "files": 19,
+    "files_listed_and_verified": 18,
+    "checksum_ledger_sha256": "f13730c67915095d8c2488cfb30236661200a5839218a2d13353efb1e7bd6264"
+  },
+  "built_in_baseline": {
+    "status": "PASS",
+    "tests": 60,
+    "raw_evidence": "docs/audits/2026-07-27/raw/grimoire-check.json"
+  },
+  "merge_commit_ci": {
+    "status": "PASS",
+    "run_id": 30236282784,
+    "head_sha": "72015acac8a57146ad8b00a6c7b4725b8d86a9c8",
+    "raw_evidence": "docs/audits/2026-07-27/raw/github-run.json"
+  },
+  "source_fuzz_evidence": {
+    "classification": "HISTORICAL_REPORTED",
+    "verification_status": "NOT_VERIFIED",
+    "cases": 500,
+    "controlled_rejections": 171,
+    "unhandled_exceptions": 214,
+    "accepted": 115,
+    "seed": "NOT_SUPPLIED",
+    "raw_corpus": "NOT_SUPPLIED"
+  },
+  "fresh_fuzz_baseline": {
+    "classification": "FRESH_DETERMINISTIC_BASELINE",
+    "seed": 20260727,
+    "cases": 500,
+    "controlled_rejections": 160,
+    "unhandled_exceptions": 171,
+    "accepted": 169,
+    "corpus_sha256": "cc67f1ee239f7c332c89389077f05efcbcb18b90f87ab622a365af9ca5bff3f6",
+    "historical_counts_reproduced": false,
+    "raw_cases": "docs/audits/2026-07-27/raw/fresh-fuzz-cases.json"
+  },
+  "reproduction": {
+    "status": "MATCH",
+    "normalized_results_sha256": "09db83759d95950f181547368891b30c7e6bbe7a864ec7b14b6bdedcb01c93b1",
+    "raw_summary": "docs/audits/2026-07-27/raw/reproduction-summary.json",
+    "environment": "docs/audits/2026-07-27/raw/environment.json",
+    "hashes": "docs/audits/2026-07-27/raw/reproducer-hashes.json",
+    "stdout": "docs/audits/2026-07-27/raw/reproducer-stdout.txt",
+    "stderr": "docs/audits/2026-07-27/raw/reproducer-stderr.txt"
+  },
+  "reproduced_findings": [
+    {
+      "id": "false_project_readiness",
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "id": "ai_operations_schema_contradiction",
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "id": "malformed_manifest_handling",
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "id": "prompt_injection_rendering",
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "id": "symlink_overwrite",
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    },
+    {
+      "id": "dirty_output_retention",
+      "product_status": "FAIL",
+      "reproduction_status": "MATCH"
+    }
+  ],
+  "limitations": [
+    "The original 500-case fuzz generator, seed, raw corpus, and logs were not supplied.",
+    "The source-reported 171/214/115 counts remain NOT_VERIFIED and are not represented as reproduced.",
+    "The fresh seed-20260727 corpus is a separate deterministic baseline.",
+    "The original performance timings and coverage snapshot are source-reported because their raw harness outputs were not supplied.",
+    "Normative self-compliance counts are source-reported because the original audit script was not supplied.",
+    "Zeref end-to-end execution remains NOT_VERIFIED.",
+    "No current benchmark re-score was performed."
+  ]
+}

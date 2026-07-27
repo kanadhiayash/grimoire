@@ -1,0 +1,6 @@
+{
+  "mutation": "unsupported_version",
+  "path": "$.standards.version",
+  "value": "99.0.0",
+  "expected_outcome": "accepted"
+}

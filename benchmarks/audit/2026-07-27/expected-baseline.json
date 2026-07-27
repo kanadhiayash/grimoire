@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "audit_id": "grimoire-2026-07-27",
+  "audited_subject": {
+    "repository": "kanadhiayash/grimoire",
+    "commit": "72015acac8a57146ad8b00a6c7b4725b8d86a9c8",
+    "release": "0.5.0"
+  },
+  "audited_input_sha256": {
+    "policies/ai-operations.json": "afb6ba4597ca9f9f1bd03c95e97d981b7511328254e239b42e33411233c88c81",
+    "policies/schemas/ai-operations.schema.json": "adc1e78f8329a3bd14abfcf69fb87c2e0eb13c493074233f65998b354c8869fc",
+    "scripts/project_orchestrator.py": "26b02418d0bf651e524411de98caca1566ce80c5f72a538bd0d12418eee5d776"
+  },
+  "package_integrity": {
+    "checksum_ledger_sha256": "f13730c67915095d8c2488cfb30236661200a5839218a2d13353efb1e7bd6264"
+  },
+  "fresh_fuzz": {
+    "cases": 500,
+    "seed": 20260727
+  },
+  "source_fuzz_evidence": {
+    "classification": "HISTORICAL_REPORTED",
+    "controlled_rejections": 171,
+    "unhandled_exceptions": 214,
+    "accepted": 115,
+    "seed": "NOT_SUPPLIED",
+    "raw_corpus": "NOT_SUPPLIED",
+    "verification_status": "NOT_VERIFIED"
+  },
+  "fixture_sha256": {
+    "ai-schema-contradiction.json": "d07c36ef4d4206dc035ba11133b258a16313769c48cbfa16a9bc9356b30523a9",
+    "dirty-output.json": "8e20cabe999bcbf46d0900e47ffa7393f6b942baa4d26696447f3ee4f4ee0f8e",
+    "false-project-readiness.json": "4e0f44ffebb3ed6b468cfb7c9d71349490b5dd0adf87ff33d7f6bfad9d59fa9f",
+    "manifest-personal-data-string.json": "bef32495c235d2363982160b1b2e13dc407a2d9ed57ffff1429538abce47e717",
+    "manifest-risk-string.json": "10c2e4a6f7e10351477d65f40263835bf434e539890809ed0c60a504cc01ba17",
+    "manifest-unknown-property.json": "c2a55a34a79349537c08eba9b1fabcbef29d1965d29335bef4144ca5412734f5",
+    "manifest-unknowns-string.json": "6b742369c02c058f6cff8c9a5cf47bcb1b60c2de2f792487611ff7842b56d257",
+    "manifest-unsupported-version.json": "40ab23dda683d232accd9053bf725af3c1ec2db33c2b6242b78c1e4b41f8329b",
+    "manifest-users-string.json": "3ec2bc5c0d589dc9d9324b86dab171dc39aa12d5bfb0f9920ee1c79ff7abd63a",
+    "prompt-injection.json": "9e92e81d01f72fff0e468fd3cad6645b785c4319797a43c75ce43d4b6a608478",
+    "symlink-overwrite.json": "55b20b5a4e853b22197c9ba7991f71da1a6d96388a2c4ef22afe48d283227ebe"
+  },
+  "findings": {
+    "ai_operations_schema_contradiction": {
+      "fixture": "ai-schema-contradiction.json",
+      "product_status": "FAIL"
+    },
+    "dirty_output_retention": {
+      "fixture": "dirty-output.json",
+      "product_status": "FAIL"
+    },
+    "false_project_readiness": {
+      "fixture": "false-project-readiness.json",
+      "product_status": "FAIL"
+    },
+    "malformed_manifest_handling": {
+      "fixtures": [
+        "manifest-users-string.json",
+        "manifest-risk-string.json",
+        "manifest-unknowns-string.json",
+        "manifest-personal-data-string.json",
+        "manifest-unsupported-version.json",
+        "manifest-unknown-property.json"
+      ],
+      "product_status": "FAIL"
+    },
+    "prompt_injection_rendering": {
+      "fixture": "prompt-injection.json",
+      "product_status": "FAIL"
+    },
+    "symlink_overwrite": {
+      "fixture": "symlink-overwrite.json",
+      "product_status": "FAIL"
+    }
+  }
+}

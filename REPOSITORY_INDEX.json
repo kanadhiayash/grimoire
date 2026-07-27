@@ -188,7 +188,8 @@
     "browser_pack_templates": "templates/browser-project",
     "browser_pack_compiler": "scripts/compile_surface_pack.py",
     "browser_pack_verifier": "scripts/verify_surface_pack.py",
-    "harness_installer": "scripts/install_ai_harness_standards.py"
+    "harness_installer": "scripts/install_ai_harness_standards.py",
+    "audit_baseline_2026_07_27": "docs/audits/2026-07-27/BASELINE.json"
   },
   "verification": {
     "required_commands": [
