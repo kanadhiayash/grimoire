@@ -11,6 +11,7 @@ OLD_URL = "https://github.com/" + OLD_SLUG
 OLD_SOURCE_KEY = "engineering_" + "standards"
 NEW_SLUG = "kanadhiayash/grimoire"
 NEW_URL = "https://github.com/kanadhiayash/grimoire"
+EXPECTED_DESCRIPTOR = "Global Product Engineering " + "Standards Orchestrator"
 
 
 def repository_text_files() -> list[Path]:
@@ -40,10 +41,7 @@ class GrimoireIdentityTests(unittest.TestCase):
         self.assertEqual(NEW_SLUG, index["repository"])
         self.assertEqual("Grimoire", index["display_name"])
         self.assertEqual(NEW_URL, index["canonical_url"])
-        self.assertEqual(
-            "Global Product Engineering Standards Orchestrator",
-            index["descriptor"],
-        )
+        self.assertEqual(EXPECTED_DESCRIPTOR, index["descriptor"])
 
     def test_instruction_manifests_use_grimoire_provenance(self) -> None:
         root_manifest = json.loads(
