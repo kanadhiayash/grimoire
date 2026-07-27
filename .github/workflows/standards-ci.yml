@@ -1,4 +1,4 @@
-name: Grimoire Migration CI
+name: Grimoire CI
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   conformance:
@@ -17,28 +17,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Set up Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
 
-      - name: Apply deterministic Grimoire migration
-        shell: bash
-        run: |
-          mkdir -p artifacts
-          python3 scripts/migrate_to_grimoire.py --apply \
-            --report artifacts/grimoire-migration.json
-          zip -qr artifacts/grimoire-transformed.zip . \
-            -x '.git/*' 'artifacts/*' '__pycache__/*'
-          cat artifacts/grimoire-migration.json
-
-      - name: Run operational conformance checks
+      - name: Run Grimoire conformance checks
         id: conformance
         shell: bash
         run: |
+          mkdir -p artifacts
           set +e
           python3 scripts/grimoire.py check \
             --json-output artifacts/grimoire-check.json
@@ -47,37 +36,11 @@ jobs:
           cat artifacts/grimoire-check.json
           exit "$status"
 
-      - name: Commit verified migration to branch
-        if: success() && github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          git restore --source=HEAD -- .github/workflows/standards-ci.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No migration changes to commit."
-          else
-            git commit -m "refactor(identity): migrate repository system to Grimoire"
-            git push origin HEAD:${GITHUB_HEAD_REF}
-          fi
-
-      - name: Upload conformance report
+      - name: Upload Grimoire conformance report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: grimoire-check
           path: artifacts/grimoire-check.json
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Upload transformed migration tree
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: grimoire-migration
-          path: |
-            artifacts/grimoire-migration.json
-            artifacts/grimoire-transformed.zip
           if-no-files-found: error
           retention-days: 14
