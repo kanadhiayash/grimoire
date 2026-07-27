@@ -1,0 +1,8 @@
+{
+  "case_id": "command_unknown_property",
+  "operation": "add",
+  "path": ["commands", "activate", "unexpected"],
+  "value": true,
+  "expected_path": ["commands", "activate"],
+  "expected_validator": "additionalProperties"
+}

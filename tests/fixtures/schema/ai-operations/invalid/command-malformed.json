@@ -1,0 +1,11 @@
+{
+  "case_id": "command_malformed",
+  "operation": "replace",
+  "path": ["commands", "activate"],
+  "value": {
+    "mode": "read_only",
+    "may_escalate": false
+  },
+  "expected_path": ["commands", "activate"],
+  "expected_validator": "required"
+}

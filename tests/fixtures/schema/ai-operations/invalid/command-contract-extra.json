@@ -1,0 +1,11 @@
+{
+  "case_id": "command_contract_extra",
+  "operation": "add",
+  "path": ["command_contracts", "unexpected"],
+  "value": {
+    "required_outputs": [],
+    "stop_conditions": []
+  },
+  "expected_path": ["command_contracts"],
+  "expected_validator": "additionalProperties"
+}

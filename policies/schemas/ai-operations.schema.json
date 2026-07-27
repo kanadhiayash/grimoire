@@ -29,8 +29,7 @@
   ],
   "properties": {
     "schema_version": {
-      "type": "integer",
-      "minimum": 1
+      "const": 2
     },
     "standard_version": {
       "type": "string",
@@ -41,38 +40,12 @@
     },
     "scope_boundaries": {
       "type": "object",
-      "required": [
-        "global",
-        "project",
-        "repository",
-        "global_rule_threshold"
-      ],
+      "required": ["global", "project", "repository", "global_rule_threshold"],
       "properties": {
-        "global": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string"
-          }
-        },
-        "project": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string"
-          }
-        },
-        "repository": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string"
-          }
-        },
-        "global_rule_threshold": {
-          "type": "string",
-          "minLength": 1
-        }
+        "global": {"$ref": "#/$defs/nonemptyStringArray"},
+        "project": {"$ref": "#/$defs/nonemptyStringArray"},
+        "repository": {"$ref": "#/$defs/nonemptyStringArray"},
+        "global_rule_threshold": {"$ref": "#/$defs/nonemptyString"}
       },
       "additionalProperties": false
     },
@@ -80,61 +53,20 @@
       "type": "array",
       "minItems": 10,
       "maxItems": 10,
-      "items": {
-        "type": "object",
-        "required": [
-          "rank",
-          "id",
-          "description"
-        ],
-        "properties": {
-          "rank": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 10
-          },
-          "id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "description": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "additionalProperties": false
-      }
+      "items": {"$ref": "#/$defs/sourcePrecedenceEntry"}
     },
     "conflict_policy": {
       "type": "object",
-      "required": [
-        "same_level",
-        "silent_resolution",
-        "required_record"
-      ],
+      "required": ["same_level", "silent_resolution", "required_record"],
       "properties": {
-        "same_level": {
-          "const": "halt_and_arbitrate"
-        },
-        "silent_resolution": {
-          "const": "forbidden"
-        },
-        "required_record": {
-          "type": "array",
-          "minItems": 4,
-          "items": {
-            "type": "string"
-          }
-        }
+        "same_level": {"const": "halt_and_arbitrate"},
+        "silent_resolution": {"const": "forbidden"},
+        "required_record": {"$ref": "#/$defs/nonemptyStringArray"}
       },
       "additionalProperties": false
     },
     "execution_spine": {
-      "type": "array",
-      "minItems": 8,
-      "items": {
-        "type": "string"
-      }
+      "$ref": "#/$defs/nonemptyStringArray"
     },
     "commands": {
       "type": "object",
@@ -155,30 +87,30 @@
         "promote_memory",
         "halt"
       ],
+      "properties": {
+        "activate": {"$ref": "#/$defs/activateCommand"},
+        "ingest": {"$ref": "#/$defs/ingestCommand"},
+        "resume": {"$ref": "#/$defs/resumeCommand"},
+        "audit": {"$ref": "#/$defs/auditCommand"},
+        "council": {"$ref": "#/$defs/councilCommand"},
+        "plan": {"$ref": "#/$defs/planCommand"},
+        "lock": {"$ref": "#/$defs/lockCommand"},
+        "approve": {"$ref": "#/$defs/approveCommand"},
+        "execute": {"$ref": "#/$defs/executeCommand"},
+        "verify": {"$ref": "#/$defs/verifyCommand"},
+        "ship": {"$ref": "#/$defs/shipCommand"},
+        "handoff": {"$ref": "#/$defs/handoffCommand"},
+        "park": {"$ref": "#/$defs/parkCommand"},
+        "promote_memory": {"$ref": "#/$defs/promoteMemoryCommand"},
+        "halt": {"$ref": "#/$defs/haltCommand"}
+      },
       "additionalProperties": false
     },
     "command_aliases": {
       "type": "object",
       "minProperties": 15,
-      "additionalProperties": {
-        "enum": [
-          "activate",
-          "ingest",
-          "resume",
-          "audit",
-          "council",
-          "plan",
-          "lock",
-          "approve",
-          "execute",
-          "verify",
-          "ship",
-          "handoff",
-          "park",
-          "promote_memory",
-          "halt"
-        ]
-      }
+      "propertyNames": {"minLength": 1},
+      "additionalProperties": {"$ref": "#/$defs/commandId"}
     },
     "command_contracts": {
       "type": "object",
@@ -199,39 +131,36 @@
         "promote_memory",
         "halt"
       ],
-      "additionalProperties": {
-        "type": "object",
-        "required": [
-          "required_outputs",
-          "stop_conditions"
-        ],
-        "properties": {
-          "required_outputs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "stop_conditions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "additionalProperties": false
-      }
+      "properties": {
+        "activate": {"$ref": "#/$defs/commandContract"},
+        "ingest": {"$ref": "#/$defs/commandContract"},
+        "resume": {"$ref": "#/$defs/commandContract"},
+        "audit": {"$ref": "#/$defs/commandContract"},
+        "council": {"$ref": "#/$defs/commandContract"},
+        "plan": {"$ref": "#/$defs/commandContract"},
+        "lock": {"$ref": "#/$defs/commandContract"},
+        "approve": {"$ref": "#/$defs/commandContract"},
+        "execute": {"$ref": "#/$defs/commandContract"},
+        "verify": {"$ref": "#/$defs/commandContract"},
+        "ship": {"$ref": "#/$defs/commandContract"},
+        "handoff": {"$ref": "#/$defs/commandContract"},
+        "park": {"$ref": "#/$defs/commandContract"},
+        "promote_memory": {"$ref": "#/$defs/commandContract"},
+        "halt": {"$ref": "#/$defs/commandContract"}
+      },
+      "additionalProperties": false
     },
     "autonomy_levels": {
       "type": "object",
-      "required": [
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
-      ],
+      "required": ["0", "1", "2", "3", "4", "5"],
+      "properties": {
+        "0": {"$ref": "#/$defs/autonomyLevel0"},
+        "1": {"$ref": "#/$defs/autonomyLevel1"},
+        "2": {"$ref": "#/$defs/autonomyLevel2"},
+        "3": {"$ref": "#/$defs/autonomyLevel3"},
+        "4": {"$ref": "#/$defs/autonomyLevel4"},
+        "5": {"$ref": "#/$defs/autonomyLevel5"}
+      },
       "additionalProperties": false
     },
     "approval": {
@@ -245,71 +174,67 @@
         "aliases",
         "invalidated_by",
         "never_implicit"
-      ]
+      ],
+      "properties": {
+        "plan_id_required": {"type": "boolean"},
+        "revision_required": {"type": "boolean"},
+        "approved_scope_required": {"type": "boolean"},
+        "excluded_scope_required": {"type": "boolean"},
+        "material_revision_invalidates_approval": {"type": "boolean"},
+        "aliases": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {"minLength": 1},
+          "additionalProperties": {"$ref": "#/$defs/nonemptyString"}
+        },
+        "invalidated_by": {"$ref": "#/$defs/nonemptyStringArray"},
+        "never_implicit": {"$ref": "#/$defs/nonemptyStringArray"}
+      },
+      "additionalProperties": false
     },
     "assurance_modes": {
       "type": "object",
-      "required": [
-        "lean",
-        "balanced",
-        "assured",
-        "experimental_council"
-      ]
+      "required": ["lean", "balanced", "assured", "experimental_council"],
+      "properties": {
+        "lean": {"$ref": "#/$defs/leanAssurance"},
+        "balanced": {"$ref": "#/$defs/balancedAssurance"},
+        "assured": {"$ref": "#/$defs/assuredAssurance"},
+        "experimental_council": {
+          "$ref": "#/$defs/experimentalCouncilAssurance"
+        }
+      },
+      "additionalProperties": false
     },
     "session_lifecycle": {
-      "type": "array",
-      "const": [
-        "boot",
-        "orient",
-        "classify",
-        "plan",
-        "execute",
-        "verify",
-        "close"
-      ]
+      "const": ["boot", "orient", "classify", "plan", "execute", "verify", "close"]
     },
     "session_outputs": {
       "type": "object",
-      "required": [
-        "boot",
-        "close"
-      ],
+      "required": ["boot", "close"],
       "properties": {
         "boot": {
-          "type": "array",
-          "minItems": 7,
-          "items": {
-            "type": "string"
-          }
+          "allOf": [
+            {"$ref": "#/$defs/nonemptyStringArray"},
+            {"minItems": 7}
+          ]
         },
         "close": {
-          "type": "array",
-          "minItems": 10,
-          "items": {
-            "type": "string"
-          }
+          "allOf": [
+            {"$ref": "#/$defs/nonemptyStringArray"},
+            {"minItems": 10}
+          ]
         }
       },
       "additionalProperties": false
     },
     "completion_statuses": {
-      "type": "array",
-      "const": [
-        "PASS",
-        "PARTIAL",
-        "BLOCKED",
-        "NOT_VERIFIED"
-      ]
+      "const": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]
     },
     "completion_display_labels": {
       "type": "object",
-      "required": [
-        "NOT_VERIFIED"
-      ],
+      "required": ["NOT_VERIFIED"],
       "properties": {
-        "NOT_VERIFIED": {
-          "const": "NOT VERIFIED"
-        }
+        "NOT_VERIFIED": {"const": "NOT VERIFIED"}
       },
       "additionalProperties": false
     },
@@ -322,52 +247,396 @@
         "alternate_states",
         "promotion_fields",
         "two_strikes_for_permanent_rules"
-      ]
+      ],
+      "properties": {
+        "single_writer_required": {"type": "boolean"},
+        "default_writer_role": {"$ref": "#/$defs/nonemptyString"},
+        "lifecycle": {
+          "const": ["raw", "candidate", "validated", "approved", "canonical"]
+        },
+        "alternate_states": {"$ref": "#/$defs/nonemptyStringArray"},
+        "promotion_fields": {"$ref": "#/$defs/nonemptyStringArray"},
+        "two_strikes_for_permanent_rules": {"type": "boolean"}
+      },
+      "additionalProperties": false
     },
     "external_action_gate": {
       "type": "object",
-      "required": [
-        "approval_required",
-        "never_inferred_from"
-      ]
+      "required": ["approval_required", "never_inferred_from"],
+      "properties": {
+        "approval_required": {"$ref": "#/$defs/nonemptyStringArray"},
+        "never_inferred_from": {"$ref": "#/$defs/nonemptyStringArray"}
+      },
+      "additionalProperties": false
     },
     "stop_conditions": {
-      "type": "array",
-      "minItems": 5,
-      "items": {
-        "type": "string"
-      }
+      "allOf": [
+        {"$ref": "#/$defs/nonemptyStringArray"},
+        {"minItems": 5}
+      ]
     },
     "currentness": {
       "type": "object",
-      "required": [
-        "verify_unstable_claims",
-        "always_verify",
-        "source_priority"
-      ]
+      "required": ["verify_unstable_claims", "always_verify", "source_priority"],
+      "properties": {
+        "verify_unstable_claims": {"type": "boolean"},
+        "always_verify": {"$ref": "#/$defs/nonemptyStringArray"},
+        "source_priority": {"$ref": "#/$defs/nonemptyStringArray"}
+      },
+      "additionalProperties": false
     },
     "validation_cases": {
       "type": "array",
       "minItems": 6,
-      "items": {
-        "type": "object",
-        "required": [
-          "input",
-          "expected_behavior"
-        ],
-        "properties": {
-          "input": {
-            "type": "string",
-            "minLength": 1
-          },
-          "expected_behavior": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "additionalProperties": false
-      }
+      "items": {"$ref": "#/$defs/validationCase"}
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "$defs": {
+    "nonemptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/nonemptyString"}
+    },
+    "nonemptyStringArray": {
+      "allOf": [
+        {"$ref": "#/$defs/stringArray"},
+        {"minItems": 1}
+      ]
+    },
+    "commandId": {
+      "enum": [
+        "activate",
+        "ingest",
+        "resume",
+        "audit",
+        "council",
+        "plan",
+        "lock",
+        "approve",
+        "execute",
+        "verify",
+        "ship",
+        "handoff",
+        "park",
+        "promote_memory",
+        "halt"
+      ]
+    },
+    "sourcePrecedenceEntry": {
+      "type": "object",
+      "required": ["rank", "id", "description"],
+      "properties": {
+        "rank": {"type": "integer", "minimum": 1, "maximum": 10},
+        "id": {"$ref": "#/$defs/nonemptyString"},
+        "description": {"$ref": "#/$defs/nonemptyString"}
+      },
+      "additionalProperties": false
+    },
+    "idempotentCommand": {
+      "type": "object",
+      "required": ["mode", "may_escalate", "idempotent"],
+      "properties": {
+        "mode": {"type": "string"},
+        "may_escalate": {"const": false},
+        "idempotent": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "activateCommand": {
+      "allOf": [
+        {"$ref": "#/$defs/idempotentCommand"},
+        {"properties": {"mode": {"const": "read_only"}}}
+      ]
+    },
+    "ingestCommand": {
+      "allOf": [
+        {"$ref": "#/$defs/idempotentCommand"},
+        {"properties": {"mode": {"const": "read_only"}}}
+      ]
+    },
+    "resumeCommand": {
+      "allOf": [
+        {"$ref": "#/$defs/idempotentCommand"},
+        {"properties": {"mode": {"const": "read_only"}}}
+      ]
+    },
+    "auditCommand": {
+      "allOf": [
+        {"$ref": "#/$defs/idempotentCommand"},
+        {"properties": {"mode": {"const": "read_only"}}}
+      ]
+    },
+    "planCommand": {
+      "allOf": [
+        {"$ref": "#/$defs/idempotentCommand"},
+        {"properties": {"mode": {"const": "draft"}}}
+      ]
+    },
+    "verifyCommand": {
+      "allOf": [
+        {"$ref": "#/$defs/idempotentCommand"},
+        {"properties": {"mode": {"const": "non_destructive"}}}
+      ]
+    },
+    "handoffCommand": {
+      "allOf": [
+        {"$ref": "#/$defs/idempotentCommand"},
+        {"properties": {"mode": {"const": "draft_or_local_write"}}}
+      ]
+    },
+    "councilCommand": {
+      "type": "object",
+      "required": [
+        "mode",
+        "may_escalate",
+        "requires_independent_work_for_council_claim"
+      ],
+      "properties": {
+        "mode": {"const": "assurance"},
+        "may_escalate": {"const": false},
+        "requires_independent_work_for_council_claim": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "lockCommand": {
+      "type": "object",
+      "required": ["mode", "requires_approval", "may_escalate"],
+      "properties": {
+        "mode": {"const": "decision_write"},
+        "requires_approval": {"const": true},
+        "may_escalate": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "approveCommand": {
+      "type": "object",
+      "required": [
+        "mode",
+        "requires_plan_id",
+        "requires_revision",
+        "may_escalate"
+      ],
+      "properties": {
+        "mode": {"const": "authorization"},
+        "requires_plan_id": {"const": true},
+        "requires_revision": {"const": true},
+        "may_escalate": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "executeCommand": {
+      "type": "object",
+      "required": ["mode", "requires_scope", "may_escalate"],
+      "properties": {
+        "mode": {"const": "bounded_mutation"},
+        "requires_scope": {"const": true},
+        "may_escalate": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "shipCommand": {
+      "type": "object",
+      "required": ["mode", "merge_or_deploy_by_default", "may_escalate"],
+      "properties": {
+        "mode": {"const": "release_assessment"},
+        "merge_or_deploy_by_default": {"const": false},
+        "may_escalate": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "parkCommand": {
+      "type": "object",
+      "required": [
+        "mode",
+        "planning_forbidden",
+        "implementation_forbidden",
+        "may_escalate"
+      ],
+      "properties": {
+        "mode": {"const": "capture_only"},
+        "planning_forbidden": {"const": true},
+        "implementation_forbidden": {"const": true},
+        "may_escalate": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "promoteMemoryCommand": {
+      "type": "object",
+      "required": ["mode", "canonical_writer_only", "may_escalate"],
+      "properties": {
+        "mode": {"const": "canonical_write"},
+        "canonical_writer_only": {"const": true},
+        "may_escalate": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "haltCommand": {
+      "type": "object",
+      "required": [
+        "mode",
+        "further_mutation_forbidden",
+        "overrides_active_commands"
+      ],
+      "properties": {
+        "mode": {"const": "stop"},
+        "further_mutation_forbidden": {"const": true},
+        "overrides_active_commands": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "commandContract": {
+      "type": "object",
+      "required": ["required_outputs", "stop_conditions"],
+      "properties": {
+        "required_outputs": {"$ref": "#/$defs/nonemptyStringArray"},
+        "stop_conditions": {"$ref": "#/$defs/stringArray"}
+      },
+      "additionalProperties": false
+    },
+    "autonomyLevel": {
+      "type": "object",
+      "required": ["name", "external_writes", "local_mutation"],
+      "properties": {
+        "name": {"type": "string"},
+        "external_writes": {
+          "oneOf": [
+            {"type": "boolean"},
+            {"enum": ["approval_required", "stored_contract_only"]}
+          ]
+        },
+        "local_mutation": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "autonomyLevel0": {
+      "allOf": [
+        {"$ref": "#/$defs/autonomyLevel"},
+        {
+          "properties": {
+            "name": {"const": "advisory"},
+            "external_writes": {"const": false},
+            "local_mutation": {"const": false}
+          }
+        }
+      ]
+    },
+    "autonomyLevel1": {
+      "allOf": [
+        {"$ref": "#/$defs/autonomyLevel"},
+        {
+          "properties": {
+            "name": {"const": "read_only"},
+            "external_writes": {"const": false},
+            "local_mutation": {"const": false}
+          }
+        }
+      ]
+    },
+    "autonomyLevel2": {
+      "allOf": [
+        {"$ref": "#/$defs/autonomyLevel"},
+        {
+          "properties": {
+            "name": {"const": "local_reversible"},
+            "external_writes": {"const": false},
+            "local_mutation": {"const": true}
+          }
+        }
+      ]
+    },
+    "autonomyLevel3": {
+      "allOf": [
+        {"$ref": "#/$defs/autonomyLevel"},
+        {
+          "properties": {
+            "name": {"const": "reviewed_external"},
+            "external_writes": {"const": "approval_required"},
+            "local_mutation": {"const": true}
+          }
+        }
+      ]
+    },
+    "autonomyLevel4": {
+      "allOf": [
+        {"$ref": "#/$defs/autonomyLevel"},
+        {
+          "properties": {
+            "name": {"const": "pre_approved_automation"},
+            "external_writes": {"const": "stored_contract_only"},
+            "local_mutation": {"const": true}
+          }
+        }
+      ]
+    },
+    "autonomyLevel5": {
+      "allOf": [
+        {"$ref": "#/$defs/autonomyLevel"},
+        {
+          "properties": {
+            "name": {"const": "prohibited_unattended"},
+            "external_writes": {"const": false},
+            "local_mutation": {"const": false}
+          }
+        }
+      ]
+    },
+    "leanAssurance": {
+      "type": "object",
+      "required": ["independent_candidates", "human_gate"],
+      "properties": {
+        "independent_candidates": {"type": "integer", "minimum": 1},
+        "human_gate": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "balancedAssurance": {
+      "type": "object",
+      "required": ["independent_candidates", "specialist_review"],
+      "properties": {
+        "independent_candidates": {"type": "integer", "minimum": 1},
+        "specialist_review": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "assuredAssurance": {
+      "type": "object",
+      "required": ["independent_candidates", "preserve_dissent", "human_gate"],
+      "properties": {
+        "independent_candidates": {"type": "integer", "minimum": 1},
+        "preserve_dissent": {"type": "boolean"},
+        "human_gate": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "experimentalCouncilAssurance": {
+      "type": "object",
+      "required": [
+        "independent_candidates",
+        "preserve_dissent",
+        "measure_value",
+        "human_gate"
+      ],
+      "properties": {
+        "independent_candidates": {"type": "integer", "minimum": 1},
+        "preserve_dissent": {"type": "boolean"},
+        "measure_value": {"type": "boolean"},
+        "human_gate": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "validationCase": {
+      "type": "object",
+      "required": ["input", "expected_behavior"],
+      "properties": {
+        "input": {"$ref": "#/$defs/nonemptyString"},
+        "expected_behavior": {"$ref": "#/$defs/nonemptyString"}
+      },
+      "additionalProperties": false
+    }
+  }
 }

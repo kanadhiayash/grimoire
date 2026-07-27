@@ -25,6 +25,21 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install CI-only schema validator
+        shell: bash
+        run: |
+          python3 -m pip install --require-hashes \
+            --isolated \
+            --no-deps \
+            --no-input \
+            --disable-pip-version-check \
+            --only-binary=:all: \
+            -r requirements/ci-schema.txt
+
+      - name: Validate Draft 2020-12 schemas
+        shell: bash
+        run: python3 checks/json_schema_check.py
+
       - name: Run Grimoire conformance checks
         id: conformance
         shell: bash

@@ -1,0 +1,8 @@
+{
+  "case_id": "autonomy_malformed",
+  "operation": "replace",
+  "path": ["autonomy_levels", "3", "external_writes"],
+  "value": true,
+  "expected_path": ["autonomy_levels", "3", "external_writes"],
+  "expected_validator": "const"
+}
