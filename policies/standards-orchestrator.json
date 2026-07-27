@@ -1,0 +1,36 @@
+{
+  "$schema": "schemas/standards-orchestrator.schema.json",
+  "schema_version": 1,
+  "module_version": "0.4.0",
+  "identity": {
+    "display_name": "Product Engineering Standards & Operations",
+    "future_name": "Standards Orchestrator",
+    "repository": "kanadhiayash/engineering-standards"
+  },
+  "principles": [
+    "detailed_at_rest_selective_in_execution",
+    "one_canonical_repository",
+    "one_project_manifest",
+    "one_compiled_context_pack",
+    "evidence_before_assertion",
+    "minimum_correct_change",
+    "neutral_global_personal_overlay",
+    "no_automated_legal_compliance_claim"
+  ],
+  "lifecycle": ["DISCOVER", "DEFINE", "DESIGN", "VALIDATE", "DECISION_LOCKED", "BUILD_READY", "BUILDING", "VERIFYING", "RELEASE_READY", "SHIPPED", "OPERATING", "RETIRED"],
+  "completion_statuses": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"],
+  "applicability_statuses": ["APPLICABLE", "POTENTIALLY_APPLICABLE", "NOT_APPLICABLE", "INSUFFICIENT_FACTS", "COUNSEL_REVIEW_REQUIRED", "SOURCE_STALE", "SOURCE_CONFLICT"],
+  "authority_classes": ["BINDING_LAW", "BINDING_REGULATION", "COURT_OR_ENFORCEMENT_DECISION", "REGULATOR_GUIDANCE", "CONSENSUS_STANDARD", "CERTIFICATION_SCHEME", "INDUSTRY_FRAMEWORK", "BEST_PRACTICE", "EMERGING_TREND", "PROPOSAL", "DRAFT", "SUPERSEDED"],
+  "priority": {
+    "P0": "active incident, safety risk, data loss, exploitable security exposure, regulatory breach, or critical service unavailable",
+    "P1": "release blocker or major harm requiring the next active work window",
+    "P2": "planned product or engineering work",
+    "P3": "valid backlog, research, or low-impact optimization"
+  },
+  "zeref_boundary": {
+    "orchestrator_owns": ["requirements", "expected_outcomes", "required_documents", "gates", "acceptance", "evidence", "limits"],
+    "zeref_owns": ["activation", "routing", "roles", "models", "tools", "skills", "approvals", "retries", "memory", "execution_receipts"],
+    "forbidden": ["modify zeref repository without separate approval", "duplicate zeref internals", "claim browser simulation as local runtime"]
+  },
+  "external_action_approval": ["merge", "deploy", "publish", "external_send", "destructive_change", "credential_change", "canonical_memory_write"]
+}

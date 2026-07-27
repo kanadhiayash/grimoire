@@ -2,88 +2,64 @@
 
 ## Canonical authority
 
-This repository is the canonical internal source for Engineering Standards and cross-surface activation policy used by Yash Kanadhia.
+This repository is the canonical private source for neutral product engineering standards, machine policy, project compilation, cross-surface adapters, and verification. It is not a source of project facts, legal advice, or Zeref runtime internals.
 
-Zeref Memory Engine remains the canonical owner of its own runtime, memory, agents, skills, permissions, and boot contract. This repository may detect, activate, simulate, or defer to Zeref but must not silently modify or duplicate Zeref internals.
+Consuming projects pin a released version or exact reviewed commit. They must not silently follow an unversioned branch or refresh compiled packs without review.
 
-Consuming repositories and browser source packs pin a released version or exact reviewed commit. They must not silently follow an unversioned branch.
+## Ownership boundaries
+
+- Standards Orchestrator: requirements, profiles, overlays, expected outcomes, document contracts, gates, evidence, and limits.
+- Zeref: activation, roles, models, tools, skills, approvals, retries, memory, and execution receipts.
+- Project repository: facts, decisions, plans, code, designs, exceptions, and evidence.
+- Qualified legal reviewers: final jurisdiction-specific legal interpretation and compliance conclusions.
 
 ## Change classes
 
 ### Patch
 
-Clarifications, typo corrections, non-behavioral documentation changes, and compatible validator fixes.
+Clarifications, source metadata corrections, non-behavioral documentation, and compatible validator fixes.
 
 ### Minor
 
-New optional standards, adapters, checks, source-pack formats, activation states, or backward-compatible requirements.
+Backward-compatible standards, profiles, schemas, templates, commands, adapters, skills, source records, or checks.
 
 ### Major
 
-Breaking policy changes, removed rules, changed instruction precedence, changed command semantics, changed memory lifecycle, or requirements that invalidate existing project manifests or source packs.
+Breaking policy, precedence, lifecycle, command semantics, schema, completion vocabulary, legal-status vocabulary, or manifest compatibility changes.
 
 ## Required process for material changes
 
-1. Create a dedicated branch.
-2. Explain the problem and intended outcome.
-3. Record affected standards, policies, profiles, adapters, templates, and surfaces.
-4. Update tests before or with implementation.
-5. Include migration guidance where compatibility changes.
-6. Open a draft pull request.
-7. Run all required checks.
-8. Verify that protected external repositories remain unchanged.
-9. Update `CHANGELOG.md` and `VERSION` only when releasing.
+1. Create a focused branch.
+2. Explain the problem, expected outcome, scope, and non-goals.
+3. Identify affected standards, policies, schemas, profiles, adapters, templates, instructions, sources, checks, and tests.
+4. Write or update tests before or with behavior changes.
+5. Record architecture decisions.
+6. Include compatibility, migration, privacy, accessibility, security, legal, cost, and Zeref-boundary analysis.
+7. Open a reviewable pull request.
+8. Run all required checks.
+9. Verify protected external repositories remain unchanged.
+10. Update `VERSION`, release notes, and changelog when releasing.
 
-## Cross-surface requirements
+## Standards changes
 
-A new or changed surface adapter must:
+Every normative standard follows the standard-authoring contract. External material is not copied into canonical policy without source classification, adoption rationale, license review where needed, version, effective date, review date, and local interpretation.
 
-- preserve the AI operations command meanings;
-- preserve the autonomy and approval model;
-- classify runtime versus simulation truthfully;
-- emit an activation receipt;
-- pin canonical sources;
-- preserve source-pack integrity and freshness metadata;
-- stage browser memory instead of claiming canonical promotion;
-- document unsupported capabilities;
-- pass adversarial conformance tests.
+## Legal source governance
 
-An adapter must not:
+Official sources are canonical. Guidance, standards, best practices, trends, proposals, and drafts remain separate authority classes. The registry must record freshness and supersession. Automated systems cannot issue final legal-compliance certification.
 
-- create a second command registry;
-- claim Zeref runtime execution without evidence;
-- modify the Zeref repository;
-- silently refresh policy to a new revision;
-- weaken security, privacy, accessibility, approval, or verification controls.
+## Instruction governance
+
+Neutral global instructions contain no personal identity or project-specific claims. Personal overlays are optional, explicitly selected, and excluded from neutral packs. Personal overlays cannot weaken law, safety, privacy, accessibility, approval, or evidence controls.
 
 ## Exceptions
 
-Projects may define exceptions only in:
+Projects record exceptions only in `docs/standards-exceptions.md` or another path explicitly named by the project manifest. Each exception includes rule, scope, reason, risk, compensating control, owner, approver, review date, and expiry or removal condition. Undocumented exceptions are violations.
 
-```text
-docs/standards-exceptions.md
-```
+## External actions
 
-Each exception must include:
-
-- Rule being excepted
-- Scope
-- Reason
-- Risk
-- Compensating control
-- Owner
-- Review date
-- Expiry or removal condition
-
-Undocumented exceptions are violations.
+Merge, deploy, publish, external send, destructive changes, credentials, canonical memory, and legal publication remain approval-gated.
 
 ## Legacy repositories
 
-The following repositories are migration sources, not canonical authority:
-
-- `project-practices`
-- `github-velocity-practices`
-- `development-architecture-practices`
-- `design-system-practices`
-
-Keep them unchanged until migration verification is complete.
+`project-practices`, `github-velocity-practices`, `development-architecture-practices`, and `design-system-practices` remain migration sources until inventoried, reconciled, imported, and verified.

@@ -1,10 +1,12 @@
 {
   "$schema": "policies/schemas/repository-index.schema.json",
   "schema_version": 1,
-  "standard_version": "0.3.0",
+  "standard_version": "0.4.0",
   "repository": "kanadhiayash/engineering-standards",
+  "display_name": "Product Engineering Standards & Operations",
+  "future_name": "Standards Orchestrator",
   "visibility": "private",
-  "purpose": "Canonical, versioned engineering policy and cross-surface AI operations control plane for Yash Kanadhia projects.",
+  "purpose": "Neutral, versioned product engineering standards and a one-entrypoint control plane for human and AI product work.",
   "implementation_stack": {
     "orchestration": "Python 3.11+ standard library",
     "machine_contracts": "JSON and JSON Schema draft 2020-12",
@@ -17,115 +19,58 @@
     "repository_index": "REPOSITORY_INDEX.json",
     "repository_index_schema": "policies/schemas/repository-index.schema.json",
     "baseline_policy": "policies/baseline.json",
+    "orchestrator_policy": "policies/standards-orchestrator.json",
     "ai_operations_policy": "policies/ai-operations.json",
     "surface_activation_policy": "policies/surface-activation.json",
     "governance": "GOVERNANCE.md",
-    "security": "SECURITY.md"
+    "security": "SECURITY.md",
+    "capability_map": "docs/operations/standards-orchestrator-capability-map.md",
+    "legal_source_registry": "sources/legal/registry.json"
   },
   "entrypoints": {
-    "human": [
-      "README.md",
-      "instructions/README.md",
-      "docs/operations/quickstart.md",
-      "GOVERNANCE.md",
-      "SECURITY.md",
-      "CHANGELOG.md"
-    ],
-    "agent": [
-      "AGENTS.md",
-      "REPOSITORY_INDEX.json",
-      "instructions/README.md",
-      "instructions/instructions-manifest.json",
-      "docs/operations/agent-entrypoint.md",
-      "policies/baseline.json",
-      "policies/ai-operations.json",
-      "policies/surface-activation.json"
-    ]
+    "human": ["README.md", "instructions/README.md", "docs/operations/quickstart.md", "docs/operations/standards-orchestrator-capability-map.md", "GOVERNANCE.md", "SECURITY.md", "CHANGELOG.md", "docs/releases/0.4.0.md"],
+    "agent": ["AGENTS.md", "REPOSITORY_INDEX.json", "instructions/README.md", "instructions/instructions-manifest.json", "docs/operations/agent-entrypoint.md", "policies/baseline.json", "policies/standards-orchestrator.json", "policies/ai-operations.json", "policies/surface-activation.json", "instructions/global/GLOBAL_BASE.md"]
   },
   "commands": {
-    "status": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "status", "--json"],
-      "purpose": "Report version, indexed entrypoints, command count, surface count, and repository health."
-    },
-    "catalog": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "catalog", "--json"],
-      "purpose": "Print this repository index for machine consumption."
-    },
-    "doctor": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "doctor"],
-      "purpose": "Run policy, surface activation, and repository-index checks."
-    },
-    "test": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "test"],
-      "purpose": "Run the dependency-free unit test suite."
-    },
-    "check": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "check"],
-      "purpose": "Run doctor checks, unit tests, and Python compilation."
-    },
-    "pack_compile": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "pack", "compile"],
-      "purpose": "Compile a pinned, integrity-recorded browser source pack."
-    },
-    "pack_verify": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "pack", "verify"],
-      "purpose": "Verify browser source-pack integrity, freshness, and runtime-claim boundaries."
-    },
-    "harness_manage": {
-      "entrypoint": "scripts/standards.py",
-      "argv": ["python3", "scripts/standards.py", "harness"],
-      "purpose": "Detect, plan, apply, verify, or uninstall managed global harness activation blocks."
-    }
+    "status": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "status", "--json"], "purpose": "Report version, entrypoints, commands, surfaces, and repository health."},
+    "catalog": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "catalog", "--json"], "purpose": "Print the machine repository index."},
+    "doctor": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "doctor"], "purpose": "Run policy, activation, index, and Orchestrator checks."},
+    "test": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "test"], "purpose": "Run dependency-free unit tests."},
+    "check": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "check"], "purpose": "Run all checks, tests, and Python compilation."},
+    "project_boot": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "project", "boot", "--manifest", ".standards/project.json", "--output", ".standards/compiled"], "purpose": "Validate project facts and compile one bounded context pack."},
+    "pack_compile": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "pack", "compile"], "purpose": "Compile a pinned browser source pack."},
+    "pack_verify": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "pack", "verify"], "purpose": "Verify browser pack integrity and freshness."},
+    "harness_manage": {"entrypoint": "scripts/standards.py", "argv": ["python3", "scripts/standards.py", "harness"], "purpose": "Detect, plan, apply, verify, or uninstall harness adapters."}
   },
   "surfaces": {
-    "claude-code": {
-      "mode": "local_harness",
-      "adapter": "adapters/claude/ZEREF_ACTIVATION.global.md"
-    },
-    "codex": {
-      "mode": "local_harness",
-      "adapter": "adapters/codex/ZEREF_ACTIVATION.global.md"
-    },
-    "gemini-cli": {
-      "mode": "local_harness",
-      "adapter": "adapters/gemini/ZEREF_ACTIVATION.global.md"
-    },
-    "chatgpt-project": {
-      "mode": "browser_project",
-      "adapter": "adapters/chatgpt/CHATGPT.md"
-    },
-    "claude-project": {
-      "mode": "browser_project",
-      "adapter": "adapters/claude-project/CLAUDE.md"
-    },
-    "gemini-gem": {
-      "mode": "browser_project",
-      "adapter": "adapters/gemini-gem/GEMINI.md"
-    },
-    "generic-chat": {
-      "mode": "browser_chat",
-      "adapter": "adapters/generic-chat/PROVIDER_ADAPTER.md"
-    }
+    "claude-code": {"mode": "local_harness", "adapter": "adapters/claude/ZEREF_ACTIVATION.global.md"},
+    "codex": {"mode": "local_harness", "adapter": "adapters/codex/ZEREF_ACTIVATION.global.md"},
+    "gemini-cli": {"mode": "local_harness", "adapter": "adapters/gemini/ZEREF_ACTIVATION.global.md"},
+    "chatgpt-project": {"mode": "browser_project", "adapter": "adapters/chatgpt/CHATGPT.md"},
+    "claude-project": {"mode": "browser_project", "adapter": "adapters/claude-project/CLAUDE.md"},
+    "gemini-gem": {"mode": "browser_project", "adapter": "adapters/gemini-gem/GEMINI.md"},
+    "generic-chat": {"mode": "browser_chat", "adapter": "adapters/generic-chat/PROVIDER_ADAPTER.md"}
   },
   "artifacts": {
+    "project_manifest_template": "templates/project/project.json",
+    "project_compiler": "scripts/project_orchestrator.py",
+    "standard_template": "templates/standards/STANDARD.md",
+    "record_templates": "templates/records",
+    "skill_catalog": "skills/standards-orchestrator/README.md",
+    "service_catalog": "services/standards-orchestrator/README.md",
+    "neutral_instructions": "instructions/global",
+    "personal_overlays": "instructions/personal",
+    "personal_instruction_pack": "instructions",
+    "personal_instruction_manifest": "instructions/instructions-manifest.json",
+    "legal_source_registry": "sources/legal/registry.json",
+    "benchmark_specification": "benchmarks/standards-orchestrator/README.md",
     "browser_pack_templates": "templates/browser-project",
     "browser_pack_compiler": "scripts/compile_surface_pack.py",
     "browser_pack_verifier": "scripts/verify_surface_pack.py",
-    "harness_installer": "scripts/install_ai_harness_standards.py",
-    "personal_instruction_pack": "instructions",
-    "personal_instruction_manifest": "instructions/instructions-manifest.json"
+    "harness_installer": "scripts/install_ai_harness_standards.py"
   },
   "verification": {
-    "required_commands": [
-      "python3 scripts/standards.py check"
-    ],
+    "required_commands": ["python3 scripts/standards.py check"],
     "ci_workflow": ".github/workflows/standards-ci.yml",
     "completion_statuses": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]
   },
@@ -133,6 +78,8 @@
     "zeref_repository_modification": "forbidden unless separately approved",
     "browser_runtime_claims": "simulation must never be represented as local runtime execution",
     "external_actions": "explicit approval required",
-    "canonical_memory": "single-writer and approval-gated"
+    "canonical_memory": "single-writer and approval-gated",
+    "automated_legal_compliance": "forbidden",
+    "personal_identity_in_neutral_packs": "forbidden"
   }
 }

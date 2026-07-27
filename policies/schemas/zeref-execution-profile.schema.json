@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Zeref Execution Profile",
+  "type": "object",
+  "required": ["schema_version", "mode", "cost_ceiling", "team", "execution"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "mode": {"enum": ["advisory", "standard", "strict", "off"]},
+    "cost_ceiling": {"type": "string"},
+    "team": {"type": "object", "required": ["lead_roles", "support_roles_max", "quality_gate"]},
+    "execution": {"type": "object", "required": ["bind_to_approved_plan_revision", "minimum_correct_change", "approval_required_for", "completion_statuses", "stop_on"]}
+  },
+  "additionalProperties": true
+}

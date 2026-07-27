@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Document Requirement",
+  "type": "object",
+  "required": ["id", "title", "document_type", "trigger", "owner", "required_headings", "acceptance_criteria", "verification", "evidence"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^DOC-[A-Z0-9-]+$"},
+    "title": {"type": "string"},
+    "document_type": {"type": "string"},
+    "trigger": {"type": "object"},
+    "owner": {"type": "string"},
+    "required_headings": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "acceptance_criteria": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "verification": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "approval_required": {"type": "boolean"},
+    "sensitivity": {"type": "string"},
+    "retention": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -1,8 +1,18 @@
-# Engineering Standards
+# Product Engineering Standards & Operations
 
-Private, versioned engineering policy and an executable control plane for human and AI-assisted product development.
+Private, neutral, versioned standards and an executable control plane for human and AI product work. The repository will later be renamed **Standards Orchestrator**.
 
-This repository is the canonical source for project structure, architecture, GitHub operations, security, testing, release readiness, product and UX quality, AI-agent execution rules, and cross-surface Zeref activation used by Yash Kanadhia.
+It covers product strategy, research, UX, UI, accessibility, design systems, architecture, frontend, APIs, backend, data, AI and agents, security, privacy, legal applicability, cloud, cost, Git, delivery, release, and operations.
+
+## Core idea
+
+**Detailed at rest, selective during execution.**
+
+The repository may be extensive. A human or AI does not load the full corpus for every task. One project manifest is compiled into one bounded context pack containing only the applicable standards, expected outcomes, documents, gates, evidence, limits, and Zeref execution metadata.
+
+```text
+Standards -> policies and profiles -> project manifest -> compiled pack -> Zeref execution -> verification
+```
 
 ## Start here
 
@@ -13,248 +23,141 @@ python3 scripts/standards.py status
 python3 scripts/standards.py check
 ```
 
-Then read the [Quickstart](docs/operations/quickstart.md).
-
 ### AI agent
 
-1. Read [`AGENTS.md`](AGENTS.md).
-2. Read [`REPOSITORY_INDEX.json`](REPOSITORY_INDEX.json).
-3. Run:
+1. Read `AGENTS.md`.
+2. Read `REPOSITORY_INDEX.json`.
+3. Read the project manifest and compiled `AI_CONTEXT.md` when operating in a consuming project.
+4. Use the smallest relevant source set.
+
+### Compile a project pack
 
 ```bash
-python3 scripts/standards.py status --json
+python3 scripts/standards.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
 ```
 
-4. Route the task using the [AI Agent Entrypoint](docs/operations/agent-entrypoint.md).
-
-The index is navigation metadata, not an alternate policy source. Canonical policy remains in the files named by the index.
-
-## Why this exists
-
-Written principles are useful, but they are not enforcement. This repository converts reusable engineering guidance into five layers:
-
-1. Human-readable standards
-2. Machine-readable policies and profiles
-3. Harness and browser-surface adapters
-4. Compiled project contracts and source packs
-5. Local and CI conformance checks
+The compiler emits:
 
 ```text
-Standards -> Policies -> Adapters -> Project contracts or source packs -> Verification
+AI_CONTEXT.md
+CONTROL_PACK.json
+PROJECT_STATUS.json
+EXPECTED_OUTCOMES.md
+REQUIRED_DOCUMENTS.md
+DOCUMENT_SCHEMAS.json
+REQUIRED_GATES.md
+ACCEPTANCE_MATRIX.md
+VERIFICATION_PLAN.md
+SOURCE_MANIFEST.json
+ZEREF_EXECUTION_PROFILE.json
+EXECUTION_RECEIPT.json
 ```
+
+`AI_CONTEXT.md` is the one-read human and AI contract. Structured files support Zeref, checks, automation, and evidence.
+
+## Ownership model
+
+### Standards Orchestrator
+
+Defines applicable requirements, expected outcomes, required documents and headings, gates, acceptance criteria, verification, evidence, limits, profiles, and overlays.
+
+### Zeref
+
+Routes execution through roles, models, tools, skills, approvals, retries, memory, cost limits, and receipts. Zeref remains a separate runtime.
+
+### Project repository
+
+Owns actual product facts, local instructions, project manifest, assumptions, decisions, risks, plan revisions, designs, code, tests, exceptions, deployment state, and evidence.
 
 ## Implementation stack
 
-The control plane uses a deliberately small stack:
-
 | Concern | Technology | Reason |
 |---|---|---|
-| Executable orchestration | Python 3.11+ standard library | Portable, readable, testable, no runtime dependency graph |
-| Machine contracts | JSON and JSON Schema | Deterministic, language-neutral, easy for agents and CI to inspect |
-| Human and agent guidance | Markdown | Reviewable, portable, diff-friendly |
-| Shell automation | Bash or Zsh | Thin launchers only |
-| CI | GitHub Actions YAML | Native repository verification |
+| Orchestration | Python 3.11+ standard library | Portable and dependency-free |
+| Machine contracts | JSON and JSON Schema draft 2020-12 | Deterministic and language-neutral |
+| Human and AI guidance | Markdown | Reviewable and portable |
+| Shell | Bash or Zsh | Thin launchers only |
+| CI | GitHub Actions YAML | Native verification |
 
-TypeScript, Go, Rust, databases, and web frameworks are not default choices. Add them only when measured requirements exceed this stack.
-
-## Core guarantees
-
-A conforming project must:
-
-- Read project context before editing
-- Separate facts, assumptions, unknowns, risks, and conflicts when material
-- Make the smallest complete change
-- Preserve tests, security controls, accessibility, and existing quality gates
-- Never invent repository state, metrics, citations, runtime capability, or verification results
-- Verify behavior before claiming success
-- Record architecture-impacting decisions
-- Tie public claims to reproducible evidence
-- Apply the same review standard to human and AI-generated changes
-- Bind approval to a named plan and revision
-- Keep external actions and canonical memory writes human-gated unless narrowly pre-approved
-- Report assurance and activation methods honestly
-- Label browser Zeref simulation separately from verified local runtime
+The project manifest is JSON. YAML is not used because adding a parser dependency would violate the current portability contract.
 
 ## Repository map
 
-The authoritative machine map is [`REPOSITORY_INDEX.json`](REPOSITORY_INDEX.json).
-
 | Path | Purpose |
 |---|---|
-| `standards/` | Human-readable rules and rationale |
-| `policies/` | Machine-readable baseline, AI operations, surface activation, and schemas |
-| `profiles/` | Risk-based enforcement profiles |
-| `adapters/` | Compact instructions for coding harnesses and browser project surfaces |
-| `templates/` | Governance, operations, browser source-pack, and delivery templates |
-| `checks/` | Dependency-free conformance checkers |
-| `scripts/` | Unified CLI, doctor, tests, compiler, verifier, and installer |
-| `tests/` | Conformance and adversarial behavior tests |
-| `docs/` | Architecture decisions, capability matrices, contracts, guides, and migration records |
+| `standards/` | Human-readable product, design, engineering, legal, AI, and operational rules |
+| `policies/` | Machine-readable policy and schemas |
+| `profiles/` | Risk and applicability profiles |
+| `adapters/` | Harness and browser-surface adapters |
+| `templates/` | Standards, product, design, engineering, governance, and evidence templates |
+| `instructions/global/` | Neutral additive instruction modules for any user or team |
+| `instructions/personal/` | Optional private overlays excluded from neutral packs |
+| `sources/` | Source authority and freshness records |
+| `checks/` | Dependency-free conformance checks |
+| `scripts/` | Unified CLI, compilers, verifiers, and installers |
+| `tests/` | Unit, boundary, adversarial, and compatibility tests |
+| `benchmarks/` | Scenario and efficiency benchmark specifications |
+| `docs/` | Architecture decisions, operations, releases, and migrations |
 
-## Unified CLI
+## Core guarantees
 
-Repository health:
+A conforming operation must:
 
-```bash
-python3 scripts/standards.py status --json
-```
+- Read context before editing
+- Separate facts, assumptions, unknowns, risks, and conflicts
+- Load only applicable standards
+- Define expected outcomes and required documents
+- Bind execution to an approved plan revision
+- Use Minimum Correct Change during implementation
+- Preserve tests, security, privacy, accessibility, legal, data, and review controls
+- Never invent evidence or runtime capability
+- Verify before claiming completion
+- Require explicit approval for external or destructive actions
+- Keep neutral standards separate from personal overlays
+- Report legal applicability without issuing automated compliance certification
 
-Machine catalog:
+## Standard structure
 
-```bash
-python3 scripts/standards.py catalog --json
-```
+Every normative standard defines purpose, expected outcome, applicability, non-applicability, inputs, unknowns, actions, decisions, details, documents, document structure, acceptance, verification, evidence, failure conditions, risks, guards, exceptions, costs, dependencies, related standards, sources, ownership, Zeref behavior, examples, and anti-patterns.
 
-Full verification:
+## Naming and placement
 
-```bash
-python3 scripts/standards.py check
-```
+Stable records use `ADR`, `DEC`, `ASM`, `RSK`, `RES`, `EXP`, `INC`, and `PM-INC` identifiers. Mutable priority, status, and owner values do not belong in filenames. Source code follows official language and framework overlays. Figma token names use nested semantic groups such as `color/semantic/text/primary`, not dotted names.
 
-Write a machine report:
+## Neutral and personal instructions
 
-```bash
-python3 scripts/standards.py check \
-  --json-output artifacts/standards-check.json
-```
+`instructions/global/` is reusable by any human, team, or AI. `instructions/personal/yash/` is a private optional overlay and is excluded from neutral packs. Personal preferences may customize tone and workflow but cannot weaken neutral safeguards.
 
-Browser pack compilation:
+## Legal and compliance boundary
 
-```bash
-python3 scripts/standards.py pack compile \
-  --surface chatgpt-project \
-  --project-name "Example Project" \
-  --output ./dist/example-project \
-  --engineering-standards-commit <40-character-sha> \
-  --zeref-commit <40-character-sha>
-```
+The system classifies source authority, identifies potentially applicable controls, detects missing facts, prepares evidence and documents, and escalates to qualified review. It never claims universal legal compliance. The legal source registry is explicitly versioned and not represented as exhaustive.
 
-Browser pack verification:
+## Existing capabilities retained
 
-```bash
-python3 scripts/standards.py pack verify ./dist/example-project
-```
-
-Local harness adapter management:
-
-```bash
-python3 scripts/standards.py harness detect
-python3 scripts/standards.py harness plan
-python3 scripts/standards.py harness apply
-python3 scripts/standards.py harness verify
-python3 scripts/standards.py harness uninstall
-```
-
-## AI operations control plane
-
-AI Operations policy module version `0.2.0` defines the provider-neutral control plane for:
-
-- command grammar;
-- autonomy levels;
-- approval scope and revision binding;
-- session lifecycle;
-- assurance modes;
-- verification statuses;
-- staged memory promotion;
-- external-action gates;
-- stop and escalation behavior;
-- cross-harness handoffs.
-
-Canonical files:
-
-- [`standards/ai-development/ai-operations-governance.md`](standards/ai-development/ai-operations-governance.md)
-- [`policies/ai-operations.json`](policies/ai-operations.json)
-- [`docs/adapters/ai-operations-adapter-contract.md`](docs/adapters/ai-operations-adapter-contract.md)
-- [`templates/ai-operations/`](templates/ai-operations/)
-
-## Cross-surface Zeref activation
-
-Version `0.3.0` adds:
-
-- verified local Zeref activation on coding harnesses;
-- source-backed simulation on ChatGPT Projects, Claude Projects, Gemini Gems, and ordinary browser chats;
-- explicit activation states and receipts;
-- pinned source provenance and SHA-256 pack integrity;
-- freshness budgets;
-- staged browser memory and writeback receipts;
-- provider adapters;
-- safe install, verify, and uninstall workflows;
-- a machine-readable repository index;
-- one operational CLI for humans, agents, Make, and CI.
-
-Canonical files:
-
-- [`policies/surface-activation.json`](policies/surface-activation.json)
-- [`standards/ai-development/cross-surface-activation.md`](standards/ai-development/cross-surface-activation.md)
-- [`standards/ai-development/browser-project-source-packs.md`](standards/ai-development/browser-project-source-packs.md)
-- [`docs/adapters/surface-capability-matrix.md`](docs/adapters/surface-capability-matrix.md)
-- [`templates/browser-project/`](templates/browser-project/)
-
-Engineering Standards owns activation portability. Zeref Memory Engine remains unchanged and owns its runtime internals.
+Version 0.4.0 retains the 0.3.0 AI Operations control plane, cross-surface Zeref activation, browser source packs, harness adapters, repository index, and unified CLI. It adds the Standards Orchestrator without modifying Zeref Memory Engine.
 
 ## Verification
-
-Requirements:
-
-- Git
-- Python 3.11 or newer
-- Bash or Zsh for legacy convenience scripts
-- Make for convenience targets
-
-Run:
 
 ```bash
 make check
 ```
 
-Expected high-level result:
+Expected top-level checks include repository health, surface activation, repository index, Standards Orchestrator, unit tests, and Python compilation.
 
-```text
-PASS  standards doctor
-PASS  surface activation
-PASS  repository index
-PASS  unit tests
-PASS  compile
-```
+## Adoption
 
-## Adoption contract
-
-A consuming repository should pin a released version and add:
+A consuming repository pins a released version and adds:
 
 ```text
 AGENTS.md
-.standards/manifest.json
+.standards/project.json
 docs/standards-exceptions.md
 ```
 
-A browser project should upload a compiled source pack and copy the generated provider instructions into the project instruction field.
-
-Projects must not silently consume an unversioned branch or silently refresh an uploaded policy snapshot.
+Generated packs are artifacts, not alternate canonical standards. They must record version, source status, integrity, and freshness.
 
 ## Status
 
-Version `0.3.0` is the current released baseline. It includes the AI Operations control plane, cross-surface Zeref activation, browser source packs, harness adapters, the unified CLI, and machine-readable repository navigation.
+Version `0.4.0` establishes the Standards Orchestrator foundation, one-call project compiler, structured standard and document contracts, neutral instructions, private Yash overlay, legal source governance, Minimum Correct Change, Zeref execution profiles, checks, templates, and benchmarks.
 
-See the [0.3.0 release notes](docs/releases/0.3.0.md) for compatibility and migration guidance.
-
-The following public repositories remain migration sources until their content is inventoried, reconciled, imported, and verified:
-
-- `project-practices`
-- `github-velocity-practices`
-- `development-architecture-practices`
-- `design-system-practices`
-
-## Governance and security
-
-- [Agent contract](AGENTS.md)
-- [Machine repository index](REPOSITORY_INDEX.json)
-- [Quickstart](docs/operations/quickstart.md)
-- [AI agent entrypoint](docs/operations/agent-entrypoint.md)
-- [Governance](GOVERNANCE.md)
-- [Security policy](SECURITY.md)
-- [Contributing](CONTRIBUTING.md)
-- [Changelog](CHANGELOG.md)
-
-## Visibility
-
-Private internal policy. Do not publish repository content without an explicit review and redaction pass.
+Private internal policy. Do not publish repository content without explicit review and redaction.
