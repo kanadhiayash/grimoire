@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/project-status.schema.json",
+  "title": "Grimoire Project Status",
+  "type": "object",
+  "required": [
+    "project",
+    "lifecycle_stage",
+    "status",
+    "status_report",
+    "risk_level",
+    "standards_version",
+    "unknown_count",
+    "blocking_gates",
+    "next_safe_action"
+  ],
+  "properties": {
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lifecycle_stage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "$ref": "#/$defs/completionStatus"
+    },
+    "status_report": {
+      "$ref": "#/$defs/statusReport"
+    },
+    "risk_level": {
+      "type": "string",
+      "minLength": 1
+    },
+    "standards_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unknown_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "blocking_gates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "next_safe_action": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "completionStatus": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "PARTIAL",
+        "BLOCKED",
+        "NOT_VERIFIED"
+      ]
+    },
+    "statusResult": {
+      "type": "object",
+      "required": [
+        "status",
+        "reason_codes"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/completionStatus"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "statusReport": {
+      "type": "object",
+      "required": [
+        "status_model_version",
+        "status",
+        "dimensions"
+      ],
+      "properties": {
+        "status_model_version": {
+          "const": 1
+        },
+        "status": {
+          "$ref": "#/$defs/completionStatus"
+        },
+        "dimensions": {
+          "type": "object",
+          "required": [
+            "PACK_GENERATION_STATUS",
+            "MANIFEST_VALIDATION_STATUS",
+            "APPLICABILITY_STATUS",
+            "CONTROL_VERIFICATION_STATUS",
+            "PROJECT_READINESS_STATUS",
+            "RELEASE_ASSURANCE_STATUS",
+            "LEGAL_REVIEW_STATUS",
+            "ZEREF_EXECUTION_STATUS"
+          ],
+          "properties": {
+            "PACK_GENERATION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "MANIFEST_VALIDATION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "APPLICABILITY_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "CONTROL_VERIFICATION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "PROJECT_READINESS_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "RELEASE_ASSURANCE_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "LEGAL_REVIEW_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "ZEREF_EXECUTION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

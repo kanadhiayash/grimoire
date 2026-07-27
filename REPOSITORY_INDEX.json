@@ -175,6 +175,9 @@
   "artifacts": {
     "project_manifest_template": "templates/project/project.json",
     "project_compiler": "scripts/project_orchestrator.py",
+    "project_status_model": "src/grimoire/status.py",
+    "project_status_schema": "policies/schemas/project-status.schema.json",
+    "execution_receipt_schema": "policies/schemas/execution-receipt.schema.json",
     "standard_template": "templates/standards/STANDARD.md",
     "record_templates": "templates/records",
     "skill_catalog": "skills/standards-orchestrator/README.md",

@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/execution-receipt.schema.json",
+  "title": "Grimoire Execution Receipt",
+  "type": "object",
+  "required": [
+    "status",
+    "pack_generation_status",
+    "status_report",
+    "generated_at",
+    "project",
+    "output_files",
+    "sha256"
+  ],
+  "properties": {
+    "status": {
+      "$ref": "#/$defs/completionStatus"
+    },
+    "pack_generation_status": {
+      "const": "PASS"
+    },
+    "status_report": {
+      "$ref": "#/$defs/statusReport"
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "output_files": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sha256": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "completionStatus": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "PARTIAL",
+        "BLOCKED",
+        "NOT_VERIFIED"
+      ]
+    },
+    "statusResult": {
+      "type": "object",
+      "required": [
+        "status",
+        "reason_codes"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/completionStatus"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "statusReport": {
+      "type": "object",
+      "required": [
+        "status_model_version",
+        "status",
+        "dimensions"
+      ],
+      "properties": {
+        "status_model_version": {
+          "const": 1
+        },
+        "status": {
+          "$ref": "#/$defs/completionStatus"
+        },
+        "dimensions": {
+          "type": "object",
+          "required": [
+            "PACK_GENERATION_STATUS",
+            "MANIFEST_VALIDATION_STATUS",
+            "APPLICABILITY_STATUS",
+            "CONTROL_VERIFICATION_STATUS",
+            "PROJECT_READINESS_STATUS",
+            "RELEASE_ASSURANCE_STATUS",
+            "LEGAL_REVIEW_STATUS",
+            "ZEREF_EXECUTION_STATUS"
+          ],
+          "properties": {
+            "PACK_GENERATION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "MANIFEST_VALIDATION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "APPLICABILITY_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "CONTROL_VERIFICATION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "PROJECT_READINESS_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "RELEASE_ASSURANCE_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "LEGAL_REVIEW_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            },
+            "ZEREF_EXECUTION_STATUS": {
+              "$ref": "#/$defs/statusResult"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

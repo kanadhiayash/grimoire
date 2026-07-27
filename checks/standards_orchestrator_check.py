@@ -10,10 +10,14 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = [
     "policies/standards-orchestrator.json",
     "policies/schemas/project-manifest.schema.json",
+    "policies/schemas/project-status.schema.json",
+    "policies/schemas/execution-receipt.schema.json",
     "policies/schemas/standard-record.schema.json",
     "policies/schemas/document-requirement.schema.json",
     "policies/schemas/zeref-execution-profile.schema.json",
     "scripts/project_orchestrator.py",
+    "src/grimoire/__init__.py",
+    "src/grimoire/status.py",
     "standards/universal/standard-authoring.md",
     "standards/universal/naming-and-placement.md",
     "standards/universal/priority-severity-risk.md",
@@ -44,6 +48,8 @@ REQUIRED_FILES = [
     "sources/legal/registry.json",
     "docs/operations/standards-orchestrator-capability-map.md",
     "benchmarks/standards-orchestrator/README.md",
+    "docs/architecture/0009-multidimensional-status-model.md",
+    "docs/migrations/0.5.x-status-model.md",
 ]
 PERSONAL_TERMS = ("Yash", "Kanadhia", "Mavis", "Toronto")
 REQUIRED_STANDARD_HEADINGS = (
@@ -52,6 +58,17 @@ REQUIRED_STANDARD_HEADINGS = (
     "Guards and limits", "Cost considerations", "Source provenance",
     "Zeref execution behavior",
 )
+COMPLETION_STATUSES = {"PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"}
+STATUS_DIMENSIONS = {
+    "PACK_GENERATION_STATUS",
+    "MANIFEST_VALIDATION_STATUS",
+    "APPLICABILITY_STATUS",
+    "CONTROL_VERIFICATION_STATUS",
+    "PROJECT_READINESS_STATUS",
+    "RELEASE_ASSURANCE_STATUS",
+    "LEGAL_REVIEW_STATUS",
+    "ZEREF_EXECUTION_STATUS",
+}
 
 
 def main() -> int:
@@ -89,6 +106,30 @@ def main() -> int:
     policy = json.loads((ROOT / "policies/standards-orchestrator.json").read_text(encoding="utf-8"))
     if "COMPLIANT" in policy.get("applicability_statuses", []):
         failures.append("automated legal COMPLIANT status is forbidden")
+    for name in ("project-status.schema.json", "execution-receipt.schema.json"):
+        schema = json.loads(
+            (ROOT / "policies" / "schemas" / name).read_text(encoding="utf-8")
+        )
+        definitions = schema.get("$defs", {})
+        declared_statuses = set(
+            definitions.get("completionStatus", {}).get("enum", [])
+        )
+        dimensions = (
+            definitions.get("statusReport", {})
+            .get("properties", {})
+            .get("dimensions", {})
+        )
+        declared_dimensions = set(dimensions.get("required", []))
+        if declared_statuses != COMPLETION_STATUSES:
+            failures.append(
+                f"{name} must declare the exact completion status vocabulary"
+            )
+        if declared_dimensions != STATUS_DIMENSIONS:
+            failures.append(
+                f"{name} must require the exact Phase 1 status dimensions"
+            )
+        if dimensions.get("additionalProperties") is not False:
+            failures.append(f"{name} must reject unknown status dimensions")
     baseline = json.loads((ROOT / "policies/baseline.json").read_text(encoding="utf-8"))
     declared = baseline.get("standards_orchestrator", {}).get("policy_version")
     if declared != policy.get("module_version"):

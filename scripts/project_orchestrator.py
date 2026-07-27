@@ -6,9 +6,22 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from grimoire.status import (  # noqa: E402
+    CompletionStatus,
+    StatusDimension,
+    StatusReport,
+    StatusResult,
+)
 
 LIFECYCLE_STAGES = (
     "DISCOVER", "DEFINE", "DESIGN", "VALIDATE", "DECISION_LOCKED",
@@ -111,6 +124,58 @@ def expected_outcomes(stage: str) -> list[str]:
     return outcomes
 
 
+def build_status_report(unknowns: list[str]) -> StatusReport:
+    """Describe each assurance dimension without inferring missing evidence."""
+
+    project_reason_codes = ["project_evidence_not_supplied"]
+    if unknowns:
+        project_reason_codes.append("declared_unknowns_present")
+
+    results = {
+        StatusDimension.PACK_GENERATION_STATUS: StatusResult(
+            StatusDimension.PACK_GENERATION_STATUS,
+            CompletionStatus.PASS,
+            ("pack_generated",),
+        ),
+        StatusDimension.MANIFEST_VALIDATION_STATUS: StatusResult(
+            StatusDimension.MANIFEST_VALIDATION_STATUS,
+            CompletionStatus.PARTIAL,
+            ("strict_manifest_validation_pending",),
+        ),
+        StatusDimension.APPLICABILITY_STATUS: StatusResult(
+            StatusDimension.APPLICABILITY_STATUS,
+            CompletionStatus.NOT_VERIFIED,
+            ("standards_resolution_not_implemented",),
+        ),
+        StatusDimension.CONTROL_VERIFICATION_STATUS: StatusResult(
+            StatusDimension.CONTROL_VERIFICATION_STATUS,
+            CompletionStatus.NOT_VERIFIED,
+            ("control_evidence_not_supplied",),
+        ),
+        StatusDimension.PROJECT_READINESS_STATUS: StatusResult(
+            StatusDimension.PROJECT_READINESS_STATUS,
+            CompletionStatus.NOT_VERIFIED,
+            tuple(project_reason_codes),
+        ),
+        StatusDimension.RELEASE_ASSURANCE_STATUS: StatusResult(
+            StatusDimension.RELEASE_ASSURANCE_STATUS,
+            CompletionStatus.NOT_VERIFIED,
+            ("release_evidence_not_supplied",),
+        ),
+        StatusDimension.LEGAL_REVIEW_STATUS: StatusResult(
+            StatusDimension.LEGAL_REVIEW_STATUS,
+            CompletionStatus.NOT_VERIFIED,
+            ("qualified_legal_review_not_supplied",),
+        ),
+        StatusDimension.ZEREF_EXECUTION_STATUS: StatusResult(
+            StatusDimension.ZEREF_EXECUTION_STATUS,
+            CompletionStatus.NOT_VERIFIED,
+            ("zeref_execution_receipt_not_supplied",),
+        ),
+    }
+    return StatusReport(results)
+
+
 def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
     errors = validate_manifest(manifest)
     if errors:
@@ -122,7 +187,9 @@ def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
     docs = required_documents(stage, manifest)
     gates = required_gates(stage, manifest)
     outcomes = expected_outcomes(stage)
-    status = "PARTIAL" if unknowns else "PASS"
+    status_report = build_status_report(unknowns)
+    status = status_report.aggregate.value
+    status_report_json = status_report.to_dict()
     generated_at = datetime.now(timezone.utc).isoformat()
 
     control = {
@@ -148,6 +215,7 @@ def compile_project(manifest: dict[str, Any], output: Path) -> dict[str, Any]:
     }
     status_doc = {
         "project": project["name"], "lifecycle_stage": stage, "status": status,
+        "status_report": status_report_json,
         "risk_level": manifest["risk"]["level"],
         "standards_version": manifest["standards"]["version"],
         "unknown_count": len(unknowns),
@@ -226,7 +294,15 @@ Read before editing. Remain bound to the approved plan and revision. During codi
     _write_json(output / "ZEREF_EXECUTION_PROFILE.json", zeref)
 
     hashes = {name: hashlib.sha256((output / name).read_bytes()).hexdigest() for name in OUTPUT_FILES[:-1]}
-    receipt = {"status": status, "generated_at": generated_at, "project": project["name"], "output_files": list(OUTPUT_FILES), "sha256": hashes}
+    receipt = {
+        "status": status,
+        "pack_generation_status": CompletionStatus.PASS.value,
+        "status_report": status_report_json,
+        "generated_at": generated_at,
+        "project": project["name"],
+        "output_files": list(OUTPUT_FILES),
+        "sha256": hashes,
+    }
     _write_json(output / "EXECUTION_RECEIPT.json", receipt)
     return receipt
 
