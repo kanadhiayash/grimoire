@@ -6,8 +6,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".md", ".json", ".py", ".yml", ".yaml", ".toml", ".txt", ".sh"}
-OLD_SLUG = "kanadhiayash/engineering-standards"
-OLD_URL = "https://github.com/kanadhiayash/engineering-standards"
+OLD_SLUG = "kanadhiayash/" + "engineering-standards"
+OLD_URL = "https://github.com/" + OLD_SLUG
+OLD_SOURCE_KEY = "engineering_" + "standards"
 NEW_SLUG = "kanadhiayash/grimoire"
 NEW_URL = "https://github.com/kanadhiayash/grimoire"
 
@@ -39,6 +40,10 @@ class GrimoireIdentityTests(unittest.TestCase):
         self.assertEqual(NEW_SLUG, index["repository"])
         self.assertEqual("Grimoire", index["display_name"])
         self.assertEqual(NEW_URL, index["canonical_url"])
+        self.assertEqual(
+            "Global Product Engineering Standards Orchestrator",
+            index["descriptor"],
+        )
 
     def test_instruction_manifests_use_grimoire_provenance(self) -> None:
         root_manifest = json.loads(
@@ -49,8 +54,8 @@ class GrimoireIdentityTests(unittest.TestCase):
         )
         self.assertEqual(NEW_URL, root_manifest["canonical_sources"]["grimoire"])
         self.assertEqual(NEW_URL, personal_manifest["canonical_sources"]["grimoire"])
-        self.assertNotIn("engineering_standards", root_manifest["canonical_sources"])
-        self.assertNotIn("engineering_standards", personal_manifest["canonical_sources"])
+        self.assertNotIn(OLD_SOURCE_KEY, root_manifest["canonical_sources"])
+        self.assertNotIn(OLD_SOURCE_KEY, personal_manifest["canonical_sources"])
 
     def test_legacy_cli_alias_is_documented_without_being_canonical(self) -> None:
         migration = (ROOT / "docs" / "migrations" / "0.5.0-grimoire.md").read_text(encoding="utf-8")
