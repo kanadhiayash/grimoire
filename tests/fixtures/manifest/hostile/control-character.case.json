@@ -1,0 +1,7 @@
+{
+  "operation": "replace",
+  "path": ["project", "name"],
+  "value": "unsafe\u0000name",
+  "expected_code": "control_character",
+  "expected_path": "$.project.name"
+}

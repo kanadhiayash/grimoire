@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "Minimum Product",
+    "lifecycle_stage": "DEFINE",
+    "product_types": ["service"]
+  },
+  "risk": {
+    "level": "low"
+  },
+  "standards": {
+    "version": "0.4.0"
+  },
+  "zeref": {
+    "mode": "off"
+  }
+}

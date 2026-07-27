@@ -40,6 +40,10 @@ jobs:
         shell: bash
         run: python3 checks/json_schema_check.py
 
+      - name: Run strict 500-case manifest acceptance
+        shell: bash
+        run: python3 benchmarks/manifest_validation/strict_500.py --cases 500 --seed 20260727 --output artifacts/manifest-validation/strict-500.json
+
       - name: Run Grimoire conformance checks
         id: conformance
         shell: bash
@@ -53,11 +57,13 @@ jobs:
           cat artifacts/grimoire-check.json
           exit "$status"
 
-      - name: Upload Grimoire conformance report
+      - name: Upload Grimoire evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: grimoire-check
-          path: artifacts/grimoire-check.json
+          name: grimoire-evidence
+          path: |
+            artifacts/grimoire-check.json
+            artifacts/manifest-validation/strict-500.json
           if-no-files-found: error
           retention-days: 14

@@ -1,0 +1,7 @@
+{
+  "operation": "replace",
+  "path": ["data", "personal_data"],
+  "value": "false",
+  "expected_code": "type_mismatch",
+  "expected_path": "$.data.personal_data"
+}

@@ -2,28 +2,230 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Standards Orchestrator Project Manifest",
   "type": "object",
-  "required": ["schema_version", "project", "risk", "standards", "zeref"],
+  "required": [
+    "schema_version",
+    "project",
+    "risk",
+    "standards",
+    "zeref"
+  ],
   "properties": {
-    "schema_version": {"const": 1},
+    "$schema": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
     "project": {
       "type": "object",
-      "required": ["name", "lifecycle_stage", "product_types"],
+      "required": [
+        "name",
+        "lifecycle_stage",
+        "product_types"
+      ],
       "properties": {
-        "name": {"type": "string", "minLength": 1},
-        "lifecycle_stage": {"enum": ["DISCOVER", "DEFINE", "DESIGN", "VALIDATE", "DECISION_LOCKED", "BUILD_READY", "BUILDING", "VERIFYING", "RELEASE_READY", "SHIPPED", "OPERATING", "RETIRED"]},
-        "product_types": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+        },
+        "lifecycle_stage": {
+          "enum": [
+            "DISCOVER",
+            "DEFINE",
+            "DESIGN",
+            "VALIDATE",
+            "DECISION_LOCKED",
+            "BUILD_READY",
+            "BUILDING",
+            "VERIFYING",
+            "RELEASE_READY",
+            "SHIPPED",
+            "OPERATING",
+            "RETIRED"
+          ]
+        },
+        "product_types": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "users": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
       }
     },
-    "users": {"type": "array", "items": {"type": "string"}},
-    "markets": {"type": "array", "items": {"type": "string"}},
-    "platforms": {"type": "array", "items": {"type": "string"}},
-    "stack": {"type": "object"},
-    "data": {"type": "object"},
-    "ai": {"type": "object"},
-    "risk": {"type": "object", "required": ["level"], "properties": {"level": {"enum": ["low", "moderate", "high", "critical"]}}},
-    "standards": {"type": "object", "required": ["version"], "properties": {"version": {"type": "string"}}},
-    "zeref": {"type": "object", "required": ["mode"], "properties": {"mode": {"enum": ["advisory", "standard", "strict", "off"]}, "cost_ceiling": {"type": "string"}}},
-    "unknowns": {"type": "array", "items": {"type": "string"}}
+    "markets": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+      }
+    },
+    "stack": {
+      "type": "object",
+      "properties": {
+        "languages": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+          }
+        },
+        "frameworks": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+          }
+        },
+        "services": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "personal_data": {
+          "type": "boolean"
+        },
+        "sensitive": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ai": {
+      "type": "object",
+      "properties": {
+        "user_facing": {
+          "type": "boolean"
+        },
+        "automated_decisions": {
+          "type": "boolean"
+        },
+        "external_models": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "risk": {
+      "type": "object",
+      "required": [
+        "level"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "low",
+            "moderate",
+            "high",
+            "critical"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "standards": {
+      "type": "object",
+      "required": [
+        "version"
+      ],
+      "properties": {
+        "version": {
+          "const": "0.4.0"
+        }
+      },
+      "additionalProperties": false
+    },
+    "zeref": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "advisory",
+            "standard",
+            "strict",
+            "off"
+          ]
+        },
+        "cost_ceiling": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "unknowns": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048,
+        "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+      }
+    }
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }

@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_ROOT = ROOT / "policies" / "schemas"
 AI_POLICY = ROOT / "policies" / "ai-operations.json"
 AI_SCHEMA = SCHEMA_ROOT / "ai-operations.schema.json"
+PROJECT_TEMPLATE = ROOT / "templates" / "project" / "project.json"
+PROJECT_SCHEMA = SCHEMA_ROOT / "project-manifest.schema.json"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "schema" / "ai-operations"
 EXPECTED_JSONSCHEMA_VERSION = "4.26.0"
 
@@ -92,6 +94,18 @@ def validate() -> list[str]:
             f"{error.validator}"
         )
 
+    project_template = load_json(PROJECT_TEMPLATE)
+    project_schema = load_json(PROJECT_SCHEMA)
+    project_validator = Draft202012Validator(project_schema)
+    for error in sorted(
+        project_validator.iter_errors(project_template),
+        key=lambda item: (list(item.path), item.validator or ""),
+    ):
+        failures.append(
+            f"{PROJECT_TEMPLATE.relative_to(ROOT)} "
+            f"{json_path(list(error.path))}: {error.validator}"
+        )
+
     for path in sorted((FIXTURE_ROOT / "valid").glob("*.json")):
         fixture = load_json(path)
         candidate = load_json(ROOT / fixture["source"])
@@ -142,7 +156,10 @@ def main() -> int:
         for failure in failures:
             print(f"FAIL  {failure}")
         return 1
-    print("PASS  Draft 2020-12 schemas and AI Operations fixtures")
+    print(
+        "PASS  Draft 2020-12 schemas, AI Operations fixtures, "
+        "and project template"
+    )
     return 0
 
 

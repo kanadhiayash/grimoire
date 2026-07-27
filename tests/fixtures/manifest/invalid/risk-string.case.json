@@ -1,0 +1,7 @@
+{
+  "operation": "replace",
+  "path": ["risk"],
+  "value": "critical",
+  "expected_code": "type_mismatch",
+  "expected_path": "$.risk"
+}

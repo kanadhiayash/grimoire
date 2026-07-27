@@ -1,0 +1,7 @@
+{
+  "operation": "replace",
+  "path": ["standards", "version"],
+  "value": "99.0.0",
+  "expected_code": "unsupported_version",
+  "expected_path": "$.standards.version"
+}
