@@ -101,6 +101,25 @@ class StandardsCheckTests(unittest.TestCase):
         )
         self.assertTrue(memory["two_strikes_for_permanent_rules"])
 
+    def test_openai_secret_pattern_requires_a_token_boundary(self) -> None:
+        patterns = standards_check.secret_patterns()
+        token = "s" + "k-" + ("A" * 24)
+        for candidate in (
+            token,
+            f"OPENAI_API_KEY={token}",
+            f'Authorization: Bearer {token}',
+        ):
+            self.assertTrue(any(pattern.search(candidate) for pattern in patterns))
+
+        for public_url in (
+            "https://www.nist.gov/itl/ai-risk-management-framework",
+            "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence",
+        ):
+            self.assertFalse(
+                any(pattern.search(public_url) for pattern in patterns),
+                public_url,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

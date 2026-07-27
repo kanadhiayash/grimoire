@@ -1,0 +1,7 @@
+{
+  "mutation": "personal_data_string",
+  "path": "$.data.personal_data",
+  "value": "false",
+  "expected_outcome": "accepted",
+  "expected_truthiness": true
+}

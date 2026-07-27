@@ -1,0 +1,2 @@
+# Preserve intentional Markdown hard breaks in the immutable audit package.
+docs/audits/2026-07-27/execution-package/*.md whitespace=-trailing-space

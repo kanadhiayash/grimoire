@@ -1,0 +1,9 @@
+{
+  "setup": {
+    "boundary": "temporary_directory_only",
+    "output_child": "AI_CONTEXT.md",
+    "target_location": "temporary_parent_outside_output"
+  },
+  "expected_observation": "target_content_overwritten",
+  "product_status": "FAIL"
+}

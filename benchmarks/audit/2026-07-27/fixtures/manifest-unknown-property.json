@@ -1,0 +1,6 @@
+{
+  "mutation": "unknown_property",
+  "path": "$.audit_unknown_field",
+  "value": "ignored",
+  "expected_outcome": "accepted"
+}

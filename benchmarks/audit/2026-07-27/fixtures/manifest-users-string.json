@@ -1,0 +1,6 @@
+{
+  "mutation": "users_string",
+  "path": "$.users",
+  "value": "abc",
+  "expected_outcome": "accepted"
+}

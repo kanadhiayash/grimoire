@@ -1,0 +1,7 @@
+{
+  "mutation": "risk_string",
+  "path": "$.risk",
+  "value": "critical",
+  "expected_outcome": "unhandled_exception",
+  "expected_exception": "AttributeError"
+}
