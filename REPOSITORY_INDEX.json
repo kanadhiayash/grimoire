@@ -178,6 +178,7 @@
     "project_compiler": "scripts/project_orchestrator.py",
     "project_manifest_model": "src/grimoire/models/manifest.py",
     "project_manifest_validator": "src/grimoire/validation/manifest.py",
+    "context_renderer": "src/grimoire/compiler/context.py",
     "strict_manifest_acceptance": "benchmarks/manifest_validation/strict_500.py",
     "manifest_fuzz_runner": "benchmarks/fuzz/manifest_fuzz.py",
     "manifest_fuzz_corpus": "benchmarks/fuzz/corpus",
