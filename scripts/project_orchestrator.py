@@ -16,6 +16,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from grimoire.filesystem import atomic_write_directory  # noqa: E402
 from grimoire.status import (  # noqa: E402
     CompletionStatus,
     StatusDimension,
@@ -172,7 +173,6 @@ def compile_project(
         else manifest
     )
     manifest_value = validated.to_dict()
-    output.mkdir(parents=True, exist_ok=True)
     project = manifest_value["project"]
     stage = project["lifecycle_stage"]
     unknowns = manifest_value["unknowns"]
@@ -276,30 +276,71 @@ def compile_project(
 
 Read before editing. Remain bound to the approved plan and revision. During coding, apply Minimum Correct Change. Reuse before creating, change the correct ownership layer, avoid unnecessary dependencies and files, preserve security, privacy, accessibility, data integrity, and tests, then stop when acceptance criteria pass. Zeref routes execution. The Standards Orchestrator defines required outcomes, documents, gates, evidence, and limits.
 """
-    (output / "AI_CONTEXT.md").write_text(context, encoding="utf-8")
-    _write_json(output / "CONTROL_PACK.json", control)
-    _write_json(output / "PROJECT_STATUS.json", status_doc)
-    (output / "EXPECTED_OUTCOMES.md").write_text("# Expected Outcomes\n\n" + _bullets(outcomes) + "\n", encoding="utf-8")
-    (output / "REQUIRED_DOCUMENTS.md").write_text("# Required Documents\n\n" + _bullets(docs) + "\n", encoding="utf-8")
-    _write_json(output / "DOCUMENT_SCHEMAS.json", schemas)
-    (output / "REQUIRED_GATES.md").write_text("# Required Gates\n\n" + _bullets(gates) + "\n", encoding="utf-8")
-    (output / "ACCEPTANCE_MATRIX.md").write_text("# Acceptance Matrix\n\n| Outcome | Evidence | Status |\n|---|---|---|\n" + "\n".join(f"| {item} | Required | NOT_VERIFIED |" for item in outcomes) + "\n", encoding="utf-8")
-    (output / "VERIFICATION_PLAN.md").write_text("# Verification Plan\n\n- Validate the manifest.\n- Verify every required document.\n- Run project tests and applicable quality gates.\n- Record exact commands and results.\n- Report PASS, PARTIAL, BLOCKED, or NOT_VERIFIED.\n", encoding="utf-8")
-    _write_json(output / "SOURCE_MANIFEST.json", {"generated_at": generated_at, "standards_version": manifest_value["standards"]["version"], "source_status": "PROJECT_DECLARED", "legal_compliance_claim": "FORBIDDEN_WITHOUT_QUALIFIED_REVIEW"})
-    _write_json(output / "ZEREF_EXECUTION_PROFILE.json", zeref)
+    receipt_holder: dict[str, Any] = {}
 
-    hashes = {name: hashlib.sha256((output / name).read_bytes()).hexdigest() for name in OUTPUT_FILES[:-1]}
-    receipt = {
-        "status": status,
-        "pack_generation_status": CompletionStatus.PASS.value,
-        "status_report": status_report_json,
-        "generated_at": generated_at,
-        "project": project["name"],
-        "output_files": list(OUTPUT_FILES),
-        "sha256": hashes,
-    }
-    _write_json(output / "EXECUTION_RECEIPT.json", receipt)
-    return receipt
+    def build_pack(target: Path) -> None:
+        (target / "AI_CONTEXT.md").write_text(context, encoding="utf-8")
+        _write_json(target / "CONTROL_PACK.json", control)
+        _write_json(target / "PROJECT_STATUS.json", status_doc)
+        (target / "EXPECTED_OUTCOMES.md").write_text(
+            "# Expected Outcomes\n\n" + _bullets(outcomes) + "\n",
+            encoding="utf-8",
+        )
+        (target / "REQUIRED_DOCUMENTS.md").write_text(
+            "# Required Documents\n\n" + _bullets(docs) + "\n",
+            encoding="utf-8",
+        )
+        _write_json(target / "DOCUMENT_SCHEMAS.json", schemas)
+        (target / "REQUIRED_GATES.md").write_text(
+            "# Required Gates\n\n" + _bullets(gates) + "\n",
+            encoding="utf-8",
+        )
+        (target / "ACCEPTANCE_MATRIX.md").write_text(
+            "# Acceptance Matrix\n\n| Outcome | Evidence | Status |\n|---|---|---|\n"
+            + "\n".join(
+                f"| {item} | Required | NOT_VERIFIED |" for item in outcomes
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        (target / "VERIFICATION_PLAN.md").write_text(
+            "# Verification Plan\n\n"
+            "- Validate the manifest.\n"
+            "- Verify every required document.\n"
+            "- Run project tests and applicable quality gates.\n"
+            "- Record exact commands and results.\n"
+            "- Report PASS, PARTIAL, BLOCKED, or NOT_VERIFIED.\n",
+            encoding="utf-8",
+        )
+        _write_json(
+            target / "SOURCE_MANIFEST.json",
+            {
+                "generated_at": generated_at,
+                "standards_version": manifest_value["standards"]["version"],
+                "source_status": "PROJECT_DECLARED",
+                "legal_compliance_claim": "FORBIDDEN_WITHOUT_QUALIFIED_REVIEW",
+            },
+        )
+        _write_json(target / "ZEREF_EXECUTION_PROFILE.json", zeref)
+
+        hashes = {
+            name: hashlib.sha256((target / name).read_bytes()).hexdigest()
+            for name in OUTPUT_FILES[:-1]
+        }
+        receipt = {
+            "status": status,
+            "pack_generation_status": CompletionStatus.PASS.value,
+            "status_report": status_report_json,
+            "generated_at": generated_at,
+            "project": project["name"],
+            "output_files": list(OUTPUT_FILES),
+            "sha256": hashes,
+        }
+        _write_json(target / "EXECUTION_RECEIPT.json", receipt)
+        receipt_holder["receipt"] = receipt
+
+    atomic_write_directory(output, OUTPUT_FILES, build_pack)
+    return receipt_holder["receipt"]
 
 
 def main() -> int:
