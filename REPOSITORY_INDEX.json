@@ -183,6 +183,7 @@
     "manifest_fuzz_corpus": "benchmarks/fuzz/corpus",
     "manifest_fuzz_workflow": ".github/workflows/manifest-fuzz.yml",
     "project_status_model": "src/grimoire/status.py",
+    "safe_filesystem_layer": "src/grimoire/filesystem",
     "project_status_schema": "policies/schemas/project-status.schema.json",
     "execution_receipt_schema": "policies/schemas/execution-receipt.schema.json",
     "ci_schema_lock": "requirements/ci-schema.txt",
