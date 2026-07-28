@@ -167,6 +167,9 @@ def build_status_report(unknowns: list[str]) -> StatusReport:
 def compile_project(
     manifest: dict[str, Any] | ValidatedManifest,
     output: Path,
+    *,
+    deterministic: bool = False,
+    generated_at: str | None = None,
 ) -> dict[str, Any]:
     validated = validate_manifest(
         manifest.to_dict()
@@ -183,7 +186,12 @@ def compile_project(
     status_report = build_status_report(unknowns)
     status = status_report.aggregate.value
     status_report_json = status_report.to_dict()
-    generated_at = datetime.now(timezone.utc).isoformat()
+    if generated_at is None:
+        generated_at = (
+            "1970-01-01T00:00:00+00:00"
+            if deterministic
+            else datetime.now(timezone.utc).isoformat()
+        )
 
     control = {
         "schema_version": 1,
@@ -339,11 +347,15 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--deterministic", action="store_true")
+    parser.add_argument("--generated-at")
     args = parser.parse_args()
     try:
         receipt = compile_project(
             load_manifest(Path(args.manifest)),
             Path(args.output),
+            deterministic=args.deterministic,
+            generated_at=args.generated_at,
         )
     except ManifestValidationError as exc:
         print(_json(exc.to_dict()), end="", file=sys.stderr)

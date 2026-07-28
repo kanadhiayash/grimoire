@@ -77,8 +77,26 @@ def build_harness_command(action: str, *, home: str | None = None) -> list[str]:
     return command
 
 
-def build_project_command(*, manifest: str, output: str) -> list[str]:
-    return [sys.executable, "scripts/project_orchestrator.py", "--manifest", manifest, "--output", output]
+def build_project_command(
+    *,
+    manifest: str,
+    output: str,
+    deterministic: bool = False,
+    generated_at: str | None = None,
+) -> list[str]:
+    command = [
+        sys.executable,
+        "scripts/project_orchestrator.py",
+        "--manifest",
+        manifest,
+        "--output",
+        output,
+    ]
+    if deterministic:
+        command.append("--deterministic")
+    if generated_at is not None:
+        command.extend(["--generated-at", generated_at])
+    return command
 
 
 def check_steps() -> list[tuple[str, Sequence[str]]]:
@@ -138,6 +156,8 @@ def parser() -> argparse.ArgumentParser:
     project_boot = project_subparsers.add_parser("boot", help="Validate a project manifest and compile one context pack")
     project_boot.add_argument("--manifest", required=True)
     project_boot.add_argument("--output", required=True)
+    project_boot.add_argument("--deterministic", action="store_true")
+    project_boot.add_argument("--generated-at")
 
     pack = subparsers.add_parser("pack", help="Compile or verify browser packs")
     pack_subparsers = pack.add_subparsers(dest="pack_action", required=True)
@@ -166,7 +186,12 @@ def main() -> int:
         print(json.dumps(load_index(ROOT), indent=2))
         return 0
     if args.command == "project":
-        command = build_project_command(manifest=args.manifest, output=args.output)
+        command = build_project_command(
+            manifest=args.manifest,
+            output=args.output,
+            deterministic=args.deterministic,
+            generated_at=args.generated_at,
+        )
         return subprocess.run(command, cwd=ROOT, check=False).returncode
     if args.command == "pack":
         if args.pack_action == "compile":
