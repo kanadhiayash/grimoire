@@ -99,6 +99,17 @@ def build_project_command(
     return command
 
 
+def build_project_verify_command(*, directory: str, mode: str = "offline") -> list[str]:
+    return [
+        sys.executable,
+        "scripts/verify_project_pack.py",
+        "--directory",
+        directory,
+        "--mode",
+        mode,
+    ]
+
+
 def check_steps() -> list[tuple[str, Sequence[str]]]:
     python = sys.executable
     return [
@@ -158,6 +169,9 @@ def parser() -> argparse.ArgumentParser:
     project_boot.add_argument("--output", required=True)
     project_boot.add_argument("--deterministic", action="store_true")
     project_boot.add_argument("--generated-at")
+    project_verify = project_subparsers.add_parser("verify", help="Verify one generated project context pack")
+    project_verify.add_argument("--directory", required=True)
+    project_verify.add_argument("--mode", choices=["offline", "connected", "release"], default="offline")
 
     pack = subparsers.add_parser("pack", help="Compile or verify browser packs")
     pack_subparsers = pack.add_subparsers(dest="pack_action", required=True)
@@ -186,12 +200,18 @@ def main() -> int:
         print(json.dumps(load_index(ROOT), indent=2))
         return 0
     if args.command == "project":
-        command = build_project_command(
-            manifest=args.manifest,
-            output=args.output,
-            deterministic=args.deterministic,
-            generated_at=args.generated_at,
-        )
+        if args.project_action == "boot":
+            command = build_project_command(
+                manifest=args.manifest,
+                output=args.output,
+                deterministic=args.deterministic,
+                generated_at=args.generated_at,
+            )
+        else:
+            command = build_project_verify_command(
+                directory=args.directory,
+                mode=args.mode,
+            )
         return subprocess.run(command, cwd=ROOT, check=False).returncode
     if args.command == "pack":
         if args.pack_action == "compile":

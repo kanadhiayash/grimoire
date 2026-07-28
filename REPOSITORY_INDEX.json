@@ -177,6 +177,7 @@
     "project_manifest_template": "templates/project/project.json",
     "project_compiler": "scripts/project_orchestrator.py",
     "deterministic_project_compiler": "scripts/project_orchestrator.py",
+    "project_pack_verifier": "src/grimoire/verifier/project_pack.py",
     "project_manifest_model": "src/grimoire/models/manifest.py",
     "project_manifest_validator": "src/grimoire/validation/manifest.py",
     "context_renderer": "src/grimoire/compiler/context.py",
