@@ -68,6 +68,22 @@ class StandardsCliTests(unittest.TestCase):
         self.assertIn("scripts/compile_surface_pack.py", command)
         self.assertIn("chatgpt-project", command)
 
+    def test_build_project_command_supports_deterministic_mode(self):
+        from scripts.standards import build_project_command
+
+        command = build_project_command(
+            manifest="templates/project/project.json",
+            output="dist/project",
+            deterministic=True,
+            generated_at="2026-07-27T00:00:00+00:00",
+        )
+
+        self.assertIn("--deterministic", command)
+        self.assertEqual(
+            command[-2:],
+            ["--generated-at", "2026-07-27T00:00:00+00:00"],
+        )
+
     def test_build_harness_command_uses_existing_installer(self):
         command = build_harness_command("detect", home="/tmp/home")
         self.assertIn("scripts/install_ai_harness_standards.py", command)
