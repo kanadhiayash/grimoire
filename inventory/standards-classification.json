@@ -259,19 +259,19 @@
     },
     {
       "path": "standards/product-ux/design-systems.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "design-systems",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.5"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0017"
     },
     {
       "path": "standards/product-ux/design-token-and-figma-conventions.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "design-systems",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.5"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0018"
     },
     {
       "path": "standards/product-ux/heuristic-and-interface-quality.md",
