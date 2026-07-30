@@ -3,19 +3,19 @@
   "documents": [
     {
       "path": "standards/ai-development/agent-operating-contract.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0026"
     },
     {
       "path": "standards/ai-development/ai-agent-product-engineering.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0027"
     },
     {
       "path": "standards/ai-development/ai-operations-governance.md",
@@ -27,59 +27,59 @@
     },
     {
       "path": "standards/ai-development/browser-project-source-packs.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0028"
     },
     {
       "path": "standards/ai-development/context-loading.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0029"
     },
     {
       "path": "standards/ai-development/cross-surface-activation.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0030"
     },
     {
       "path": "standards/ai-development/hallucination-controls.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0031"
     },
     {
       "path": "standards/ai-development/implementation.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0032"
     },
     {
       "path": "standards/ai-development/model-routing.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0033"
     },
     {
       "path": "standards/ai-development/zeref-orchestrator-integration.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "ai-agents",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.11"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0034"
     },
     {
       "path": "standards/engineering/api-integration.md",

@@ -25,6 +25,15 @@
     {"id": "SRC-API-INTEGRATION", "source_type": "local_policy", "path": "standards/engineering/api-integration.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-BACKEND-DATA", "source_type": "local_policy", "path": "standards/engineering/backend-data.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-SEC-DEPENDENCIES", "source_type": "local_policy", "path": "standards/engineering/dependency-management.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
-    {"id": "SRC-SEC-DEFENSIVE-REVIEW", "source_type": "local_policy", "path": "standards/engineering/security-red-team.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
+    {"id": "SRC-SEC-DEFENSIVE-REVIEW", "source_type": "local_policy", "path": "standards/engineering/security-red-team.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-OPERATING-CONTRACT", "source_type": "local_policy", "path": "standards/ai-development/agent-operating-contract.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-PRODUCT-ENGINEERING", "source_type": "local_policy", "path": "standards/ai-development/ai-agent-product-engineering.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-BROWSER-PACKS", "source_type": "local_policy", "path": "standards/ai-development/browser-project-source-packs.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-CONTEXT-LOADING", "source_type": "local_policy", "path": "standards/ai-development/context-loading.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-CROSS-SURFACE", "source_type": "local_policy", "path": "standards/ai-development/cross-surface-activation.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-HALLUCINATION", "source_type": "local_policy", "path": "standards/ai-development/hallucination-controls.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-IMPLEMENTATION", "source_type": "local_policy", "path": "standards/ai-development/implementation.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-MODEL-ROUTING", "source_type": "local_policy", "path": "standards/ai-development/model-routing.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-AI-ZEREF-INTEGRATION", "source_type": "local_policy", "path": "standards/ai-development/zeref-orchestrator-integration.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
   ]
 }
