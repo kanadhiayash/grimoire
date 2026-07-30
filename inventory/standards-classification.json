@@ -91,11 +91,11 @@
     },
     {
       "path": "standards/engineering/architecture.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "architecture",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.6"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0019"
     },
     {
       "path": "standards/engineering/backend-data.md",
@@ -163,11 +163,11 @@
     },
     {
       "path": "standards/engineering/system-layering.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "architecture",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.6"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0020"
     },
     {
       "path": "standards/engineering/testing.md",
