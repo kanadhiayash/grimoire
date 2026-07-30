@@ -107,11 +107,11 @@
     },
     {
       "path": "standards/engineering/cloud-reliability-cost.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "cloud-cost",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.12"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0035"
     },
     {
       "path": "standards/engineering/dependency-management.md",
@@ -139,19 +139,19 @@
     },
     {
       "path": "standards/engineering/observability.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "cloud-cost",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.12"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0036"
     },
     {
       "path": "standards/engineering/performance.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "cloud-cost",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.12"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0037"
     },
     {
       "path": "standards/engineering/security-red-team.md",

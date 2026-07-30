@@ -34,6 +34,9 @@
     {"id": "SRC-AI-HALLUCINATION", "source_type": "local_policy", "path": "standards/ai-development/hallucination-controls.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-AI-IMPLEMENTATION", "source_type": "local_policy", "path": "standards/ai-development/implementation.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-AI-MODEL-ROUTING", "source_type": "local_policy", "path": "standards/ai-development/model-routing.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
-    {"id": "SRC-AI-ZEREF-INTEGRATION", "source_type": "local_policy", "path": "standards/ai-development/zeref-orchestrator-integration.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
+    {"id": "SRC-AI-ZEREF-INTEGRATION", "source_type": "local_policy", "path": "standards/ai-development/zeref-orchestrator-integration.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-CLOUD-RELIABILITY-COST", "source_type": "local_policy", "path": "standards/engineering/cloud-reliability-cost.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-CLOUD-OBSERVABILITY", "source_type": "local_policy", "path": "standards/engineering/observability.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-CLOUD-PERFORMANCE", "source_type": "local_policy", "path": "standards/engineering/performance.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
   ]
 }
