@@ -38,12 +38,13 @@ ROOT_FIELDS = {
     "known_external_ids",
     "mappings",
 }
-MAPPING_FIELDS = {
+MAPPING_REQUIRED_FIELDS = {
     "external_id",
     "grimoire_control_ids",
     "rationale",
     "evidence_classes",
 }
+MAPPING_FIELDS = MAPPING_REQUIRED_FIELDS | {"external_level"}
 APPLICABILITY_FIELDS = {"product_types", "platforms", "ai_required"}
 
 
@@ -69,6 +70,7 @@ class Crosswalk:
     mappings: Mapping[str, tuple[str, ...]]
     reverse_mappings: Mapping[str, tuple[str, ...]]
     evidence_classes: Mapping[str, tuple[str, ...]]
+    external_levels: Mapping[str, str]
 
     def controls_for(self, external_id: str) -> tuple[str, ...]:
         return self.mappings.get(external_id, ())
@@ -183,9 +185,14 @@ def _load_crosswalk(
     forward: dict[str, tuple[str, ...]] = {}
     reverse: dict[str, list[str]] = {}
     evidence_by_external_id: dict[str, tuple[str, ...]] = {}
+    levels_by_external_id: dict[str, str] = {}
     seen_pairs: set[tuple[str, str]] = set()
     for mapping in mappings:
-        if not isinstance(mapping, dict) or set(mapping) != MAPPING_FIELDS:
+        if (
+            not isinstance(mapping, dict)
+            or MAPPING_REQUIRED_FIELDS - set(mapping)
+            or set(mapping) - MAPPING_FIELDS
+        ):
             reasons.add("invalid_mapping")
             continue
         external_id = mapping.get("external_id")
@@ -215,6 +222,11 @@ def _load_crosswalk(
             forward[external_id] = tuple(control_ids)
             if isinstance(evidence, list):
                 evidence_by_external_id[external_id] = tuple(evidence)
+            if "external_level" in mapping:
+                if mapping["external_level"] not in {"A", "AA", "AAA"}:
+                    reasons.add("invalid_external_level")
+                else:
+                    levels_by_external_id[external_id] = mapping["external_level"]
 
     if reasons:
         raise CrosswalkValidationError(reasons)
@@ -233,6 +245,7 @@ def _load_crosswalk(
             {key: tuple(sorted(items)) for key, items in reverse.items()}
         ),
         evidence_classes=MappingProxyType(evidence_by_external_id),
+        external_levels=MappingProxyType(levels_by_external_id),
     )
 
 
