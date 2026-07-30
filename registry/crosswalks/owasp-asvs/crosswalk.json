@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "framework": {
+    "id": "owasp-asvs",
+    "title": "OWASP Application Security Verification Standard",
+    "version": "5.0.0",
+    "version_lock": "5.0.0",
+    "official_url": "https://owasp.org/www-project-application-security-verification-standard/",
+    "source_license": "CC-BY-SA-4.0",
+    "license_review": "identifiers-and-local-rationale-only",
+    "review_date": "2026-07-30",
+    "expires_on": "2027-01-30",
+    "assurance_boundary": "mapping_only"
+  },
+  "applicability": {
+    "product_types": ["static-site", "public-analytics", "authenticated-saas", "api-platform"]
+  },
+  "known_external_ids": ["v5.0.0-1.2.5", "v5.0.0-2.1.1", "v5.0.0-3.1.1", "v5.0.0-4.1.1", "v5.0.0-7.1.1", "v5.0.0-13.1.1"],
+  "mappings": [
+    {"external_id": "v5.0.0-1.2.5", "grimoire_control_ids": ["GRIM-STD-0022"], "rationale": "The API contract requires bounded input handling and deterministic validation.", "evidence_classes": ["automated", "review"]},
+    {"external_id": "v5.0.0-2.1.1", "grimoire_control_ids": ["GRIM-STD-0023"], "rationale": "Backend and data controls require explicit trusted-boundary validation and domain rules.", "evidence_classes": ["review", "artifact"]},
+    {"external_id": "v5.0.0-3.1.1", "grimoire_control_ids": ["GRIM-STD-0021"], "rationale": "Frontend engineering requires explicit client state, boundaries, and test plans.", "evidence_classes": ["manual", "artifact"]},
+    {"external_id": "v5.0.0-4.1.1", "grimoire_control_ids": ["GRIM-STD-0022"], "rationale": "API and web-service interfaces require explicit schemas, authorization, limits, and failure handling.", "evidence_classes": ["automated", "manual"]},
+    {"external_id": "v5.0.0-7.1.1", "grimoire_control_ids": ["GRIM-STD-0022"], "rationale": "Session behavior belongs in the versioned interface and authorization contract.", "evidence_classes": ["review", "artifact"]},
+    {"external_id": "v5.0.0-13.1.1", "grimoire_control_ids": ["GRIM-STD-0035"], "rationale": "Operational configuration, limits, recovery, and ownership require reviewable documentation.", "evidence_classes": ["review", "artifact"]}
+  ]
+}
