@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "suite_id": "runner-smoke",
+  "sources": [
+    "VERSION",
+    "REPOSITORY_INDEX.json"
+  ],
+  "cases": [
+    {
+      "id": "repository-status",
+      "command": ["python3", "scripts/grimoire.py", "status", "--json"],
+      "hard_gate": true
+    },
+    {
+      "id": "repository-doctor",
+      "command": ["python3", "scripts/grimoire.py", "doctor"],
+      "hard_gate": true
+    }
+  ]
+}

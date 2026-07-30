@@ -122,6 +122,47 @@ def build_project_explain_command(*, directory: str, standard_id: str) -> list[s
     ]
 
 
+def build_benchmark_run_command(
+    *,
+    suite: str,
+    output: str,
+    commit: str,
+) -> list[str]:
+    return [
+        sys.executable,
+        "scripts/benchmark_runner.py",
+        "run",
+        "--suite",
+        suite,
+        "--output",
+        output,
+        "--commit",
+        commit,
+    ]
+
+
+def build_benchmark_compare_command(
+    *,
+    current: str,
+    baseline: str,
+    thresholds: str,
+    output: str,
+) -> list[str]:
+    return [
+        sys.executable,
+        "scripts/benchmark_runner.py",
+        "compare",
+        "--current",
+        current,
+        "--baseline",
+        baseline,
+        "--thresholds",
+        thresholds,
+        "--output",
+        output,
+    ]
+
+
 def check_steps() -> list[tuple[str, Sequence[str]]]:
     python = sys.executable
     return [
@@ -190,6 +231,22 @@ def parser() -> argparse.ArgumentParser:
     project_explain.add_argument("--standard-id", required=True)
     project_explain.add_argument("--json", action="store_true")
 
+    benchmark = subparsers.add_parser(
+        "benchmark", help="Run or compare evidence-bound benchmarks"
+    )
+    benchmark_subparsers = benchmark.add_subparsers(
+        dest="benchmark_action", required=True
+    )
+    benchmark_run = benchmark_subparsers.add_parser("run")
+    benchmark_run.add_argument("--suite", required=True)
+    benchmark_run.add_argument("--output", required=True)
+    benchmark_run.add_argument("--commit", required=True)
+    benchmark_compare = benchmark_subparsers.add_parser("compare")
+    benchmark_compare.add_argument("--current", required=True)
+    benchmark_compare.add_argument("--baseline", required=True)
+    benchmark_compare.add_argument("--thresholds", required=True)
+    benchmark_compare.add_argument("--output", required=True)
+
     pack = subparsers.add_parser("pack", help="Compile or verify browser packs")
     pack_subparsers = pack.add_subparsers(dest="pack_action", required=True)
     pack_compile = pack_subparsers.add_parser("compile")
@@ -240,6 +297,21 @@ def main() -> int:
             command = build_pack_command(surface=args.surface, project_name=args.project_name, output=args.output, grimoire_commit=args.grimoire_commit, zeref_commit=args.zeref_commit, overwrite=args.overwrite)
         else:
             command = [sys.executable, "scripts/verify_surface_pack.py", args.directory]
+        return subprocess.run(command, cwd=ROOT, check=False).returncode
+    if args.command == "benchmark":
+        if args.benchmark_action == "run":
+            command = build_benchmark_run_command(
+                suite=args.suite,
+                output=args.output,
+                commit=args.commit,
+            )
+        else:
+            command = build_benchmark_compare_command(
+                current=args.current,
+                baseline=args.baseline,
+                thresholds=args.thresholds,
+                output=args.output,
+            )
         return subprocess.run(command, cwd=ROOT, check=False).returncode
     if args.command == "harness":
         command = build_harness_command(args.action, home=args.home)

@@ -99,6 +99,26 @@
       ],
       "purpose": "Run all checks, tests, and Python compilation."
     },
+    "benchmark_run": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "benchmark",
+        "run"
+      ],
+      "purpose": "Execute a versioned benchmark suite and retain a complete evidence package."
+    },
+    "benchmark_compare": {
+      "entrypoint": "scripts/grimoire.py",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "benchmark",
+        "compare"
+      ],
+      "purpose": "Compare benchmark metrics against explicit historical regression thresholds."
+    },
     "project_boot": {
       "entrypoint": "scripts/grimoire.py",
       "argv": [
@@ -217,6 +237,11 @@
     "personal_instruction_manifest": "instructions/instructions-manifest.json",
     "legal_source_registry": "sources/legal/registry.json",
     "benchmark_specification": "benchmarks/standards-orchestrator/README.md",
+    "benchmark_runner": "src/grimoire/benchmarks/runner.py",
+    "benchmark_cli": "scripts/benchmark_runner.py",
+    "benchmark_suites": "benchmarks/suites",
+    "benchmark_suite_schema": "policies/schemas/benchmarks/benchmark-suite.schema.json",
+    "benchmark_result_schema": "policies/schemas/benchmarks/benchmark-result.schema.json",
     "browser_pack_templates": "templates/browser-project",
     "browser_pack_compiler": "scripts/compile_surface_pack.py",
     "browser_pack_verifier": "scripts/verify_surface_pack.py",
