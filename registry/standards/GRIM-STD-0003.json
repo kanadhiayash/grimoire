@@ -2,7 +2,7 @@
   "id": "GRIM-STD-0003",
   "version": "1.0.0",
   "status": "normative",
-  "domain": "product-ux",
+  "domain": "accessibility",
   "requirement_level": "must",
   "title": "Accessibility requirements",
   "owner": "Standards Orchestrator",
@@ -10,7 +10,7 @@
   "human_document": "standards/product-ux/accessibility.md",
   "provenance": {
     "source_type": "local_policy",
-    "source_id": "SRC-FOUNDATION-ACCESSIBILITY"
+    "source_id": "SRC-A11Y-REQUIREMENTS"
   },
   "applicability": {
     "any": [
@@ -19,5 +19,15 @@
         "op": "non_empty"
       }
     ]
+  },
+  "contract": {
+    "expected_outcomes": ["Applicable interfaces have testable accessibility requirements."],
+    "required_actions": ["Define accessibility requirements and validate applicable interaction paths."],
+    "expected_documents": ["Accessibility requirements and test results."],
+    "acceptance": ["Applicable accessibility criteria have evidence or a disclosed gap."],
+    "verification": ["Run automated and manual accessibility checks proportionate to risk."],
+    "evidence": ["Test output, review notes, and unresolved findings."],
+    "failure_conditions": ["Accessibility is represented as compliant without current evidence."],
+    "exceptions": ["Record affected users, compensating control, owner, approval, and review date."]
   }
 }
