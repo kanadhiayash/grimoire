@@ -1,0 +1,18 @@
+{
+  "id": "GRIM-STD-0001",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal",
+  "requirement_level": "must",
+  "title": "Verification evidence",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-27",
+  "human_document": "standards/universal/verification.md",
+  "provenance": {
+    "source_type": "local_policy",
+    "source_id": "standards/universal/verification.md"
+  },
+  "applicability": {
+    "all": []
+  }
+}

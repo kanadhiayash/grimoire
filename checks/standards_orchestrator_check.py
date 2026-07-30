@@ -13,6 +13,7 @@ REQUIRED_FILES = [
     "policies/schemas/project-status.schema.json",
     "policies/schemas/execution-receipt.schema.json",
     "policies/schemas/standard-record.schema.json",
+    "policies/schemas/standards/standard-registry-record.schema.json",
     "policies/schemas/document-requirement.schema.json",
     "policies/schemas/zeref-execution-profile.schema.json",
     "scripts/project_orchestrator.py",
@@ -61,6 +62,11 @@ REQUIRED_FILES = [
     "benchmarks/fuzz/manifest_fuzz.py",
     "benchmarks/fuzz/corpus/minimum.json",
     "benchmarks/fuzz/corpus/full.json",
+    "registry/standards/GRIM-STD-0001.json",
+    "registry/standards/GRIM-STD-0002.json",
+    "registry/standards/GRIM-STD-0003.json",
+    "registry/standards/GRIM-STD-0004.json",
+    "registry/standards/GRIM-STD-0005.json",
     ".github/workflows/manifest-fuzz.yml",
 ]
 PERSONAL_TERMS = ("Yash", "Kanadhia", "Mavis", "Toronto")
@@ -91,7 +97,7 @@ def main() -> int:
 
     json_paths = [
         ROOT / "policies/standards-orchestrator.json",
-        *sorted((ROOT / "policies/schemas").glob("*.json")),
+        *sorted((ROOT / "policies/schemas").rglob("*.json")),
         ROOT / "instructions/global/manifest.json",
         ROOT / "instructions/personal/yash/manifest.json",
         ROOT / "sources/legal/registry.json",

@@ -1,0 +1,24 @@
+{
+  "id": "GRIM-STD-0002",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "engineering",
+  "requirement_level": "must",
+  "title": "Minimum correct change",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-27",
+  "human_document": "standards/engineering/minimum-correct-change.md",
+  "provenance": {
+    "source_type": "local_policy",
+    "source_id": "standards/engineering/minimum-correct-change.md"
+  },
+  "applicability": {
+    "all": [
+      {
+        "field": "project.lifecycle_stage",
+        "op": "in",
+        "value": ["BUILD_READY", "BUILDING", "VERIFYING", "RELEASE_READY"]
+      }
+    ]
+  }
+}
