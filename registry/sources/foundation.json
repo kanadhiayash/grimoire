@@ -37,6 +37,14 @@
     {"id": "SRC-AI-ZEREF-INTEGRATION", "source_type": "local_policy", "path": "standards/ai-development/zeref-orchestrator-integration.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-CLOUD-RELIABILITY-COST", "source_type": "local_policy", "path": "standards/engineering/cloud-reliability-cost.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-CLOUD-OBSERVABILITY", "source_type": "local_policy", "path": "standards/engineering/observability.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
-    {"id": "SRC-CLOUD-PERFORMANCE", "source_type": "local_policy", "path": "standards/engineering/performance.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
+    {"id": "SRC-CLOUD-PERFORMANCE", "source_type": "local_policy", "path": "standards/engineering/performance.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-BRANCHES", "source_type": "local_policy", "path": "standards/github/branches.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-CI", "source_type": "local_policy", "path": "standards/github/ci-cd.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-REVIEW", "source_type": "local_policy", "path": "standards/github/code-review.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-COMMITS", "source_type": "local_policy", "path": "standards/github/commits.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-DELIVERY", "source_type": "local_policy", "path": "standards/github/git-delivery-operations.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-PRS", "source_type": "local_policy", "path": "standards/github/pull-requests.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-RELEASES", "source_type": "local_policy", "path": "standards/github/releases.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-GIT-READINESS", "source_type": "local_policy", "path": "standards/universal/release-readiness.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
   ]
 }
