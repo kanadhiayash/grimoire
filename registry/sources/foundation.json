@@ -23,6 +23,8 @@
     {"id": "SRC-ARCH-LAYERING", "source_type": "local_policy", "path": "standards/engineering/system-layering.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-FRONTEND-CLIENT", "source_type": "local_policy", "path": "standards/engineering/frontend-client.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-API-INTEGRATION", "source_type": "local_policy", "path": "standards/engineering/api-integration.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
-    {"id": "SRC-BACKEND-DATA", "source_type": "local_policy", "path": "standards/engineering/backend-data.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
+    {"id": "SRC-BACKEND-DATA", "source_type": "local_policy", "path": "standards/engineering/backend-data.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-SEC-DEPENDENCIES", "source_type": "local_policy", "path": "standards/engineering/dependency-management.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-SEC-DEFENSIVE-REVIEW", "source_type": "local_policy", "path": "standards/engineering/security-red-team.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
   ]
 }
