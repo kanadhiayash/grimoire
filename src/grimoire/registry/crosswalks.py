@@ -68,12 +68,16 @@ class Crosswalk:
     applicability: Mapping[str, Any]
     mappings: Mapping[str, tuple[str, ...]]
     reverse_mappings: Mapping[str, tuple[str, ...]]
+    evidence_classes: Mapping[str, tuple[str, ...]]
 
     def controls_for(self, external_id: str) -> tuple[str, ...]:
         return self.mappings.get(external_id, ())
 
     def external_ids_for(self, control_id: str) -> tuple[str, ...]:
         return self.reverse_mappings.get(control_id, ())
+
+    def evidence_for(self, external_id: str) -> tuple[str, ...]:
+        return self.evidence_classes.get(external_id, ())
 
     def applies_to(self, manifest: Mapping[str, Any]) -> bool:
         product_types = set(
@@ -178,6 +182,7 @@ def _load_crosswalk(
         mappings = []
     forward: dict[str, tuple[str, ...]] = {}
     reverse: dict[str, list[str]] = {}
+    evidence_by_external_id: dict[str, tuple[str, ...]] = {}
     seen_pairs: set[tuple[str, str]] = set()
     for mapping in mappings:
         if not isinstance(mapping, dict) or set(mapping) != MAPPING_FIELDS:
@@ -208,6 +213,8 @@ def _load_crosswalk(
             reverse.setdefault(control_id, []).append(str(external_id))
         if isinstance(external_id, str):
             forward[external_id] = tuple(control_ids)
+            if isinstance(evidence, list):
+                evidence_by_external_id[external_id] = tuple(evidence)
 
     if reasons:
         raise CrosswalkValidationError(reasons)
@@ -225,6 +232,7 @@ def _load_crosswalk(
         reverse_mappings=MappingProxyType(
             {key: tuple(sorted(items)) for key, items in reverse.items()}
         ),
+        evidence_classes=MappingProxyType(evidence_by_external_id),
     )
 
 

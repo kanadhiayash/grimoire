@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "framework": {
+    "id": "owasp-masvs",
+    "title": "OWASP Mobile Application Security Verification Standard",
+    "version": "2.1.0",
+    "version_lock": "2.1.0",
+    "official_url": "https://mas.owasp.org/MASVS/",
+    "source_license": "CC-BY-SA-4.0",
+    "license_review": "identifiers-and-local-rationale-only",
+    "review_date": "2026-07-30",
+    "expires_on": "2027-01-30",
+    "assurance_boundary": "mapping_only"
+  },
+  "applicability": {
+    "platforms": ["ios", "android"]
+  },
+  "known_external_ids": ["MASVS-STORAGE-1", "MASVS-AUTH-1", "MASVS-NETWORK-1", "MASVS-PLATFORM-1", "MASVS-CODE-1", "MASVS-PRIVACY-1"],
+  "mappings": [
+    {"external_id": "MASVS-STORAGE-1", "grimoire_control_ids": ["GRIM-STD-0023"], "rationale": "Backend/data ownership includes sensitive storage, retention, deletion, and access evidence.", "evidence_classes": ["automated", "manual", "platform"]},
+    {"external_id": "MASVS-AUTH-1", "grimoire_control_ids": ["GRIM-STD-0022"], "rationale": "Protected operations require trusted-boundary authorization and explicit interface contracts.", "evidence_classes": ["automated", "manual"]},
+    {"external_id": "MASVS-NETWORK-1", "grimoire_control_ids": ["GRIM-STD-0022"], "rationale": "Integration contracts define bounded transport, identity, failure, and sensitive-field behavior.", "evidence_classes": ["automated", "platform"]},
+    {"external_id": "MASVS-PLATFORM-1", "grimoire_control_ids": ["GRIM-STD-0021"], "rationale": "Client engineering requires platform-appropriate permissions, state, and semantic controls.", "evidence_classes": ["manual", "platform"]},
+    {"external_id": "MASVS-CODE-1", "grimoire_control_ids": ["GRIM-STD-0024"], "rationale": "Dependency policy requires maintained, pinned, reviewed, and removable components.", "evidence_classes": ["automated", "review"]},
+    {"external_id": "MASVS-PRIVACY-1", "grimoire_control_ids": ["GRIM-STD-0005"], "rationale": "Legal/privacy routing preserves data-purpose, minimization, disclosure, and specialist-review questions.", "evidence_classes": ["manual", "review"]}
+  ]
+}
