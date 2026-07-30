@@ -48,8 +48,8 @@ class ControlTraceTests(unittest.TestCase):
             conflicts = json.loads((output / "CONFLICT_REPORT.json").read_text("utf-8"))
             control_pack = json.loads((output / "CONTROL_PACK.json").read_text("utf-8"))
 
-        self.assertEqual(trace["trace_completeness"], {"actual": 22, "expected": 22, "status": "PASS"})
-        self.assertEqual(len(trace["controls"]), 22)
+        self.assertEqual(trace["trace_completeness"], {"actual": 23, "expected": 23, "status": "PASS"})
+        self.assertEqual(len(trace["controls"]), 23)
         self.assertEqual(
             [control["standard_id"] for control in trace["controls"]],
             sorted(control["standard_id"] for control in trace["controls"]),
@@ -69,6 +69,7 @@ class ControlTraceTests(unittest.TestCase):
                 "GRIM-STD-0019", "GRIM-STD-0020",
                 "GRIM-STD-0021",
                 "GRIM-STD-0022",
+                "GRIM-STD-0023",
             ],
         )
 

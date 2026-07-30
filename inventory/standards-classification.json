@@ -99,11 +99,11 @@
     },
     {
       "path": "standards/engineering/backend-data.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "backend-data",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.9"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0023"
     },
     {
       "path": "standards/engineering/cloud-reliability-cost.md",
