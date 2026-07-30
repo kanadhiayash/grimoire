@@ -81,6 +81,14 @@ class Crosswalk:
     def evidence_for(self, external_id: str) -> tuple[str, ...]:
         return self.evidence_classes.get(external_id, ())
 
+    def evidence_complete_for(
+        self,
+        external_id: str,
+        observed_classes: set[str],
+    ) -> bool:
+        required = set(self.evidence_for(external_id))
+        return bool(required) and required.issubset(observed_classes)
+
     def applies_to(self, manifest: Mapping[str, Any]) -> bool:
         product_types = set(
             manifest.get("project", {}).get("product_types", [])

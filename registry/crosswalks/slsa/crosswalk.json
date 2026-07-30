@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "framework": {
+    "id": "slsa",
+    "title": "Supply-chain Levels for Software Artifacts",
+    "version": "1.2",
+    "version_lock": "1.2",
+    "official_url": "https://slsa.dev/spec/v1.2/",
+    "source_license": "Community-Specification-License-1.0",
+    "license_review": "summary-identifiers-only",
+    "review_date": "2026-07-30",
+    "expires_on": "2027-01-30",
+    "assurance_boundary": "mapping_only"
+  },
+  "applicability": {},
+  "known_external_ids": [
+    "SLSA-BUILD-L1",
+    "SLSA-BUILD-L2",
+    "SLSA-BUILD-L3",
+    "SLSA-SOURCE-L1",
+    "SLSA-SOURCE-L2",
+    "SLSA-SOURCE-L3",
+    "SLSA-SOURCE-L4"
+  ],
+  "mappings": [
+    {"external_id": "SLSA-BUILD-L1", "grimoire_control_ids": ["GRIM-STD-0044"], "rationale": "Release records bind a reviewed source revision, build process, and artifact provenance.", "evidence_classes": ["automated", "review", "artifact"]},
+    {"external_id": "SLSA-BUILD-L2", "grimoire_control_ids": ["GRIM-STD-0039", "GRIM-STD-0044"], "rationale": "Hosted build and signed provenance require reviewed workflow evidence and release artifacts.", "evidence_classes": ["automated", "platform", "review", "artifact"]},
+    {"external_id": "SLSA-BUILD-L3", "grimoire_control_ids": ["GRIM-STD-0039", "GRIM-STD-0045"], "rationale": "Hardened build claims require current platform evidence plus independent release-readiness review.", "evidence_classes": ["automated", "platform", "review", "artifact"]},
+    {"external_id": "SLSA-SOURCE-L1", "grimoire_control_ids": ["GRIM-STD-0042"], "rationale": "Git delivery operations preserve uniquely identifiable source revisions.", "evidence_classes": ["automated", "review", "artifact"]},
+    {"external_id": "SLSA-SOURCE-L2", "grimoire_control_ids": ["GRIM-STD-0042", "GRIM-STD-0044"], "rationale": "Continuous history and source provenance require revision and attestation artifacts.", "evidence_classes": ["automated", "review", "artifact"]},
+    {"external_id": "SLSA-SOURCE-L3", "grimoire_control_ids": ["GRIM-STD-0039", "GRIM-STD-0042"], "rationale": "Continuous technical controls require exact-head workflow and source-control evidence.", "evidence_classes": ["automated", "platform", "review", "artifact"]},
+    {"external_id": "SLSA-SOURCE-L4", "grimoire_control_ids": ["GRIM-STD-0040", "GRIM-STD-0042"], "rationale": "Two-party review maps to focused change review and protected delivery operations.", "evidence_classes": ["manual", "platform", "review", "artifact"]}
+  ]
+}
