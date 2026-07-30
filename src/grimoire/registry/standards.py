@@ -10,6 +10,8 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from grimoire.predicates import PredicateValidationError, validate_predicate
+
 STANDARD_ID = re.compile(r"^GRIM-STD-[0-9]{4}$")
 SEMVER = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 NORMATIVE_STATUS = "normative"
@@ -166,6 +168,11 @@ def _validate_record(value: Any, *, root: Path, seen: set[str]) -> StandardRecor
 
     if not isinstance(value.get("applicability"), dict):
         reasons.add("type_mismatch")
+    else:
+        try:
+            validate_predicate(value["applicability"])
+        except PredicateValidationError:
+            reasons.add("invalid_applicability")
 
     if reasons:
         raise RegistryValidationError(reasons)

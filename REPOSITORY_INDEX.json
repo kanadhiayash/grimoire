@@ -181,6 +181,8 @@
     "standard_registry": "registry/standards",
     "standard_registry_loader": "src/grimoire/registry/standards.py",
     "standard_registry_schema": "policies/schemas/standards/standard-registry-record.schema.json",
+    "predicate_engine": "src/grimoire/predicates/engine.py",
+    "predicate_schema": "policies/schemas/predicates/predicate.schema.json",
     "project_manifest_model": "src/grimoire/models/manifest.py",
     "project_manifest_validator": "src/grimoire/validation/manifest.py",
     "context_renderer": "src/grimoire/compiler/context.py",
