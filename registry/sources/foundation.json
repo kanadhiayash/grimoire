@@ -12,6 +12,10 @@
     {"id": "SRC-UG-TESTING", "source_type": "local_policy", "path": "standards/engineering/testing.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-FOUNDATION-ACCESSIBILITY", "source_type": "local_policy", "path": "standards/product-ux/accessibility.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"},
     {"id": "SRC-FOUNDATION-AI-OPERATIONS", "source_type": "local_policy", "path": "standards/ai-development/ai-operations-governance.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"},
-    {"id": "SRC-FOUNDATION-LEGAL", "source_type": "local_policy", "path": "standards/legal-compliance/global-legal-control-plane.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"}
+    {"id": "SRC-FOUNDATION-LEGAL", "source_type": "local_policy", "path": "standards/legal-compliance/global-legal-control-plane.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"},
+    {"id": "SRC-PUX-HANDOFF", "source_type": "local_policy", "path": "standards/product-ux/design-development-handoff.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-PUX-HEURISTICS", "source_type": "local_policy", "path": "standards/product-ux/heuristic-and-interface-quality.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-PUX-OPERATIONS", "source_type": "local_policy", "path": "standards/product-ux/product-design-operations.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-PUX-EVIDENCE", "source_type": "local_policy", "path": "standards/product-ux/ux-evidence.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
   ]
 }
