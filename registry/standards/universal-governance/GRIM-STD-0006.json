@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0006",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal-governance",
+  "requirement_level": "must",
+  "title": "Change discipline",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-30",
+  "human_document": "standards/universal/change-discipline.md",
+  "provenance": {"source_type": "local_policy", "source_id": "SRC-UG-CHANGE-DISCIPLINE"},
+  "applicability": {"all": []},
+  "contract": {
+    "expected_outcomes": ["Each change has a bounded, reviewable mission."],
+    "required_actions": ["Read before editing and keep one mission per branch."],
+    "expected_documents": ["Updated documentation for behavior changes."],
+    "acceptance": ["No unrelated cleanup or silent scope expansion is included."],
+    "verification": ["Inspect the branch diff and test results."],
+    "evidence": ["Focused branch, reviewed diff, and command results."],
+    "failure_conditions": ["Checks are disabled or completion is inferred without execution."],
+    "exceptions": ["Document any explicit compatibility break or scope exception."]
+  }
+}

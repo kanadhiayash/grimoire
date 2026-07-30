@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reviewed local source registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "sources"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "source_type", "path", "review_date", "expires_on"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "source_type": {"enum": ["local_policy", "official_source", "approved_crosswalk"]},
+          "path": {"type": "string", "minLength": 1},
+          "review_date": {"type": "string", "format": "date"},
+          "expires_on": {"type": "string", "format": "date"}
+        }
+      }
+    }
+  }
+}

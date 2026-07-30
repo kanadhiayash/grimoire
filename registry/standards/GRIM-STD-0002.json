@@ -2,7 +2,7 @@
   "id": "GRIM-STD-0002",
   "version": "1.0.0",
   "status": "normative",
-  "domain": "engineering",
+  "domain": "universal-governance",
   "requirement_level": "must",
   "title": "Minimum correct change",
   "owner": "Standards Orchestrator",
@@ -10,7 +10,7 @@
   "human_document": "standards/engineering/minimum-correct-change.md",
   "provenance": {
     "source_type": "local_policy",
-    "source_id": "standards/engineering/minimum-correct-change.md"
+    "source_id": "SRC-UG-MINIMUM-CORRECT-CHANGE"
   },
   "applicability": {
     "all": [
@@ -20,5 +20,15 @@
         "value": ["BUILD_READY", "BUILDING", "VERIFYING", "RELEASE_READY"]
       }
     ]
+  },
+  "contract": {
+    "expected_outcomes": ["The smallest complete verified change satisfies the approved contract."],
+    "required_actions": ["Read the code path, reuse existing ownership, and add runnable verification."],
+    "expected_documents": ["Scoped change record when behavior or risk changes."],
+    "acceptance": ["No safeguard is removed for minimalism and the acceptance criteria pass."],
+    "verification": ["Review the diff and run the smallest credible test layer."],
+    "evidence": ["Changed files, dependencies avoided or added, and test output."],
+    "failure_conditions": ["A change expands scope or weakens required safeguards."],
+    "exceptions": ["Document an approved deviation from the discipline; safety controls remain mandatory."]
   }
 }

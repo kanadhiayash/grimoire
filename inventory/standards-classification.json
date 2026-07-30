@@ -171,11 +171,11 @@
     },
     {
       "path": "standards/engineering/testing.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "universal-governance",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.2"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0012"
     },
     {
       "path": "standards/github/branches.md",
@@ -331,35 +331,35 @@
     },
     {
       "path": "standards/universal/change-discipline.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "universal-governance",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.2"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0006"
     },
     {
       "path": "standards/universal/documentation.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "universal-governance",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.2"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0007"
     },
     {
       "path": "standards/universal/naming-and-placement.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "universal-governance",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.2"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0008"
     },
     {
       "path": "standards/universal/priority-severity-risk.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "universal-governance",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.2"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0009"
     },
     {
       "path": "standards/universal/release-readiness.md",
@@ -371,19 +371,19 @@
     },
     {
       "path": "standards/universal/source-discipline.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "universal-governance",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.2"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0010"
     },
     {
       "path": "standards/universal/standard-authoring.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "universal-governance",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.2"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0011"
     },
     {
       "path": "standards/universal/verification.md",

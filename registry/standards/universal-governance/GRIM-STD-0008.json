@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0008",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal-governance",
+  "requirement_level": "must",
+  "title": "Naming and placement conventions",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-30",
+  "human_document": "standards/universal/naming-and-placement.md",
+  "provenance": {"source_type": "local_policy", "source_id": "SRC-UG-NAMING-AND-PLACEMENT"},
+  "applicability": {"all": []},
+  "contract": {
+    "expected_outcomes": ["Artifacts have stable, searchable, responsibility-based names."],
+    "required_actions": ["Use native language conventions with documented repository exceptions."],
+    "expected_documents": ["Stable record and exported-artifact names when governance metadata travels."],
+    "acceptance": ["Mutable status, priority, and ownership do not appear in stable filenames."],
+    "verification": ["Review added paths and naming patterns."],
+    "evidence": ["Diff containing the created or renamed paths."],
+    "failure_conditions": ["One platform convention is imposed on incompatible platforms."],
+    "exceptions": ["Document a repository-local naming exception with its rationale."]
+  }
+}

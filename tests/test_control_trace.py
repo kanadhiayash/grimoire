@@ -48,8 +48,8 @@ class ControlTraceTests(unittest.TestCase):
             conflicts = json.loads((output / "CONFLICT_REPORT.json").read_text("utf-8"))
             control_pack = json.loads((output / "CONTROL_PACK.json").read_text("utf-8"))
 
-        self.assertEqual(trace["trace_completeness"], {"actual": 5, "expected": 5, "status": "PASS"})
-        self.assertEqual(len(trace["controls"]), 5)
+        self.assertEqual(trace["trace_completeness"], {"actual": 12, "expected": 12, "status": "PASS"})
+        self.assertEqual(len(trace["controls"]), 12)
         self.assertEqual(
             [control["standard_id"] for control in trace["controls"]],
             sorted(control["standard_id"] for control in trace["controls"]),
@@ -60,7 +60,11 @@ class ControlTraceTests(unittest.TestCase):
         self.assertEqual(conflicts, {"conflicts": [], "status": "PASS"})
         self.assertEqual(
             control_pack["selected_controls"],
-            ["GRIM-STD-0001", "GRIM-STD-0002", "GRIM-STD-0003", "GRIM-STD-0005"],
+            [
+                "GRIM-STD-0001", "GRIM-STD-0002", "GRIM-STD-0003", "GRIM-STD-0005",
+                "GRIM-STD-0006", "GRIM-STD-0007", "GRIM-STD-0008", "GRIM-STD-0009",
+                "GRIM-STD-0010", "GRIM-STD-0011", "GRIM-STD-0012",
+            ],
         )
 
     def test_conflicting_fact_blocks_the_applicability_dimension(self):

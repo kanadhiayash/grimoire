@@ -19,6 +19,7 @@ REQUIRED_FILES = [
     "policies/schemas/corpus-classification.schema.json",
     "policies/schemas/standard-record.schema.json",
     "policies/schemas/standards/standard-registry-record.schema.json",
+    "policies/schemas/standards/source-record.schema.json",
     "policies/schemas/document-requirement.schema.json",
     "policies/schemas/zeref-execution-profile.schema.json",
     "scripts/project_orchestrator.py",
@@ -81,6 +82,7 @@ REQUIRED_FILES = [
     "registry/standards/GRIM-STD-0003.json",
     "registry/standards/GRIM-STD-0004.json",
     "registry/standards/GRIM-STD-0005.json",
+    "registry/sources/foundation.json",
     ".github/workflows/manifest-fuzz.yml",
 ]
 PERSONAL_TERMS = ("Yash", "Kanadhia", "Mavis", "Toronto")

@@ -35,7 +35,7 @@ def _load_json(path: Path) -> Any:
 
 def _registry_documents(root: Path) -> dict[str, str]:
     records: dict[str, str] = {}
-    for path in sorted((root / "registry" / "standards").glob("*.json")):
+    for path in sorted((root / "registry" / "standards").rglob("*.json")):
         try:
             value = _load_json(path)
         except (OSError, UnicodeError, json.JSONDecodeError):
