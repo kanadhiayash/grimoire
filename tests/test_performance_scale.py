@@ -82,6 +82,26 @@ class PerformanceScaleTests(unittest.TestCase):
         self.assertEqual(report["memory_gate"], "NOT_VERIFIED")
         self.assertEqual(report["context_token_gate"], "NOT_VERIFIED")
 
+    def test_fast_supporting_subset_does_not_claim_target_measurement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = run_scale_benchmark(
+                sizes=(100, 1000),
+                seed=20260730,
+                repeats=2,
+                thresholds={
+                    "target_control_count": 10000,
+                    "compile_median_max_ms": 100.0,
+                    "compile_p95_max_ms": 250.0,
+                    "verify_max_ms": 500.0,
+                    "memory_max_bytes": None,
+                    "context_token_ceiling": None,
+                },
+                output=Path(directory) / "performance",
+            )
+        self.assertFalse(report["target_measured"])
+        self.assertEqual(report["verdict"], "PARTIAL")
+        self.assertEqual(report["regressions"], [])
+
 
 if __name__ == "__main__":
     unittest.main()

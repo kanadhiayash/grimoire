@@ -129,7 +129,14 @@ def evaluate_scale_results(
         None,
     )
     if target is None:
-        raise BenchmarkContractError("target_dataset_missing")
+        return {
+            "verdict": "PARTIAL",
+            "target_control_count": target_count,
+            "target_measured": False,
+            "regressions": [],
+            "memory_gate": "NOT_VERIFIED",
+            "context_token_gate": "NOT_VERIFIED",
+        }
     regressions: list[str] = []
     for metric, threshold_key in (
         ("compile_median_ms", "compile_median_max_ms"),
@@ -170,6 +177,7 @@ def evaluate_scale_results(
     return {
         "verdict": verdict,
         "target_control_count": target_count,
+        "target_measured": True,
         "regressions": sorted(regressions),
         "memory_gate": memory_gate,
         "context_token_gate": token_gate,
