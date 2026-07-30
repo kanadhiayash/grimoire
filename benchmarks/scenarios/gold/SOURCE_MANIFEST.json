@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "path": "benchmarks/scenarios/gold/scenarios.json",
+  "sha256": "9dcd2d5b0f39694c11cd6fccde92031dec1b0986e36eb99eababa8484b04906d",
+  "review_boundary": "fixture_changes_require_separate_review"
+}

@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "expectation_profiles": {
+    "static": {"control_state_sha256": "a6f74f09d42995a15e31237f8729521348c0c5c55760cf3eb176377a232fbb30", "selected_count": 41, "excluded_count": 4, "uncertain_count": 0, "conflicted_count": 0, "required_documents": ["Assumption log", "Decision log", "Product brief", "Project manifest", "Risk register"], "required_evidence_sha256": "9fcd866fc8f145a9a1ec63b7a08f6ef644690c5959be7653aa29d12bec2c2eaa", "required_evidence_count": 41, "expected_status": "NOT_VERIFIED"},
+    "define-personal": {"control_state_sha256": "79527b9a76b9ace5eb35cb8cbbb8cd4c2c8a4827eeaa186d895526a46ec7c1fc", "selected_count": 43, "excluded_count": 2, "uncertain_count": 0, "conflicted_count": 0, "required_documents": ["Assumption log", "Data-flow map", "Decision log", "Product brief", "Project manifest", "Retention and deletion schedule", "Risk register"], "required_evidence_sha256": "53b2045d7007362a5641dcd8533bac581cf0e3dfc84f14e6895e228e9a8a9201", "required_evidence_count": 43, "expected_status": "NOT_VERIFIED"},
+    "build-selected44": {"control_state_sha256": "cf1b46a1a472e69fdb52d75c97e45907ffdc669d91e17cb167623b2676675653", "selected_count": 44, "excluded_count": 1, "uncertain_count": 0, "conflicted_count": 0, "required_documents": ["Acceptance matrix", "Accessibility requirements", "Architecture decision records where triggered", "Assumption log", "Data-flow map", "Decision log", "Design decision record", "Implementation plan", "Product brief", "Project manifest", "Retention and deletion schedule", "Risk register", "User-flow specification", "Verification plan"], "required_evidence_sha256": "9d9ee8709b1fd4e2649fe6b6c4dc955a660a356177932a2586800c34f373a0dc", "required_evidence_count": 44, "expected_status": "NOT_VERIFIED"},
+    "release-ai-selected45": {"control_state_sha256": "6c5c4e4bb401c9a080bf0a6ebe57c7cb6f1734a5f491ebe5e0e1a2ac52ac96b7", "selected_count": 45, "excluded_count": 0, "uncertain_count": 0, "conflicted_count": 0, "required_documents": ["AI evaluation plan", "AI risk assessment", "Acceptance matrix", "Accessibility requirements", "Architecture decision records where triggered", "Assumption log", "Data-flow map", "Decision log", "Design decision record", "Implementation plan", "Legal and privacy review status", "Operational runbook", "Product brief", "Project manifest", "Release evidence", "Retention and deletion schedule", "Risk register", "Rollback procedure", "User-flow specification", "Verification plan"], "required_evidence_sha256": "9d9ee8709b1fd4e2649fe6b6c4dc955a660a356177932a2586800c34f373a0dc", "required_evidence_count": 44, "expected_status": "NOT_VERIFIED"},
+    "child-selected43": {"control_state_sha256": "79527b9a76b9ace5eb35cb8cbbb8cd4c2c8a4827eeaa186d895526a46ec7c1fc", "selected_count": 43, "excluded_count": 2, "uncertain_count": 0, "conflicted_count": 0, "required_documents": ["Accessibility requirements", "Assumption log", "Data-flow map", "Decision log", "Design decision record", "Product brief", "Project manifest", "Retention and deletion schedule", "Risk register", "User-flow specification"], "required_evidence_sha256": "53b2045d7007362a5641dcd8533bac581cf0e3dfc84f14e6895e228e9a8a9201", "required_evidence_count": 43, "expected_status": "NOT_VERIFIED"},
+    "ai-validate-selected44": {"control_state_sha256": "15899c3de117a2d0ef1197f5de6fca44135f80a7b569b83825e305a3d26a440b", "selected_count": 44, "excluded_count": 1, "uncertain_count": 0, "conflicted_count": 0, "required_documents": ["AI evaluation plan", "AI risk assessment", "Accessibility requirements", "Assumption log", "Data-flow map", "Decision log", "Design decision record", "Product brief", "Project manifest", "Retention and deletion schedule", "Risk register", "User-flow specification"], "required_evidence_sha256": "53b2045d7007362a5641dcd8533bac581cf0e3dfc84f14e6895e228e9a8a9201", "required_evidence_count": 43, "expected_status": "NOT_VERIFIED"},
+    "ai-build-selected45": {"control_state_sha256": "6c5c4e4bb401c9a080bf0a6ebe57c7cb6f1734a5f491ebe5e0e1a2ac52ac96b7", "selected_count": 45, "excluded_count": 0, "uncertain_count": 0, "conflicted_count": 0, "required_documents": ["AI evaluation plan", "AI risk assessment", "Acceptance matrix", "Accessibility requirements", "Architecture decision records where triggered", "Assumption log", "Data-flow map", "Decision log", "Design decision record", "Implementation plan", "Product brief", "Project manifest", "Retention and deletion schedule", "Risk register", "User-flow specification", "Verification plan"], "required_evidence_sha256": "9d9ee8709b1fd4e2649fe6b6c4dc955a660a356177932a2586800c34f373a0dc", "required_evidence_count": 44, "expected_status": "NOT_VERIFIED"}
+  },
+  "scenarios": [
+    {
+      "id": "simple-static-website",
+      "manifest": {"schema_version": 1, "project": {"name": "Simple Static Website", "lifecycle_stage": "DISCOVER", "product_types": ["marketing-site"]}, "users": ["public"], "markets": [], "platforms": [], "stack": {"languages": ["html"], "frameworks": [], "services": []}, "data": {"personal_data": false, "sensitive": []}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "low"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "advisory", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "static",
+      "counsel_questions": [],
+      "critical_controls": ["GRIM-STD-0001"]
+    },
+    {
+      "id": "public-marketing-analytics",
+      "manifest": {"schema_version": 1, "project": {"name": "Public Marketing Analytics", "lifecycle_stage": "DEFINE", "product_types": ["marketing-site"]}, "users": ["public"], "markets": ["Canada"], "platforms": ["web"], "stack": {"languages": ["typescript"], "frameworks": ["react"], "services": ["analytics"]}, "data": {"personal_data": true, "sensitive": ["analytics-identifiers"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "moderate"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "advisory", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "define-personal",
+      "counsel_questions": ["Which analytics identifiers require consent or notice in each market?"],
+      "critical_controls": ["GRIM-STD-0003", "GRIM-STD-0005"]
+    },
+    {
+      "id": "authenticated-b2b-saas",
+      "manifest": {"schema_version": 1, "project": {"name": "Authenticated B2B SaaS", "lifecycle_stage": "BUILD_READY", "product_types": ["b2b-saas"]}, "users": ["authenticated"], "markets": ["Canada"], "platforms": ["web"], "stack": {"languages": ["python"], "frameworks": ["django"], "services": ["postgres"]}, "data": {"personal_data": true, "sensitive": []}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "moderate"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "standard", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": [],
+      "critical_controls": ["GRIM-STD-0002", "GRIM-STD-0022"]
+    },
+    {
+      "id": "consumer-mobile-application",
+      "manifest": {"schema_version": 1, "project": {"name": "Consumer Mobile Application", "lifecycle_stage": "BUILDING", "product_types": ["consumer-mobile"]}, "users": ["authenticated"], "markets": ["Canada"], "platforms": ["ios", "android"], "stack": {"languages": ["swift", "kotlin"], "frameworks": ["swiftui", "compose"], "services": []}, "data": {"personal_data": true, "sensitive": ["location"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "high"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": ["What permissions and location uses require platform-specific disclosure?"],
+      "critical_controls": ["GRIM-STD-0003", "GRIM-STD-0025"]
+    },
+    {
+      "id": "fintech-mobile-location",
+      "manifest": {"schema_version": 1, "project": {"name": "Fintech Mobile Location", "lifecycle_stage": "RELEASE_READY", "product_types": ["consumer-mobile", "fintech"]}, "users": ["authenticated"], "markets": ["Canada"], "platforms": ["ios", "android"], "stack": {"languages": ["kotlin"], "frameworks": ["compose"], "services": ["payments"]}, "data": {"personal_data": true, "sensitive": ["financial", "location"]}, "ai": {"user_facing": true, "automated_decisions": false, "external_models": true}, "risk": {"level": "critical"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "release-ai-selected45",
+      "counsel_questions": ["Which financial and location rules apply to the intended service and markets?"],
+      "critical_controls": ["GRIM-STD-0004", "GRIM-STD-0045"]
+    },
+    {
+      "id": "health-regulated",
+      "manifest": {"schema_version": 1, "project": {"name": "Regulated Health Application", "lifecycle_stage": "BUILD_READY", "product_types": ["health-application", "regulated-health"]}, "users": ["patients", "clinicians"], "markets": ["Canada"], "platforms": ["web", "ios"], "stack": {"languages": ["typescript", "swift"], "frameworks": ["react", "swiftui"], "services": ["health-records"]}, "data": {"personal_data": true, "sensitive": ["health"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "critical"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": ["Which health-sector rules and accountable custodians apply?"],
+      "critical_controls": ["GRIM-STD-0005", "GRIM-STD-0025"]
+    },
+    {
+      "id": "health-non-regulated",
+      "manifest": {"schema_version": 1, "project": {"name": "Wellness Application", "lifecycle_stage": "DEFINE", "product_types": ["wellness-application"]}, "users": ["consumers"], "markets": ["Canada"], "platforms": ["web"], "stack": {"languages": ["typescript"], "frameworks": ["react"], "services": []}, "data": {"personal_data": true, "sensitive": ["wellness"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "moderate"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "standard", "cost_ceiling": "bounded"}, "unknowns": ["Whether planned features cross into regulated health scope"]},
+      "expected_profile": "define-personal",
+      "counsel_questions": ["Do the claims or features cross into regulated health scope?"],
+      "critical_controls": ["GRIM-STD-0005"]
+    },
+    {
+      "id": "child-directed-social",
+      "manifest": {"schema_version": 1, "project": {"name": "Child Directed Social Product", "lifecycle_stage": "DESIGN", "product_types": ["social-platform", "child-directed"]}, "users": ["children", "guardians"], "markets": ["Canada", "United States"], "platforms": ["web", "ios", "android"], "stack": {"languages": ["typescript"], "frameworks": ["react-native"], "services": ["user-generated-content"]}, "data": {"personal_data": true, "sensitive": ["age", "messages"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "critical"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "child-selected43",
+      "counsel_questions": ["Which child privacy, age assurance, consent, and safety duties apply?"],
+      "critical_controls": ["GRIM-STD-0005", "GRIM-STD-0025"]
+    },
+    {
+      "id": "eu-consumer-ai-assistant",
+      "manifest": {"schema_version": 1, "project": {"name": "EU Consumer AI Assistant", "lifecycle_stage": "VALIDATE", "product_types": ["consumer-ai-assistant"]}, "users": ["consumers"], "markets": ["European Union"], "platforms": ["web"], "stack": {"languages": ["python", "typescript"], "frameworks": ["fastapi", "react"], "services": ["external-model"]}, "data": {"personal_data": true, "sensitive": []}, "ai": {"user_facing": true, "automated_decisions": false, "external_models": true}, "risk": {"level": "high"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "ai-validate-selected44",
+      "counsel_questions": ["Which EU AI and consumer transparency duties apply to the intended use?"],
+      "critical_controls": ["GRIM-STD-0004", "GRIM-STD-0043"]
+    },
+    {
+      "id": "california-subscription-automated-decisions",
+      "manifest": {"schema_version": 1, "project": {"name": "California Subscription Decisions", "lifecycle_stage": "BUILD_READY", "product_types": ["subscription-service"]}, "users": ["consumers"], "markets": ["California"], "platforms": ["web"], "stack": {"languages": ["typescript"], "frameworks": ["nextjs"], "services": ["billing"]}, "data": {"personal_data": true, "sensitive": ["behavioral"]}, "ai": {"user_facing": true, "automated_decisions": true, "external_models": true}, "risk": {"level": "critical"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "ai-build-selected45",
+      "counsel_questions": ["Which subscription, privacy, and automated-decision duties apply in California?"],
+      "critical_controls": ["GRIM-STD-0004", "GRIM-STD-0043"]
+    },
+    {
+      "id": "public-sector-accessible-service",
+      "manifest": {"schema_version": 1, "project": {"name": "Public Sector Accessible Service", "lifecycle_stage": "VERIFYING", "product_types": ["public-sector-service"]}, "users": ["public"], "markets": ["Canada"], "platforms": ["web"], "stack": {"languages": ["typescript"], "frameworks": ["react"], "services": []}, "data": {"personal_data": true, "sensitive": []}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "high"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": ["Which public-sector accessibility and service obligations apply?"],
+      "critical_controls": ["GRIM-STD-0003", "GRIM-STD-0045"]
+    },
+    {
+      "id": "api-platform",
+      "manifest": {"schema_version": 1, "project": {"name": "API Platform", "lifecycle_stage": "BUILDING", "product_types": ["api-platform"]}, "users": ["developers", "services"], "markets": ["Global"], "platforms": ["api"], "stack": {"languages": ["python"], "frameworks": ["fastapi"], "services": ["postgres"]}, "data": {"personal_data": true, "sensitive": []}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "high"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "standard", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": [],
+      "critical_controls": ["GRIM-STD-0017", "GRIM-STD-0022"]
+    },
+    {
+      "id": "marketplace-user-generated-content",
+      "manifest": {"schema_version": 1, "project": {"name": "Marketplace UGC", "lifecycle_stage": "BUILD_READY", "product_types": ["marketplace", "social-platform"]}, "users": ["buyers", "sellers"], "markets": ["Canada"], "platforms": ["web", "ios"], "stack": {"languages": ["typescript", "swift"], "frameworks": ["react", "swiftui"], "services": ["payments", "user-generated-content"]}, "data": {"personal_data": true, "sensitive": ["messages"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "high"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": ["Which marketplace, payments, content, and privacy duties apply?"],
+      "critical_controls": ["GRIM-STD-0005", "GRIM-STD-0025"]
+    },
+    {
+      "id": "connected-product",
+      "manifest": {"schema_version": 1, "project": {"name": "Connected Product", "lifecycle_stage": "BUILDING", "product_types": ["connected-product"]}, "users": ["consumers"], "markets": ["Canada"], "platforms": ["ios", "embedded"], "stack": {"languages": ["swift", "c"], "frameworks": ["swiftui"], "services": ["device-cloud"]}, "data": {"personal_data": true, "sensitive": ["device-telemetry"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "high"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": ["Which connected-device disclosure, update, and data duties apply?"],
+      "critical_controls": ["GRIM-STD-0024", "GRIM-STD-0025"]
+    },
+    {
+      "id": "internal-enterprise-tool",
+      "manifest": {"schema_version": 1, "project": {"name": "Internal Enterprise Tool", "lifecycle_stage": "BUILD_READY", "product_types": ["internal-enterprise-tool"]}, "users": ["employees"], "markets": ["Canada"], "platforms": ["web"], "stack": {"languages": ["typescript"], "frameworks": ["react"], "services": ["identity-provider"]}, "data": {"personal_data": true, "sensitive": ["employment"]}, "ai": {"user_facing": false, "automated_decisions": false, "external_models": false}, "risk": {"level": "moderate"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "standard", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "build-selected44",
+      "counsel_questions": ["Which employment privacy and monitoring duties apply?"],
+      "critical_controls": ["GRIM-STD-0022", "GRIM-STD-0025"]
+    },
+    {
+      "id": "agentic-automation-external-tools",
+      "manifest": {"schema_version": 1, "project": {"name": "Agentic Automation External Tools", "lifecycle_stage": "VERIFYING", "product_types": ["agentic-automation"]}, "users": ["operators"], "markets": ["Global"], "platforms": ["api"], "stack": {"languages": ["python"], "frameworks": ["agents-sdk"], "services": ["external-model", "external-tools"]}, "data": {"personal_data": true, "sensitive": []}, "ai": {"user_facing": true, "automated_decisions": true, "external_models": true}, "risk": {"level": "critical"}, "standards": {"version": "0.4.0"}, "zeref": {"mode": "strict", "cost_ceiling": "bounded"}, "unknowns": []},
+      "expected_profile": "ai-build-selected45",
+      "counsel_questions": ["Which automated-action, external-tool, and human-oversight duties apply?"],
+      "critical_controls": ["GRIM-STD-0043", "GRIM-STD-0045"]
+    }
+  ]
+}

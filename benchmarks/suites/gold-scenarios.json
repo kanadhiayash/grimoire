@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "suite_id": "gold-scenarios",
+  "sources": [
+    "benchmarks/scenarios/gold/scenarios.json",
+    "benchmarks/scenarios/gold/SOURCE_MANIFEST.json",
+    "src/grimoire/benchmarks/gold.py"
+  ],
+  "cases": [
+    {
+      "id": "gold-product-matrix",
+      "command": ["python3", "benchmarks/scenarios/gold/run.py"],
+      "hard_gate": true
+    }
+  ]
+}
