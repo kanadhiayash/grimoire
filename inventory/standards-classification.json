@@ -251,11 +251,11 @@
     },
     {
       "path": "standards/product-ux/design-development-handoff.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "product-ux",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.3"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0013"
     },
     {
       "path": "standards/product-ux/design-systems.md",
@@ -275,27 +275,27 @@
     },
     {
       "path": "standards/product-ux/heuristic-and-interface-quality.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "product-ux",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.3"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0014"
     },
     {
       "path": "standards/product-ux/product-design-operations.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "product-ux",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.3"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0015"
     },
     {
       "path": "standards/product-ux/ux-evidence.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "product-ux",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.3"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0016"
     },
     {
       "path": "standards/stacks/node-typescript.md",
