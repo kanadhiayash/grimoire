@@ -9,6 +9,13 @@ from .runner import (
 )
 from .gold import load_gold_scenarios, run_gold_scenarios
 from .trust_boundaries import run_trust_boundary_suite
+from .performance import (
+    compile_scale_dataset,
+    evaluate_scale_results,
+    generate_scale_dataset,
+    run_scale_benchmark,
+    verify_scale_pack,
+)
 
 __all__ = [
     "BenchmarkContractError",
@@ -18,5 +25,10 @@ __all__ = [
     "run_benchmark_suite",
     "run_gold_scenarios",
     "run_trust_boundary_suite",
+    "compile_scale_dataset",
+    "evaluate_scale_results",
+    "generate_scale_dataset",
+    "run_scale_benchmark",
+    "verify_scale_pack",
     "validate_benchmark_result",
 ]
