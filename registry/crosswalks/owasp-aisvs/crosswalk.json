@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "framework": {
+    "id": "owasp-aisvs",
+    "title": "OWASP Artificial Intelligence Security Verification Standard",
+    "version": "1.0",
+    "version_lock": "1.0",
+    "official_url": "https://owasp.org/www-project-artificial-intelligence-security-verification-standard-aisvs-docs/",
+    "source_license": "CC-BY-SA-4.0",
+    "license_review": "identifiers-and-local-rationale-only",
+    "review_date": "2026-07-30",
+    "expires_on": "2027-01-30",
+    "assurance_boundary": "mapping_only"
+  },
+  "applicability": {
+    "ai_required": true
+  },
+  "known_external_ids": ["v1.0-C1.1.1", "v1.0-C2.1.1", "v1.0-C7.1.1", "v1.0-C9.1.1", "v1.0-C9.2.1", "v1.0-C9.3.1", "v1.0-C12.1.1"],
+  "mappings": [
+    {"external_id": "v1.0-C1.1.1", "grimoire_control_ids": ["GRIM-STD-0027"], "rationale": "AI product engineering requires versioned model, data, retrieval, and source provenance.", "evidence_classes": ["review", "artifact"]},
+    {"external_id": "v1.0-C2.1.1", "grimoire_control_ids": ["GRIM-STD-0027", "GRIM-STD-0031"], "rationale": "Context and input controls preserve bounded processing, validation, and uncertainty.", "evidence_classes": ["automated", "manual"]},
+    {"external_id": "v1.0-C7.1.1", "grimoire_control_ids": ["GRIM-STD-0031"], "rationale": "Output claims remain tied to sources and unavailable evidence remains unverified.", "evidence_classes": ["automated", "manual"]},
+    {"external_id": "v1.0-C9.1.1", "grimoire_control_ids": ["GRIM-STD-0033"], "rationale": "Model, tool, context, and cost routing retain explicit limits.", "evidence_classes": ["automated", "review"]},
+    {"external_id": "v1.0-C9.2.1", "grimoire_control_ids": ["GRIM-STD-0027"], "rationale": "Consequential and external actions retain explicit human approval and stop conditions.", "evidence_classes": ["manual", "review"]},
+    {"external_id": "v1.0-C9.3.1", "grimoire_control_ids": ["GRIM-STD-0034"], "rationale": "Orchestrator and runtime ownership preserve bounded tools and approval responsibilities.", "evidence_classes": ["manual", "artifact"]},
+    {"external_id": "v1.0-C12.1.1", "grimoire_control_ids": ["GRIM-STD-0036"], "rationale": "Observability provides diagnostic evidence while redacting sensitive inputs and outputs.", "evidence_classes": ["automated", "review"]}
+  ]
+}
