@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Grimoire Exclusions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["controls"],
+  "properties": {
+    "controls": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^GRIM-STD-[0-9]{4}$"}
+    }
+  }
+}

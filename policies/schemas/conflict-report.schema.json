@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Grimoire Conflict Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["conflicts", "status"],
+  "properties": {
+    "conflicts": {"type": "array", "items": {"type": "object"}},
+    "status": {"enum": ["PASS", "BLOCKED"]}
+  }
+}

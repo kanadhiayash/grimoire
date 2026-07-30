@@ -20,6 +20,9 @@ REQUIRED_FILES = (
     "VERIFICATION_PLAN.md",
     "SOURCE_MANIFEST.json",
     "ZEREF_EXECUTION_PROFILE.json",
+    "CONTROL_TRACE.json",
+    "CONFLICT_REPORT.json",
+    "EXCLUSIONS.json",
     "EXECUTION_RECEIPT.json",
 )
 MODES = {"offline", "connected", "release"}
@@ -127,6 +130,33 @@ def verify_project_pack(
             "generated_at"
         ):
             _add(reason_codes, "timestamp_mismatch")
+
+    if "CONTROL_TRACE.json" in actual:
+        try:
+            trace = _load_json(root / "CONTROL_TRACE.json")
+            controls = trace.get("controls") if isinstance(trace, dict) else None
+            completeness = trace.get("trace_completeness") if isinstance(trace, dict) else None
+            if not isinstance(controls, list) or not isinstance(completeness, dict):
+                _add(reason_codes, "invalid_control_trace")
+            elif (
+                completeness.get("status") != "PASS"
+                or completeness.get("actual") != len(controls)
+                or completeness.get("expected") != len(controls)
+            ):
+                _add(reason_codes, "incomplete_control_trace")
+            elif any(
+                not isinstance(control, dict)
+                or not isinstance(control.get("standard_id"), str)
+                or not isinstance(control.get("version"), str)
+                or not isinstance(control.get("state"), str)
+                or not isinstance(control.get("reason_codes"), list)
+                or not isinstance(control.get("predicate_trace"), dict)
+                or not isinstance(control.get("provenance"), dict)
+                for control in controls
+            ):
+                _add(reason_codes, "invalid_control_trace")
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            _add(reason_codes, "invalid_control_trace")
 
     return _result(reason_codes, mode)
 
