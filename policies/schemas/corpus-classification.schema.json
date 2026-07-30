@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Grimoire Standards Corpus Classification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "documents"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "classification", "domain", "owner", "review_status", "migration_target"],
+        "properties": {
+          "path": {"type": "string", "pattern": "^standards/.+\\.md$"},
+          "classification": {"enum": ["NORMATIVE", "LEGACY_NORMATIVE", "GUIDANCE", "TEMPLATE", "EXAMPLE", "DRAFT", "SUPERSEDED"]},
+          "domain": {"type": "string", "minLength": 1},
+          "owner": {"type": "string", "minLength": 1},
+          "review_status": {"type": "string", "minLength": 1},
+          "migration_target": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

@@ -187,6 +187,8 @@
     "applicability_gold_scenarios": "benchmarks/scenarios/phase3-applicability",
     "control_trace_schema": "policies/schemas/control-trace.schema.json",
     "project_trace_explainer": "scripts/project_explain.py",
+    "corpus_classification": "inventory/standards-classification.json",
+    "corpus_classification_check": "checks/corpus_classification_check.py",
     "project_manifest_model": "src/grimoire/models/manifest.py",
     "project_manifest_validator": "src/grimoire/validation/manifest.py",
     "context_renderer": "src/grimoire/compiler/context.py",
