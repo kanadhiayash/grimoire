@@ -83,11 +83,11 @@
     },
     {
       "path": "standards/engineering/api-integration.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "api",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.8"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0022"
     },
     {
       "path": "standards/engineering/architecture.md",
