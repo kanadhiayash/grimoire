@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "project": {"name": "Consumer Mobile", "lifecycle_stage": "BUILDING", "product_types": ["consumer-mobile"]},
+  "users": ["authenticated"],
+  "markets": ["Canada"],
+  "platforms": ["ios", "android"],
+  "stack": {"languages": ["swift"], "frameworks": ["swiftui"], "services": []},
+  "data": {"personal_data": true, "sensitive": ["location"]},
+  "ai": {"user_facing": false, "automated_decisions": false, "external_models": false},
+  "risk": {"level": "high"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "strict", "cost_ceiling": "bounded"},
+  "unknowns": []
+}
