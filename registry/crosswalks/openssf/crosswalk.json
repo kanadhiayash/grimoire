@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "framework": {
+    "id": "openssf-scorecard",
+    "title": "OpenSSF Scorecard",
+    "version": "5.5.0",
+    "version_lock": "5.5.0",
+    "official_url": "https://github.com/ossf/scorecard/releases/tag/v5.5.0",
+    "source_license": "Apache-2.0",
+    "license_review": "summary-identifiers-only",
+    "review_date": "2026-07-30",
+    "expires_on": "2027-01-30",
+    "assurance_boundary": "mapping_only"
+  },
+  "applicability": {},
+  "known_external_ids": [
+    "Binary-Artifacts",
+    "Branch-Protection",
+    "CI-Tests",
+    "Code-Review",
+    "Dangerous-Workflow",
+    "Dependency-Update-Tool",
+    "Pinned-Dependencies",
+    "SAST",
+    "Signed-Releases",
+    "Vulnerabilities"
+  ],
+  "mappings": [
+    {"external_id": "Binary-Artifacts", "grimoire_control_ids": ["GRIM-STD-0044"], "rationale": "Repository and release records distinguish reviewed source from generated binary artifacts.", "evidence_classes": ["automated", "review", "artifact"]},
+    {"external_id": "Branch-Protection", "grimoire_control_ids": ["GRIM-STD-0042"], "rationale": "Protected delivery paths require current platform configuration and review evidence.", "evidence_classes": ["automated", "platform", "review"]},
+    {"external_id": "CI-Tests", "grimoire_control_ids": ["GRIM-STD-0039"], "rationale": "CI checks must be observed on the exact revision and reviewed in context.", "evidence_classes": ["automated", "review", "artifact"]},
+    {"external_id": "Code-Review", "grimoire_control_ids": ["GRIM-STD-0040"], "rationale": "Focused change review preserves approval scope and exact-revision evidence.", "evidence_classes": ["manual", "review", "artifact"]},
+    {"external_id": "Dangerous-Workflow", "grimoire_control_ids": ["GRIM-STD-0039"], "rationale": "Workflow permissions and trust boundaries require source inspection plus current execution evidence.", "evidence_classes": ["automated", "manual", "review"]},
+    {"external_id": "Dependency-Update-Tool", "grimoire_control_ids": ["GRIM-STD-0024"], "rationale": "Automated dependency updates remain subject to pinning, review, and compatibility tests.", "evidence_classes": ["automated", "review"]},
+    {"external_id": "Pinned-Dependencies", "grimoire_control_ids": ["GRIM-STD-0024", "GRIM-STD-0039"], "rationale": "Dependency and workflow references are pinned and reviewed before use.", "evidence_classes": ["automated", "review"]},
+    {"external_id": "SAST", "grimoire_control_ids": ["GRIM-STD-0025", "GRIM-STD-0039"], "rationale": "Static analysis contributes defensive evidence but requires triage and cannot certify security.", "evidence_classes": ["automated", "review", "artifact"]},
+    {"external_id": "Signed-Releases", "grimoire_control_ids": ["GRIM-STD-0044", "GRIM-STD-0045"], "rationale": "Release signatures and provenance are reviewed artifacts within the release-readiness gate.", "evidence_classes": ["automated", "review", "artifact"]},
+    {"external_id": "Vulnerabilities", "grimoire_control_ids": ["GRIM-STD-0024", "GRIM-STD-0025"], "rationale": "Dependency findings require defensive review and accountable disposition.", "evidence_classes": ["automated", "review", "artifact"]}
+  ]
+}
