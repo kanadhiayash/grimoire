@@ -13,7 +13,7 @@ if str(SRC) not in sys.path:
 
 from grimoire.errors import ManifestValidationError  # noqa: E402
 from grimoire.models.manifest import RiskConfig, ValidatedManifest  # noqa: E402
-from scripts.project_orchestrator import compile_project, validate_manifest
+from scripts.project_orchestrator import OUTPUT_FILES, compile_project, validate_manifest
 
 
 class ProjectOrchestratorTests(unittest.TestCase):
@@ -43,7 +43,7 @@ class ProjectOrchestratorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)
             receipt = compile_project(self.valid_manifest(), output)
-            expected = {"AI_CONTEXT.md", "CONTROL_PACK.json", "PROJECT_STATUS.json", "EXPECTED_OUTCOMES.md", "REQUIRED_DOCUMENTS.md", "DOCUMENT_SCHEMAS.json", "REQUIRED_GATES.md", "ACCEPTANCE_MATRIX.md", "VERIFICATION_PLAN.md", "SOURCE_MANIFEST.json", "ZEREF_EXECUTION_PROFILE.json", "EXECUTION_RECEIPT.json"}
+            expected = set(OUTPUT_FILES)
             self.assertEqual({path.name for path in output.iterdir()}, expected)
             self.assertEqual(receipt["pack_generation_status"], "PASS")
             self.assertEqual(receipt["status"], "NOT_VERIFIED")
@@ -159,7 +159,7 @@ class ProjectOrchestratorTests(unittest.TestCase):
                 0,
                 msg=f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}",
             )
-            self.assertEqual(len(list(output.iterdir())), 12)
+            self.assertEqual(len(list(output.iterdir())), len(OUTPUT_FILES))
 
 
 if __name__ == "__main__":

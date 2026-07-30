@@ -110,6 +110,18 @@ def build_project_verify_command(*, directory: str, mode: str = "offline") -> li
     ]
 
 
+def build_project_explain_command(*, directory: str, standard_id: str) -> list[str]:
+    return [
+        sys.executable,
+        "scripts/project_explain.py",
+        "--directory",
+        directory,
+        "--standard-id",
+        standard_id,
+        "--json",
+    ]
+
+
 def check_steps() -> list[tuple[str, Sequence[str]]]:
     python = sys.executable
     return [
@@ -172,6 +184,10 @@ def parser() -> argparse.ArgumentParser:
     project_verify = project_subparsers.add_parser("verify", help="Verify one generated project context pack")
     project_verify.add_argument("--directory", required=True)
     project_verify.add_argument("--mode", choices=["offline", "connected", "release"], default="offline")
+    project_explain = project_subparsers.add_parser("explain", help="Explain one stored control decision")
+    project_explain.add_argument("--directory", required=True)
+    project_explain.add_argument("--standard-id", required=True)
+    project_explain.add_argument("--json", action="store_true")
 
     pack = subparsers.add_parser("pack", help="Compile or verify browser packs")
     pack_subparsers = pack.add_subparsers(dest="pack_action", required=True)
@@ -207,10 +223,15 @@ def main() -> int:
                 deterministic=args.deterministic,
                 generated_at=args.generated_at,
             )
-        else:
+        elif args.project_action == "verify":
             command = build_project_verify_command(
                 directory=args.directory,
                 mode=args.mode,
+            )
+        else:
+            command = build_project_explain_command(
+                directory=args.directory,
+                standard_id=args.standard_id,
             )
         return subprocess.run(command, cwd=ROOT, check=False).returncode
     if args.command == "pack":

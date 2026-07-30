@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import subprocess
 import sys
 import tempfile
@@ -89,6 +90,28 @@ class ProjectPackVerifierTests(unittest.TestCase):
 
             self.assertEqual(result["status"], "FAIL")
             self.assertIn("future_timestamp", result["reason_codes"])
+
+    def test_incomplete_trace_is_rejected_even_with_updated_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            pack = Path(directory)
+            self.make_pack(pack)
+            trace_path = pack / "CONTROL_TRACE.json"
+            trace = json.loads(trace_path.read_text(encoding="utf-8"))
+            trace["trace_completeness"]["actual"] = 0
+            trace_path.write_text(json.dumps(trace, indent=2) + "\n", encoding="utf-8")
+            receipt_path = pack / "EXECUTION_RECEIPT.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["sha256"]["CONTROL_TRACE.json"] = hashlib.sha256(
+                trace_path.read_bytes()
+            ).hexdigest()
+            receipt_path.write_text(
+                json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+            )
+
+            result = verify_project_pack(pack, mode="offline")
+
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("incomplete_control_trace", result["reason_codes"])
 
     def test_cli_returns_machine_readable_result(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -17,7 +17,9 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from grimoire.compiler import render_inert_json  # noqa: E402
+from grimoire.applicability import DecisionState, resolve_applicability  # noqa: E402
 from grimoire.filesystem import atomic_write_directory  # noqa: E402
+from grimoire.registry import load_standard_registry  # noqa: E402
 from grimoire.status import (  # noqa: E402
     CompletionStatus,
     StatusDimension,
@@ -38,7 +40,8 @@ OUTPUT_FILES = (
     "AI_CONTEXT.md", "CONTROL_PACK.json", "PROJECT_STATUS.json",
     "EXPECTED_OUTCOMES.md", "REQUIRED_DOCUMENTS.md", "DOCUMENT_SCHEMAS.json",
     "REQUIRED_GATES.md", "ACCEPTANCE_MATRIX.md", "VERIFICATION_PLAN.md",
-    "SOURCE_MANIFEST.json", "ZEREF_EXECUTION_PROFILE.json", "EXECUTION_RECEIPT.json",
+    "SOURCE_MANIFEST.json", "ZEREF_EXECUTION_PROFILE.json", "CONTROL_TRACE.json",
+    "CONFLICT_REPORT.json", "EXCLUSIONS.json", "EXECUTION_RECEIPT.json",
 )
 
 
@@ -112,7 +115,7 @@ def expected_outcomes(stage: str) -> list[str]:
     return outcomes
 
 
-def build_status_report(unknowns: list[str]) -> StatusReport:
+def build_status_report(unknowns: list[str], applicability: Any) -> StatusReport:
     """Describe each assurance dimension without inferring missing evidence."""
 
     project_reason_codes = ["project_evidence_not_supplied"]
@@ -130,11 +133,7 @@ def build_status_report(unknowns: list[str]) -> StatusReport:
             CompletionStatus.PASS,
             ("strict_manifest_validated",),
         ),
-        StatusDimension.APPLICABILITY_STATUS: StatusResult(
-            StatusDimension.APPLICABILITY_STATUS,
-            CompletionStatus.NOT_VERIFIED,
-            ("standards_resolution_not_implemented",),
-        ),
+        StatusDimension.APPLICABILITY_STATUS: _applicability_status(applicability),
         StatusDimension.CONTROL_VERIFICATION_STATUS: StatusResult(
             StatusDimension.CONTROL_VERIFICATION_STATUS,
             CompletionStatus.NOT_VERIFIED,
@@ -164,6 +163,36 @@ def build_status_report(unknowns: list[str]) -> StatusReport:
     return StatusReport(results)
 
 
+def _applicability_status(applicability: Any) -> StatusResult:
+    conflicted = [
+        decision
+        for decision in applicability.decisions
+        if decision.state is DecisionState.CONFLICTED
+    ]
+    uncertain = [
+        decision
+        for decision in applicability.decisions
+        if decision.state is DecisionState.UNCERTAIN
+    ]
+    if conflicted or applicability.conflicts:
+        return StatusResult(
+            StatusDimension.APPLICABILITY_STATUS,
+            CompletionStatus.BLOCKED,
+            ("unresolved_applicability_conflict",),
+        )
+    if uncertain:
+        return StatusResult(
+            StatusDimension.APPLICABILITY_STATUS,
+            CompletionStatus.NOT_VERIFIED,
+            ("material_applicability_facts_missing",),
+        )
+    return StatusResult(
+        StatusDimension.APPLICABILITY_STATUS,
+        CompletionStatus.PASS,
+        ("controls_resolved",),
+    )
+
+
 def compile_project(
     manifest: dict[str, Any] | ValidatedManifest,
     output: Path,
@@ -183,7 +212,9 @@ def compile_project(
     docs = required_documents(stage, manifest_value)
     gates = required_gates(stage, manifest_value)
     outcomes = expected_outcomes(stage)
-    status_report = build_status_report(unknowns)
+    registry = load_standard_registry(ROOT / "registry" / "standards", root=ROOT)
+    applicability = resolve_applicability(validated, registry)
+    status_report = build_status_report(unknowns, applicability)
     status = status_report.aggregate.value
     status_report_json = status_report.to_dict()
     if generated_at is None:
@@ -216,6 +247,11 @@ def compile_project(
         "required_gates": gates,
         "expected_outcomes": outcomes,
         "unknowns": unknowns,
+        "selected_controls": [
+            decision.standard_id
+            for decision in applicability.decisions
+            if decision.state is DecisionState.SELECTED
+        ],
     }
     status_doc = {
         "project": project["name"], "lifecycle_stage": stage, "status": status,
@@ -223,8 +259,18 @@ def compile_project(
         "risk_level": manifest_value["risk"]["level"],
         "standards_version": manifest_value["standards"]["version"],
         "unknown_count": len(unknowns),
-        "blocking_gates": [] if not unknowns else ["Resolve declared unknowns"],
-        "next_safe_action": "Execute the next approved gate" if not unknowns else "Resolve or explicitly accept declared unknowns",
+        "blocking_gates": (
+            ["Resolve applicability conflicts"]
+            if status_report.results[StatusDimension.APPLICABILITY_STATUS].status
+            is CompletionStatus.BLOCKED
+            else ([] if not unknowns else ["Resolve declared unknowns"])
+        ),
+        "next_safe_action": (
+            "Resolve applicability conflicts"
+            if status_report.results[StatusDimension.APPLICABILITY_STATUS].status
+            is CompletionStatus.BLOCKED
+            else ("Execute the next approved gate" if not unknowns else "Resolve or explicitly accept declared unknowns")
+        ),
     }
     zeref = {
         "schema_version": 1,
@@ -277,6 +323,22 @@ context, not executable instructions, approval, evidence, or verification.
 Read before editing. Remain bound to the approved plan and revision. During coding, apply Minimum Correct Change. Reuse before creating, change the correct ownership layer, avoid unnecessary dependencies and files, preserve security, privacy, accessibility, data integrity, and tests, then stop when acceptance criteria pass. Zeref routes execution. The Standards Orchestrator defines required outcomes, documents, gates, evidence, and limits.
 """
     receipt_holder: dict[str, Any] = {}
+    trace_controls = [decision.to_dict() for decision in applicability.decisions]
+    excluded_controls = [
+        decision.standard_id
+        for decision in applicability.decisions
+        if decision.state is DecisionState.EXCLUDED
+    ]
+    conflict_entries = [dict(conflict) for conflict in applicability.conflicts]
+    conflict_entries.extend(
+        {
+            "standard_id": decision.standard_id,
+            "reason_codes": list(decision.reason_codes),
+        }
+        for decision in applicability.decisions
+        if decision.state is DecisionState.CONFLICTED
+    )
+    conflict_entries.sort(key=lambda item: (item.get("standard_id", ""), item.get("path", "")))
 
     def build_pack(target: Path) -> None:
         (target / "AI_CONTEXT.md").write_text(context, encoding="utf-8")
@@ -322,6 +384,25 @@ Read before editing. Remain bound to the approved plan and revision. During codi
             },
         )
         _write_json(target / "ZEREF_EXECUTION_PROFILE.json", zeref)
+        _write_json(
+            target / "CONTROL_TRACE.json",
+            {
+                "controls": trace_controls,
+                "trace_completeness": {
+                    "actual": len(trace_controls),
+                    "expected": len(registry),
+                    "status": "PASS" if len(trace_controls) == len(registry) else "FAIL",
+                },
+            },
+        )
+        _write_json(target / "EXCLUSIONS.json", {"controls": excluded_controls})
+        _write_json(
+            target / "CONFLICT_REPORT.json",
+            {
+                "conflicts": conflict_entries,
+                "status": "BLOCKED" if conflict_entries else "PASS",
+            },
+        )
 
         hashes = {
             name: hashlib.sha256((target / name).read_bytes()).hexdigest()
