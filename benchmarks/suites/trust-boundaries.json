@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "suite_id": "trust-boundaries",
+  "sources": [
+    "src/grimoire/benchmarks/trust_boundaries.py",
+    "benchmarks/trust-boundaries/run.py"
+  ],
+  "cases": [
+    {
+      "id": "inert-local-trust-boundaries",
+      "command": ["python3", "benchmarks/trust-boundaries/run.py"],
+      "hard_gate": true
+    }
+  ]
+}
