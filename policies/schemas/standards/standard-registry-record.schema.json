@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Standard Registry Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "status",
+    "domain",
+    "requirement_level",
+    "title",
+    "owner",
+    "review_date",
+    "human_document",
+    "provenance",
+    "applicability"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^GRIM-STD-[0-9]{4}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "const": "normative"
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requirement_level": {
+      "enum": ["must", "should", "may", "must_not"]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "human_document": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_type", "source_id"],
+      "properties": {
+        "source_type": {
+          "enum": ["local_policy", "official_source", "approved_crosswalk"]
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "applicability": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "GRIM-STD-0005",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "legal-compliance",
+  "requirement_level": "must",
+  "title": "Global legal control plane",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-27",
+  "human_document": "standards/legal-compliance/global-legal-control-plane.md",
+  "provenance": {
+    "source_type": "local_policy",
+    "source_id": "standards/legal-compliance/global-legal-control-plane.md"
+  },
+  "applicability": {
+    "any": [
+      {
+        "field": "markets",
+        "op": "non_empty"
+      },
+      {
+        "field": "data.personal_data",
+        "op": "equals",
+        "value": true
+      }
+    ]
+  }
+}

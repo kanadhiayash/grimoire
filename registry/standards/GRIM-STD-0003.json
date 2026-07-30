@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0003",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "product-ux",
+  "requirement_level": "must",
+  "title": "Accessibility requirements",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-27",
+  "human_document": "standards/product-ux/accessibility.md",
+  "provenance": {
+    "source_type": "local_policy",
+    "source_id": "standards/product-ux/accessibility.md"
+  },
+  "applicability": {
+    "any": [
+      {
+        "field": "platforms",
+        "op": "non_empty"
+      }
+    ]
+  }
+}

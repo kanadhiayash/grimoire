@@ -11,6 +11,12 @@ from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from grimoire.registry import RegistryValidationError, load_standard_registry  # noqa: E402
+
 SEMVER = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 
 REQUIRED_FILES = (
@@ -29,6 +35,7 @@ REQUIRED_FILES = (
     "policies/baseline.json",
     "policies/ai-operations.json",
     "policies/schemas/ai-operations.schema.json",
+    "policies/schemas/standards/standard-registry-record.schema.json",
     "requirements/ci-schema.txt",
     "checks/json_schema_check.py",
     "profiles/minimal.json",
@@ -46,6 +53,11 @@ REQUIRED_FILES = (
     "templates/ai-operations/escalation-packet.md",
     "scripts/doctor.sh",
     "scripts/test.sh",
+    "registry/standards/GRIM-STD-0001.json",
+    "registry/standards/GRIM-STD-0002.json",
+    "registry/standards/GRIM-STD-0003.json",
+    "registry/standards/GRIM-STD-0004.json",
+    "registry/standards/GRIM-STD-0005.json",
     ".github/workflows/standards-ci.yml",
     ".github/CODEOWNERS",
 )
@@ -344,6 +356,23 @@ def check_ai_operations_policy() -> CheckResult:
     )
 
 
+def check_standard_registry() -> CheckResult:
+    try:
+        records = load_standard_registry(ROOT / "registry" / "standards", root=ROOT)
+    except RegistryValidationError as exc:
+        return CheckResult(
+            "standard registry",
+            False,
+            ", ".join(exc.reason_codes),
+        )
+
+    return CheckResult(
+        "standard registry",
+        True,
+        f"{len(records)} normative records",
+    )
+
+
 def iter_text_files() -> Iterable[Path]:
     excluded_parts = {
         ".git",
@@ -418,6 +447,7 @@ def run_checks() -> list[CheckResult]:
         check_standard_areas,
         check_adapters,
         check_ai_operations_policy,
+        check_standard_registry,
         check_secrets,
     )
     results: list[CheckResult] = []

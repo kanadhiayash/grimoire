@@ -1,0 +1,29 @@
+{
+  "id": "GRIM-STD-0004",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "ai-development",
+  "requirement_level": "must",
+  "title": "AI operations governance",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-27",
+  "human_document": "standards/ai-development/ai-operations-governance.md",
+  "provenance": {
+    "source_type": "local_policy",
+    "source_id": "standards/ai-development/ai-operations-governance.md"
+  },
+  "applicability": {
+    "any": [
+      {
+        "field": "ai.user_facing",
+        "op": "equals",
+        "value": true
+      },
+      {
+        "field": "ai.external_models",
+        "op": "equals",
+        "value": true
+      }
+    ]
+  }
+}
