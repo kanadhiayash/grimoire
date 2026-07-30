@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/grimoire/schemas/benchmarks/performance-result.schema.json",
+  "title": "Grimoire Performance Result",
+  "type": "object",
+  "required": ["schema_version", "benchmark_kind", "full_product_compiler_claim", "seed", "repeats", "datasets", "environment", "verdict", "target_control_count", "target_measured", "regressions", "memory_gate", "context_token_gate"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "benchmark_kind": {"const": "synthetic_control_scale_kernel"},
+    "full_product_compiler_claim": {"const": "NOT_VERIFIED"},
+    "seed": {"type": "integer", "minimum": 0},
+    "repeats": {"type": "integer", "minimum": 2},
+    "datasets": {"type": "array", "minItems": 1},
+    "environment": {"type": "object", "minProperties": 1},
+    "verdict": {"enum": ["PASS", "PARTIAL", "FAIL"]},
+    "target_control_count": {"const": 10000},
+    "target_measured": {"type": "boolean"},
+    "regressions": {"type": "array", "items": {"type": "string"}},
+    "memory_gate": {"enum": ["PASS", "FAIL", "NOT_VERIFIED"]},
+    "context_token_gate": {"enum": ["PASS", "FAIL", "NOT_VERIFIED"]}
+  }
+}

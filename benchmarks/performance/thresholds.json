@@ -1,0 +1,8 @@
+{
+  "target_control_count": 10000,
+  "compile_median_max_ms": 100.0,
+  "compile_p95_max_ms": 250.0,
+  "verify_max_ms": 500.0,
+  "memory_max_bytes": null,
+  "context_token_ceiling": null
+}

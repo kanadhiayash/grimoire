@@ -1,0 +1,61 @@
+name: Grimoire Performance
+
+on:
+  pull_request:
+    paths:
+      - "benchmarks/performance/**"
+      - "src/grimoire/benchmarks/performance.py"
+      - "tests/test_performance_scale.py"
+      - ".github/workflows/performance.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  fast-scale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Run supporting scale datasets
+        run: |
+          python3 benchmarks/performance/run.py \
+            --sizes 100 1000 \
+            --seed 20260730 \
+            --repeats 3 \
+            --output artifacts/performance/fast
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: performance-fast
+          path: artifacts/performance/fast
+          if-no-files-found: error
+          retention-days: 14
+
+  full-scale:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Run full scale matrix
+        run: |
+          python3 benchmarks/performance/run.py \
+            --sizes 100 1000 10000 50000 \
+            --seed 20260730 \
+            --repeats 7 \
+            --output artifacts/performance/full
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: performance-full
+          path: artifacts/performance/full
+          if-no-files-found: error
+          retention-days: 30
