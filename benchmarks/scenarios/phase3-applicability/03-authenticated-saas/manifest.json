@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "project": {"name": "B2B SaaS", "lifecycle_stage": "BUILD_READY", "product_types": ["b2b-saas"]},
+  "users": ["authenticated"],
+  "markets": ["Canada"],
+  "platforms": ["web"],
+  "stack": {"languages": ["python"], "frameworks": ["django"], "services": ["postgres"]},
+  "data": {"personal_data": true, "sensitive": []},
+  "ai": {"user_facing": false, "automated_decisions": false, "external_models": false},
+  "risk": {"level": "moderate"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "standard", "cost_ceiling": "bounded"},
+  "unknowns": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "project": {"name": "Fintech Mobile", "lifecycle_stage": "RELEASE_READY", "product_types": ["consumer-mobile"]},
+  "users": ["authenticated"],
+  "markets": ["Canada"],
+  "platforms": ["ios", "android"],
+  "stack": {"languages": ["kotlin"], "frameworks": ["compose"], "services": ["payments"]},
+  "data": {"personal_data": true, "sensitive": ["location"]},
+  "ai": {"user_facing": true, "automated_decisions": false, "external_models": true},
+  "risk": {"level": "critical"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "strict", "cost_ceiling": "bounded"},
+  "unknowns": []
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "project": {"name": "Public Analytics", "lifecycle_stage": "DEFINE", "product_types": ["marketing-site"]},
+  "users": ["public"],
+  "markets": ["Canada"],
+  "platforms": ["web"],
+  "stack": {"languages": ["typescript"], "frameworks": ["react"], "services": ["analytics"]},
+  "data": {"personal_data": false, "sensitive": []},
+  "ai": {"user_facing": false, "automated_decisions": false, "external_models": false},
+  "risk": {"level": "moderate"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "advisory", "cost_ceiling": "bounded"},
+  "unknowns": []
+}

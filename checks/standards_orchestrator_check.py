@@ -25,6 +25,8 @@ REQUIRED_FILES = [
     "src/grimoire/status.py",
     "src/grimoire/predicates/__init__.py",
     "src/grimoire/predicates/engine.py",
+    "src/grimoire/applicability/__init__.py",
+    "src/grimoire/applicability/resolver.py",
     "src/grimoire/validation/__init__.py",
     "src/grimoire/validation/manifest.py",
     "standards/universal/standard-authoring.md",

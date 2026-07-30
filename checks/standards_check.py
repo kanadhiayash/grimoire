@@ -47,6 +47,7 @@ REQUIRED_FILES = (
     "docs/architecture/0002-ai-operations-control-plane.md",
     "docs/architecture/0010-runtime-schema-validation.md",
     "docs/architecture/0011-declarative-predicate-language.md",
+    "docs/architecture/0017-applicability-resolution.md",
     "docs/adapters/ai-operations-adapter-contract.md",
     "templates/ai-operations/mission-packet.md",
     "templates/ai-operations/approval-record.md",
@@ -62,6 +63,8 @@ REQUIRED_FILES = (
     "registry/standards/GRIM-STD-0005.json",
     "src/grimoire/predicates/__init__.py",
     "src/grimoire/predicates/engine.py",
+    "src/grimoire/applicability/__init__.py",
+    "src/grimoire/applicability/resolver.py",
     ".github/workflows/standards-ci.yml",
     ".github/CODEOWNERS",
 )
