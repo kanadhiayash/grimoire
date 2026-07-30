@@ -115,11 +115,11 @@
     },
     {
       "path": "standards/engineering/dependency-management.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "security",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.10"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0024"
     },
     {
       "path": "standards/engineering/frontend-client.md",
@@ -155,11 +155,11 @@
     },
     {
       "path": "standards/engineering/security-red-team.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "security",
       "owner": "Standards Orchestrator",
-      "review_status": "DEFENSIVE_REVIEW_REQUIRED",
-      "migration_target": "phase4.10"
+      "review_status": "DEFENSIVE_BOUNDARY_RETAINED",
+      "migration_target": "GRIM-STD-0025"
     },
     {
       "path": "standards/engineering/system-layering.md",

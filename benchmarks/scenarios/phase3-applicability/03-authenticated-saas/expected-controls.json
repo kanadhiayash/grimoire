@@ -21,7 +21,9 @@
     "GRIM-STD-0020",
     "GRIM-STD-0021",
     "GRIM-STD-0022",
-    "GRIM-STD-0023"
+    "GRIM-STD-0023",
+    "GRIM-STD-0024",
+    "GRIM-STD-0025"
   ],
   "excluded": [
     "GRIM-STD-0004"
