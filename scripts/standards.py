@@ -128,6 +128,7 @@ def check_steps() -> list[tuple[str, Sequence[str]]]:
         ("grimoire doctor", [python, "checks/standards_check.py"]),
         ("surface activation", [python, "checks/surface_activation_check.py"]),
         ("repository index", [python, "checks/repository_index_check.py"]),
+        ("corpus classification", [python, "checks/corpus_classification_check.py"]),
         ("standards orchestrator", [python, "checks/standards_orchestrator_check.py"]),
         ("unit tests", [python, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", "-v"]),
         (
@@ -246,9 +247,9 @@ def main() -> int:
 
     steps = check_steps()
     if args.command == "doctor":
-        steps = steps[:4]
+        steps = steps[:5]
     elif args.command == "test":
-        steps = steps[4:5]
+        steps = steps[5:6]
     results = run_steps(steps, ROOT)
     report = {"status": "PASS" if all(item["exit_code"] == 0 for item in results) else "FAIL", "results": results}
     if getattr(args, "json_output", None):

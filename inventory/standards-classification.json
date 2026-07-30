@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "documents": [
+    {
+      "path": "standards/ai-development/agent-operating-contract.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/ai-agent-product-engineering.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/ai-operations-governance.md",
+      "classification": "NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0004"
+    },
+    {
+      "path": "standards/ai-development/browser-project-source-packs.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/context-loading.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/cross-surface-activation.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/hallucination-controls.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/implementation.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/model-routing.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/ai-development/zeref-orchestrator-integration.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "ai-agents",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.11"
+    },
+    {
+      "path": "standards/engineering/api-integration.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "api",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.8"
+    },
+    {
+      "path": "standards/engineering/architecture.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "architecture",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.6"
+    },
+    {
+      "path": "standards/engineering/backend-data.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "backend-data",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.9"
+    },
+    {
+      "path": "standards/engineering/cloud-reliability-cost.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "cloud-cost",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.12"
+    },
+    {
+      "path": "standards/engineering/dependency-management.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "security",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.10"
+    },
+    {
+      "path": "standards/engineering/frontend-client.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "frontend",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.7"
+    },
+    {
+      "path": "standards/engineering/minimum-correct-change.md",
+      "classification": "NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0002"
+    },
+    {
+      "path": "standards/engineering/observability.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "cloud-cost",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.12"
+    },
+    {
+      "path": "standards/engineering/performance.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "cloud-cost",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.12"
+    },
+    {
+      "path": "standards/engineering/security-red-team.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "security",
+      "owner": "Standards Orchestrator",
+      "review_status": "DEFENSIVE_REVIEW_REQUIRED",
+      "migration_target": "phase4.10"
+    },
+    {
+      "path": "standards/engineering/system-layering.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "architecture",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.6"
+    },
+    {
+      "path": "standards/engineering/testing.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.2"
+    },
+    {
+      "path": "standards/github/branches.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/github/ci-cd.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/github/code-review.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/github/commits.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/github/git-delivery-operations.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/github/pull-requests.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/github/releases.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/legal-compliance/global-legal-control-plane.md",
+      "classification": "NORMATIVE",
+      "domain": "legal-privacy",
+      "owner": "Standards Orchestrator",
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0005"
+    },
+    {
+      "path": "standards/product-ux/accessibility.md",
+      "classification": "NORMATIVE",
+      "domain": "accessibility",
+      "owner": "Standards Orchestrator",
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0003"
+    },
+    {
+      "path": "standards/product-ux/design-development-handoff.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "product-ux",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.3"
+    },
+    {
+      "path": "standards/product-ux/design-systems.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "design-systems",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.5"
+    },
+    {
+      "path": "standards/product-ux/design-token-and-figma-conventions.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "design-systems",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.5"
+    },
+    {
+      "path": "standards/product-ux/heuristic-and-interface-quality.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "product-ux",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.3"
+    },
+    {
+      "path": "standards/product-ux/product-design-operations.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "product-ux",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.3"
+    },
+    {
+      "path": "standards/product-ux/ux-evidence.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "product-ux",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.3"
+    },
+    {
+      "path": "standards/stacks/node-typescript.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "stack-overlays",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "ADR_REQUIRED_STACK_OVERLAYS"
+    },
+    {
+      "path": "standards/stacks/python.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "stack-overlays",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "ADR_REQUIRED_STACK_OVERLAYS"
+    },
+    {
+      "path": "standards/stacks/react-native-expo.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "stack-overlays",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "ADR_REQUIRED_STACK_OVERLAYS"
+    },
+    {
+      "path": "standards/stacks/swiftui-ios.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "stack-overlays",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "ADR_REQUIRED_STACK_OVERLAYS"
+    },
+    {
+      "path": "standards/universal/change-discipline.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.2"
+    },
+    {
+      "path": "standards/universal/documentation.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.2"
+    },
+    {
+      "path": "standards/universal/naming-and-placement.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.2"
+    },
+    {
+      "path": "standards/universal/priority-severity-risk.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.2"
+    },
+    {
+      "path": "standards/universal/release-readiness.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "git-release",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.13"
+    },
+    {
+      "path": "standards/universal/source-discipline.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.2"
+    },
+    {
+      "path": "standards/universal/standard-authoring.md",
+      "classification": "LEGACY_NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "MIGRATION_REQUIRED",
+      "migration_target": "phase4.2"
+    },
+    {
+      "path": "standards/universal/verification.md",
+      "classification": "NORMATIVE",
+      "domain": "universal-governance",
+      "owner": "Standards Orchestrator",
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0001"
+    }
+  ]
+}
