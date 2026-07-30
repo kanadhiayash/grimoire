@@ -7,11 +7,14 @@ from .runner import (
     run_benchmark_suite,
     validate_benchmark_result,
 )
+from .gold import load_gold_scenarios, run_gold_scenarios
 
 __all__ = [
     "BenchmarkContractError",
     "compare_benchmark_results",
     "load_benchmark_suite",
+    "load_gold_scenarios",
     "run_benchmark_suite",
+    "run_gold_scenarios",
     "validate_benchmark_result",
 ]

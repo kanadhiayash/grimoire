@@ -210,6 +210,7 @@
     "predicate_schema": "policies/schemas/predicates/predicate.schema.json",
     "applicability_resolver": "src/grimoire/applicability/resolver.py",
     "applicability_gold_scenarios": "benchmarks/scenarios/phase3-applicability",
+    "benchmark_gold_product_scenarios": "benchmarks/scenarios/gold",
     "control_trace_schema": "policies/schemas/control-trace.schema.json",
     "project_trace_explainer": "scripts/project_explain.py",
     "corpus_classification": "inventory/standards-classification.json",
