@@ -123,11 +123,11 @@
     },
     {
       "path": "standards/engineering/frontend-client.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "frontend",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.7"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0021"
     },
     {
       "path": "standards/engineering/minimum-correct-change.md",
