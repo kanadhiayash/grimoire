@@ -19,6 +19,10 @@ AI_POLICY = ROOT / "policies" / "ai-operations.json"
 AI_SCHEMA = SCHEMA_ROOT / "ai-operations.schema.json"
 PROJECT_TEMPLATE = ROOT / "templates" / "project" / "project.json"
 PROJECT_SCHEMA = SCHEMA_ROOT / "project-manifest.schema.json"
+STANDARD_REGISTRY = ROOT / "registry" / "standards"
+STANDARD_SCHEMA = SCHEMA_ROOT / "standards" / "standard-registry-record.schema.json"
+SOURCE_REGISTRY = ROOT / "registry" / "sources"
+SOURCE_SCHEMA = SCHEMA_ROOT / "standards" / "source-record.schema.json"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "schema" / "ai-operations"
 EXPECTED_JSONSCHEMA_VERSION = "4.26.0"
 
@@ -70,7 +74,7 @@ def validate() -> list[str]:
         )
         return failures
 
-    for path in sorted(SCHEMA_ROOT.glob("*.json")):
+    for path in sorted(SCHEMA_ROOT.rglob("*.json")):
         schema = load_json(path)
         if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
             failures.append(
@@ -105,6 +109,30 @@ def validate() -> list[str]:
             f"{PROJECT_TEMPLATE.relative_to(ROOT)} "
             f"{json_path(list(error.path))}: {error.validator}"
         )
+
+    standard_validator = Draft202012Validator(load_json(STANDARD_SCHEMA))
+    for path in sorted(STANDARD_REGISTRY.rglob("*.json")):
+        value = load_json(path)
+        for error in sorted(
+            standard_validator.iter_errors(value),
+            key=lambda item: (list(item.path), item.validator or ""),
+        ):
+            failures.append(
+                f"{path.relative_to(ROOT)} {json_path(list(error.path))}: "
+                f"{error.validator}"
+            )
+
+    source_validator = Draft202012Validator(load_json(SOURCE_SCHEMA))
+    for path in sorted(SOURCE_REGISTRY.rglob("*.json")):
+        value = load_json(path)
+        for error in sorted(
+            source_validator.iter_errors(value),
+            key=lambda item: (list(item.path), item.validator or ""),
+        ):
+            failures.append(
+                f"{path.relative_to(ROOT)} {json_path(list(error.path))}: "
+                f"{error.validator}"
+            )
 
     for path in sorted((FIXTURE_ROOT / "valid").glob("*.json")):
         fixture = load_json(path)

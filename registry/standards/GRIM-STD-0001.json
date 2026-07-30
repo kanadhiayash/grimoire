@@ -10,9 +10,19 @@
   "human_document": "standards/universal/verification.md",
   "provenance": {
     "source_type": "local_policy",
-    "source_id": "standards/universal/verification.md"
+    "source_id": "SRC-UG-VERIFICATION"
   },
   "applicability": {
     "all": []
+  },
+  "contract": {
+    "expected_outcomes": ["Applicable work has current, proportionate verification evidence."],
+    "required_actions": ["Define verification before implementation and report exact results."],
+    "expected_documents": ["Verification plan or completion report."],
+    "acceptance": ["Applicable checks pass or failures are reported exactly."],
+    "verification": ["Run the selected test, check, build, or review command."],
+    "evidence": ["Command, exit code, output, and any manual-review record."],
+    "failure_conditions": ["Completion is claimed without applicable evidence."],
+    "exceptions": ["Record an approved exception with scope, owner, review date, and expiry."]
   }
 }

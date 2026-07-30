@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0012",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal-governance",
+  "requirement_level": "must",
+  "title": "Testing evidence",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-30",
+  "human_document": "standards/engineering/testing.md",
+  "provenance": {"source_type": "local_policy", "source_id": "SRC-UG-TESTING"},
+  "applicability": {"all": []},
+  "contract": {
+    "expected_outcomes": ["Tests prove intended behavior at a credible layer."],
+    "required_actions": ["Add proportionate tests and preserve defect regressions."],
+    "expected_documents": ["Test fixture or documented justification for a test deletion."],
+    "acceptance": ["A new behavior test fails for the claimed defect before the fix when practical."],
+    "verification": ["Run focused tests followed by broader checks when integration risk requires."],
+    "evidence": ["Raw test output and a stable regression fixture."],
+    "failure_conditions": ["Flaky tests are normalized or failing tests are deleted without analysis."],
+    "exceptions": ["Document why a regression test is impractical and the alternate verification."]
+  }
+}

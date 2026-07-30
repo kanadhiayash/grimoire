@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 from types import MappingProxyType
@@ -31,6 +31,23 @@ REQUIRED_FIELDS = {
     "provenance",
     "applicability",
 }
+SOURCE_RECORD_REQUIRED_FIELDS = {
+    "id",
+    "source_type",
+    "path",
+    "review_date",
+    "expires_on",
+}
+UNIVERSAL_GOVERNANCE_CONTRACT_FIELDS = {
+    "expected_outcomes",
+    "required_actions",
+    "expected_documents",
+    "acceptance",
+    "verification",
+    "evidence",
+    "failure_conditions",
+    "exceptions",
+}
 
 
 class RegistryValidationError(ValueError):
@@ -56,12 +73,18 @@ class StandardRecord:
     human_document: str
     provenance: Mapping[str, str]
     applicability: Mapping[str, Any]
+    contract: Mapping[str, Any] = field(default_factory=dict)
 
     @classmethod
     def from_json(cls, value: Mapping[str, Any]) -> "StandardRecord":
         provenance = value["provenance"]
         applicability = value["applicability"]
-        if not isinstance(provenance, dict) or not isinstance(applicability, dict):
+        contract = value.get("contract", {})
+        if (
+            not isinstance(provenance, dict)
+            or not isinstance(applicability, dict)
+            or not isinstance(contract, dict)
+        ):
             raise RegistryValidationError({"type_mismatch"})
         return cls(
             id=str(value["id"]),
@@ -77,10 +100,11 @@ class StandardRecord:
                 {str(key): str(item) for key, item in provenance.items()}
             ),
             applicability=MappingProxyType(dict(applicability)),
+            contract=MappingProxyType(dict(contract)),
         )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "id": self.id,
             "version": self.version,
             "status": self.status,
@@ -93,10 +117,84 @@ class StandardRecord:
             "provenance": dict(self.provenance),
             "applicability": dict(self.applicability),
         }
+        if self.contract:
+            result["contract"] = dict(self.contract)
+        return result
 
 
 def _load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _parse_date(value: Any) -> date | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
+def _load_source_records(root: Path) -> Mapping[str, Mapping[str, str]]:
+    """Load reviewed source records when a registry is present.
+
+    Source records are deliberately separate from legal sources.  They bind a
+    local policy record to its human-readable canonical document without
+    treating the document itself as unreviewed input.
+    """
+
+    source_dir = root / "registry" / "sources"
+    if not source_dir.exists():
+        return MappingProxyType({})
+    if not source_dir.is_dir():
+        raise RegistryValidationError({"source_registry_invalid"})
+
+    records: dict[str, Mapping[str, str]] = {}
+    reasons: set[str] = set()
+    for path in sorted(source_dir.rglob("*.json")):
+        try:
+            document = _load_json(path)
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            reasons.add("source_registry_invalid")
+            continue
+        entries = document.get("sources") if isinstance(document, dict) else None
+        if document.get("schema_version") != 1 or not isinstance(entries, list):
+            reasons.add("source_registry_invalid")
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict) or SOURCE_RECORD_REQUIRED_FIELDS - set(entry):
+                reasons.add("source_registry_invalid")
+                continue
+            source_id = entry.get("id")
+            source_type = entry.get("source_type")
+            source_path = entry.get("path")
+            review_date = _parse_date(entry.get("review_date"))
+            expires_on = _parse_date(entry.get("expires_on"))
+            if (
+                not isinstance(source_id, str)
+                or not source_id
+                or source_id in records
+                or source_type not in SOURCE_TYPES
+                or not isinstance(source_path, str)
+                or not _path_inside(root, source_path)
+                or not (root / source_path).is_file()
+                or review_date is None
+                or expires_on is None
+                or expires_on < review_date
+            ):
+                reasons.add("source_registry_invalid")
+                continue
+            records[source_id] = MappingProxyType(
+                {
+                    "source_type": source_type,
+                    "path": source_path,
+                    "review_date": review_date.isoformat(),
+                    "expires_on": expires_on.isoformat(),
+                }
+            )
+    if reasons:
+        raise RegistryValidationError(reasons)
+    return MappingProxyType(records)
 
 
 def _path_inside(root: Path, relative: str) -> bool:
@@ -108,7 +206,13 @@ def _path_inside(root: Path, relative: str) -> bool:
     return resolved == root_resolved or root_resolved in resolved.parents
 
 
-def _validate_record(value: Any, *, root: Path, seen: set[str]) -> StandardRecord:
+def _validate_record(
+    value: Any,
+    *,
+    root: Path,
+    seen: set[str],
+    source_records: Mapping[str, Mapping[str, str]],
+) -> StandardRecord:
     reasons: set[str] = set()
     if not isinstance(value, dict):
         raise RegistryValidationError({"type_mismatch"})
@@ -153,6 +257,17 @@ def _validate_record(value: Any, *, root: Path, seen: set[str]) -> StandardRecor
         "source_id"
     ):
         reasons.add("missing_provenance")
+    else:
+        source = source_records.get(provenance["source_id"])
+        if source is None and source_records:
+            reasons.add("missing_source_record")
+        elif source is not None and (
+            source["source_type"] != provenance["source_type"]
+            or source["path"] != value.get("human_document")
+        ):
+            reasons.add("source_provenance_mismatch")
+        elif source is not None and date.fromisoformat(source["expires_on"]) < date.today():
+            reasons.add("expired_source_review")
 
     human_document = value.get("human_document")
     if not isinstance(human_document, str):
@@ -174,6 +289,15 @@ def _validate_record(value: Any, *, root: Path, seen: set[str]) -> StandardRecor
         except PredicateValidationError:
             reasons.add("invalid_applicability")
 
+    contract = value.get("contract")
+    if value.get("domain") == "universal-governance":
+        if not isinstance(contract, dict) or set(contract) != UNIVERSAL_GOVERNANCE_CONTRACT_FIELDS:
+            reasons.add("invalid_contract")
+        elif any(not isinstance(contract[key], list) or not contract[key] for key in UNIVERSAL_GOVERNANCE_CONTRACT_FIELDS):
+            reasons.add("invalid_contract")
+    elif contract is not None and not isinstance(contract, dict):
+        reasons.add("invalid_contract")
+
     if reasons:
         raise RegistryValidationError(reasons)
 
@@ -194,10 +318,16 @@ def load_standard_registry(
     records: dict[str, StandardRecord] = {}
     seen: set[str] = set()
     reason_codes: set[str] = set()
-    for path in sorted(registry_dir.glob("*.json")):
+    source_records = _load_source_records(root)
+    for path in sorted(registry_dir.rglob("*.json")):
         try:
             value = _load_json(path)
-            record = _validate_record(value, root=root, seen=seen)
+            record = _validate_record(
+                value,
+                root=root,
+                seen=seen,
+                source_records=source_records,
+            )
         except (OSError, UnicodeError, json.JSONDecodeError):
             reason_codes.add("invalid_json")
             continue

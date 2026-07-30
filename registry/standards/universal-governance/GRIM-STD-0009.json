@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0009",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal-governance",
+  "requirement_level": "must",
+  "title": "Priority severity risk and evidence taxonomy",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-30",
+  "human_document": "standards/universal/priority-severity-risk.md",
+  "provenance": {"source_type": "local_policy", "source_id": "SRC-UG-PRIORITY-SEVERITY-RISK"},
+  "applicability": {"all": []},
+  "contract": {
+    "expected_outcomes": ["Priority, severity, risk, evidence confidence, and gate effect remain distinct."],
+    "required_actions": ["Record the prescribed metadata for P0 and material risks."],
+    "expected_documents": ["Issue or risk record with owner, trigger, mitigation, and residual risk."],
+    "acceptance": ["Gate effect is stated without substituting priority for evidence."],
+    "verification": ["Review issue and risk metadata for all required dimensions."],
+    "evidence": ["Timestamped record and linked verification evidence."],
+    "failure_conditions": ["Urgency, impact, uncertainty, and release blocking are collapsed into one label."],
+    "exceptions": ["Document a taxonomy exception and compensating review control."]
+  }
+}

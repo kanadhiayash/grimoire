@@ -67,6 +67,37 @@
     },
     "applicability": {
       "type": "object"
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_outcomes",
+        "required_actions",
+        "expected_documents",
+        "acceptance",
+        "verification",
+        "evidence",
+        "failure_conditions",
+        "exceptions"
+      ],
+      "properties": {
+        "expected_outcomes": {"$ref": "#/$defs/nonEmptyStrings"},
+        "required_actions": {"$ref": "#/$defs/nonEmptyStrings"},
+        "expected_documents": {"$ref": "#/$defs/nonEmptyStrings"},
+        "acceptance": {"$ref": "#/$defs/nonEmptyStrings"},
+        "verification": {"$ref": "#/$defs/nonEmptyStrings"},
+        "evidence": {"$ref": "#/$defs/nonEmptyStrings"},
+        "failure_conditions": {"$ref": "#/$defs/nonEmptyStrings"},
+        "exceptions": {"$ref": "#/$defs/nonEmptyStrings"}
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
     }
   }
 }

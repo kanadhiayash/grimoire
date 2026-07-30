@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {"id": "SRC-UG-VERIFICATION", "source_type": "local_policy", "path": "standards/universal/verification.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"},
+    {"id": "SRC-UG-MINIMUM-CORRECT-CHANGE", "source_type": "local_policy", "path": "standards/engineering/minimum-correct-change.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"},
+    {"id": "SRC-UG-CHANGE-DISCIPLINE", "source_type": "local_policy", "path": "standards/universal/change-discipline.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-UG-DOCUMENTATION", "source_type": "local_policy", "path": "standards/universal/documentation.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-UG-NAMING-AND-PLACEMENT", "source_type": "local_policy", "path": "standards/universal/naming-and-placement.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-UG-PRIORITY-SEVERITY-RISK", "source_type": "local_policy", "path": "standards/universal/priority-severity-risk.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-UG-SOURCE-DISCIPLINE", "source_type": "local_policy", "path": "standards/universal/source-discipline.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-UG-STANDARD-AUTHORING", "source_type": "local_policy", "path": "standards/universal/standard-authoring.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-UG-TESTING", "source_type": "local_policy", "path": "standards/engineering/testing.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-FOUNDATION-ACCESSIBILITY", "source_type": "local_policy", "path": "standards/product-ux/accessibility.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"},
+    {"id": "SRC-FOUNDATION-AI-OPERATIONS", "source_type": "local_policy", "path": "standards/ai-development/ai-operations-governance.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"},
+    {"id": "SRC-FOUNDATION-LEGAL", "source_type": "local_policy", "path": "standards/legal-compliance/global-legal-control-plane.md", "review_date": "2026-07-27", "expires_on": "2027-07-27"}
+  ]
+}

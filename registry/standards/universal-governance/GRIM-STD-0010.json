@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0010",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal-governance",
+  "requirement_level": "must",
+  "title": "Source discipline",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-30",
+  "human_document": "standards/universal/source-discipline.md",
+  "provenance": {"source_type": "local_policy", "source_id": "SRC-UG-SOURCE-DISCIPLINE"},
+  "applicability": {"all": []},
+  "contract": {
+    "expected_outcomes": ["Decisions distinguish facts, assumptions, unknowns, risks, and conflicts."],
+    "required_actions": ["Preserve exact commands, paths, values, and current-source evidence."],
+    "expected_documents": ["Evidence or decision record for material claims."],
+    "acceptance": ["Present-day and external authority claims are verified before use."],
+    "verification": ["Inspect cited source and recorded command evidence."],
+    "evidence": ["Observed source, test, log, or trusted documentation reference."],
+    "failure_conditions": ["An unverified claim is promoted as authority or public fact."],
+    "exceptions": ["Keep a clearly labeled assumption with an owner and review trigger."]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0011",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal-governance",
+  "requirement_level": "must",
+  "title": "Standard authoring contract",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-30",
+  "human_document": "standards/universal/standard-authoring.md",
+  "provenance": {"source_type": "local_policy", "source_id": "SRC-UG-STANDARD-AUTHORING"},
+  "applicability": {"all": []},
+  "contract": {
+    "expected_outcomes": ["A reader can determine applicability, output, evidence, and escalation without hidden context."],
+    "required_actions": ["Provide all required authoring sections and unambiguous requirement vocabulary."],
+    "expected_documents": ["Normative standard following the standard authoring template."],
+    "acceptance": ["Required sections, provenance, ownership, review cycle, examples, and anti-patterns are present."],
+    "verification": ["Validate the standard against the authoring contract and registry schema."],
+    "evidence": ["Schema-valid record, linked human document, and source record."],
+    "failure_conditions": ["Mandatory behavior is hidden behind ambiguous vocabulary or missing evidence."],
+    "exceptions": ["Record an approved exception with rule ID, scope, risk, control, owner, and expiry."]
+  }
+}

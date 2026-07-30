@@ -1,0 +1,23 @@
+{
+  "id": "GRIM-STD-0007",
+  "version": "1.0.0",
+  "status": "normative",
+  "domain": "universal-governance",
+  "requirement_level": "must",
+  "title": "Documentation truthfulness",
+  "owner": "Standards Orchestrator",
+  "review_date": "2026-07-30",
+  "human_document": "standards/universal/documentation.md",
+  "provenance": {"source_type": "local_policy", "source_id": "SRC-UG-DOCUMENTATION"},
+  "applicability": {"all": []},
+  "contract": {
+    "expected_outcomes": ["A new contributor can safely understand, run, and verify the project."],
+    "required_actions": ["Document current supported behavior and known limits."],
+    "expected_documents": ["Purpose, setup, architecture, verification, and change history documentation."],
+    "acceptance": ["Commands are exercised or labeled NOT_VERIFIED."],
+    "verification": ["Run documented commands in a clean environment when practical."],
+    "evidence": ["Command output or an explicit NOT_VERIFIED annotation."],
+    "failure_conditions": ["Aspirational behavior is described as complete."],
+    "exceptions": ["Record a time-bounded documentation exception and remediation owner."]
+  }
+}
