@@ -18,6 +18,8 @@
     {"id": "SRC-PUX-OPERATIONS", "source_type": "local_policy", "path": "standards/product-ux/product-design-operations.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-PUX-EVIDENCE", "source_type": "local_policy", "path": "standards/product-ux/ux-evidence.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
     {"id": "SRC-DS-GOVERNANCE", "source_type": "local_policy", "path": "standards/product-ux/design-systems.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
-    {"id": "SRC-DS-TOKENS", "source_type": "local_policy", "path": "standards/product-ux/design-token-and-figma-conventions.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
+    {"id": "SRC-DS-TOKENS", "source_type": "local_policy", "path": "standards/product-ux/design-token-and-figma-conventions.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-ARCH-DECISIONS", "source_type": "local_policy", "path": "standards/engineering/architecture.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"},
+    {"id": "SRC-ARCH-LAYERING", "source_type": "local_policy", "path": "standards/engineering/system-layering.md", "review_date": "2026-07-30", "expires_on": "2027-07-30"}
   ]
 }
