@@ -23,6 +23,8 @@ STANDARD_REGISTRY = ROOT / "registry" / "standards"
 STANDARD_SCHEMA = SCHEMA_ROOT / "standards" / "standard-registry-record.schema.json"
 SOURCE_REGISTRY = ROOT / "registry" / "sources"
 SOURCE_SCHEMA = SCHEMA_ROOT / "standards" / "source-record.schema.json"
+CROSSWALK_REGISTRY = ROOT / "registry" / "crosswalks"
+CROSSWALK_SCHEMA = SCHEMA_ROOT / "standards" / "crosswalk.schema.json"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "schema" / "ai-operations"
 EXPECTED_JSONSCHEMA_VERSION = "4.26.0"
 
@@ -127,6 +129,18 @@ def validate() -> list[str]:
         value = load_json(path)
         for error in sorted(
             source_validator.iter_errors(value),
+            key=lambda item: (list(item.path), item.validator or ""),
+        ):
+            failures.append(
+                f"{path.relative_to(ROOT)} {json_path(list(error.path))}: "
+                f"{error.validator}"
+            )
+
+    crosswalk_validator = Draft202012Validator(load_json(CROSSWALK_SCHEMA))
+    for path in sorted(CROSSWALK_REGISTRY.rglob("*.json")):
+        value = load_json(path)
+        for error in sorted(
+            crosswalk_validator.iter_errors(value),
             key=lambda item: (list(item.path), item.validator or ""),
         ):
             failures.append(

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "framework": {
+    "id": "nist-ssdf",
+    "title": "NIST Secure Software Development Framework",
+    "version": "1.1",
+    "version_lock": "1.1",
+    "official_url": "https://csrc.nist.gov/pubs/sp/800/218/final",
+    "source_license": "NIST-publication-terms",
+    "license_review": "summary-identifiers-only",
+    "review_date": "2026-07-30",
+    "expires_on": "2027-01-30",
+    "assurance_boundary": "mapping_only"
+  },
+  "applicability": {},
+  "known_external_ids": ["PO.1.1", "PO.3.1", "PS.1.1", "PW.1.1", "PW.4.1", "PW.7.1", "PW.8.1", "RV.1.1", "RV.2.1", "RV.3.1"],
+  "mappings": [
+    {"external_id": "PO.1.1", "grimoire_control_ids": ["GRIM-STD-0006"], "rationale": "Governance roles and change ownership support organizational preparation.", "evidence_classes": ["review"]},
+    {"external_id": "PO.3.1", "grimoire_control_ids": ["GRIM-STD-0042"], "rationale": "Delivery operations preserve tooling, approvals, provenance, and rollback decisions.", "evidence_classes": ["review", "artifact"]},
+    {"external_id": "PS.1.1", "grimoire_control_ids": ["GRIM-STD-0024"], "rationale": "Dependency records support protection of software components and supply inputs.", "evidence_classes": ["automated", "review"]},
+    {"external_id": "PW.1.1", "grimoire_control_ids": ["GRIM-STD-0019"], "rationale": "Architecture decisions record design boundaries before implementation.", "evidence_classes": ["review"]},
+    {"external_id": "PW.4.1", "grimoire_control_ids": ["GRIM-STD-0040"], "rationale": "Focused review checks implementation against defined requirements.", "evidence_classes": ["manual"]},
+    {"external_id": "PW.7.1", "grimoire_control_ids": ["GRIM-STD-0012"], "rationale": "Risk-based testing verifies executable behavior changes.", "evidence_classes": ["automated", "manual"]},
+    {"external_id": "PW.8.1", "grimoire_control_ids": ["GRIM-STD-0039"], "rationale": "CI runs deterministic active-profile verification on exact changes.", "evidence_classes": ["automated", "artifact"]},
+    {"external_id": "RV.1.1", "grimoire_control_ids": ["GRIM-STD-0025"], "rationale": "Defensive review identifies residual risks without authorizing live exploitation.", "evidence_classes": ["review"]},
+    {"external_id": "RV.2.1", "grimoire_control_ids": ["GRIM-STD-0045"], "rationale": "Release readiness blocks unresolved critical findings and retains recovery evidence.", "evidence_classes": ["review", "artifact"]},
+    {"external_id": "RV.3.1", "grimoire_control_ids": ["GRIM-STD-0036"], "rationale": "Operational signals support diagnosis and response without exposing sensitive data.", "evidence_classes": ["automated", "manual"]}
+  ]
+}
