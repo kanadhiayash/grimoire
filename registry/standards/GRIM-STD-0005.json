@@ -2,11 +2,11 @@
   "id": "GRIM-STD-0005",
   "version": "1.0.0",
   "status": "normative",
-  "domain": "legal-compliance",
+  "domain": "legal-privacy",
   "requirement_level": "must",
   "title": "Global legal control plane",
   "owner": "Standards Orchestrator",
-  "review_date": "2026-07-27",
+  "review_date": "2026-07-30",
   "human_document": "standards/legal-compliance/global-legal-control-plane.md",
   "provenance": {
     "source_type": "local_policy",
@@ -23,6 +23,34 @@
         "op": "equals",
         "value": true
       }
+    ]
+  },
+  "contract": {
+    "expected_outcomes": [
+      "Potentially applicable authority, required controls, unknown facts, evidence, and legal-review boundaries are explicit."
+    ],
+    "required_actions": [
+      "Classify authority, resolve applicability inputs, compile triggered controls and documents, preserve source dates, and escalate high-risk or uncertain scope."
+    ],
+    "expected_documents": [
+      "Applicable notices, inventories, assessments, retention schedules, incident plans, rights processes, and release attestations."
+    ],
+    "acceptance": [
+      "Official sources remain canonical, guidance is not promoted to binding law, and jurisdiction-specific review remains visible."
+    ],
+    "verification": [
+      "Review authority class, source freshness, applicability facts, triggered controls, unknowns, and counsel escalation."
+    ],
+    "evidence": [
+      "Source records, applicability report, document inventory, review receipt, and unresolved legal questions."
+    ],
+    "failure_conditions": [
+      "Automated output uses COMPLIANT as a final legal status.",
+      "A proposal, trend, translation, or guidance source is silently treated as binding law."
+    ],
+    "exceptions": [
+      "Legal templates remain drafts requiring jurisdiction-specific qualified review.",
+      "No automated result constitutes legal advice or a global compliance certification."
     ]
   }
 }
