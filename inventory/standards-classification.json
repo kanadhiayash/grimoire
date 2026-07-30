@@ -179,59 +179,59 @@
     },
     {
       "path": "standards/github/branches.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0038"
     },
     {
       "path": "standards/github/ci-cd.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0039"
     },
     {
       "path": "standards/github/code-review.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0040"
     },
     {
       "path": "standards/github/commits.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0041"
     },
     {
       "path": "standards/github/git-delivery-operations.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0042"
     },
     {
       "path": "standards/github/pull-requests.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0043"
     },
     {
       "path": "standards/github/releases.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0044"
     },
     {
       "path": "standards/legal-compliance/global-legal-control-plane.md",
@@ -363,11 +363,11 @@
     },
     {
       "path": "standards/universal/release-readiness.md",
-      "classification": "LEGACY_NORMATIVE",
+      "classification": "NORMATIVE",
       "domain": "git-release",
       "owner": "Standards Orchestrator",
-      "review_status": "MIGRATION_REQUIRED",
-      "migration_target": "phase4.13"
+      "review_status": "CURRENT",
+      "migration_target": "GRIM-STD-0045"
     },
     {
       "path": "standards/universal/source-discipline.md",

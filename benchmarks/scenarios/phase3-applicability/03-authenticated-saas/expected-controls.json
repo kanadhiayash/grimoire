@@ -35,7 +35,15 @@
     "GRIM-STD-0034",
     "GRIM-STD-0035",
     "GRIM-STD-0036",
-    "GRIM-STD-0037"
+    "GRIM-STD-0037",
+    "GRIM-STD-0038",
+    "GRIM-STD-0039",
+    "GRIM-STD-0040",
+    "GRIM-STD-0041",
+    "GRIM-STD-0042",
+    "GRIM-STD-0043",
+    "GRIM-STD-0044",
+    "GRIM-STD-0045"
   ],
   "excluded": [
     "GRIM-STD-0004"
