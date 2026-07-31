@@ -10,6 +10,64 @@ permissions:
   contents: read
 
 jobs:
+  runtime-matrix:
+    name: runtime (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Check out exact requested commit
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up matrix Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Record exact environment
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python scripts/write_ci_environment.py \
+            --output artifacts/matrix/environment.json \
+            --expected-sha "$EXPECTED_SHA"
+
+      - name: Run strict manifest compatibility
+        run: |
+          python benchmarks/manifest_validation/strict_500.py \
+            --cases 500 \
+            --seed 20260727 \
+            --output artifacts/matrix/strict-500.json
+
+      - name: Run deterministic fuzz subset
+        run: |
+          python benchmarks/fuzz/manifest_fuzz.py \
+            --cases 200 \
+            --seed 20260727 \
+            --output artifacts/matrix/fuzz
+
+      - name: Run dependency-free Grimoire check
+        run: |
+          python scripts/grimoire.py check \
+            --json-output artifacts/matrix/grimoire-check.json
+
+      - name: Upload matrix environment and results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: matrix-environment-${{ matrix.os }}-py${{ matrix.python }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/matrix
+          if-no-files-found: error
+          retention-days: 14
+
   conformance:
     runs-on: ubuntu-latest
     timeout-minutes: 10
