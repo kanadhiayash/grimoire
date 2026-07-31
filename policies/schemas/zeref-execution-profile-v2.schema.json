@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/zeref-execution-profile-v2.schema.json",
+  "title": "Grimoire Zeref Execution Profile v2",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "grimoire_version",
+    "pack_hash_algorithm",
+    "pack_hash",
+    "project",
+    "plan",
+    "scope",
+    "mode",
+    "required_controls",
+    "required_documents",
+    "acceptance_criteria",
+    "tools",
+    "approvals",
+    "execution",
+    "memory",
+    "expected_receipt",
+    "constraint_trace"
+  ],
+  "properties": {
+    "schema_id": {"const": "grimoire.zeref.profile.v2"},
+    "schema_version": {"const": "2.0"},
+    "grimoire_version": {"type": "string", "minLength": 1},
+    "pack_hash_algorithm": {"const": "sha256-framed-pack-v1"},
+    "pack_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "project": {
+      "type": "object",
+      "required": ["repository", "commit"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"}
+      },
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "revision": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "scope": {"$ref": "#/$defs/scope"},
+    "mode": {"enum": ["advisory", "standard", "strict", "off"]},
+    "required_controls": {"$ref": "#/$defs/nonemptyStrings"},
+    "required_documents": {"$ref": "#/$defs/strings"},
+    "acceptance_criteria": {"$ref": "#/$defs/strings"},
+    "tools": {
+      "type": "object",
+      "required": ["permitted", "prohibited"],
+      "properties": {
+        "permitted": {"$ref": "#/$defs/nonemptyStrings"},
+        "prohibited": {"$ref": "#/$defs/nonemptyStrings"}
+      },
+      "additionalProperties": false
+    },
+    "approvals": {
+      "type": "object",
+      "required": ["required_for"],
+      "properties": {
+        "required_for": {
+          "type": "array",
+          "allOf": [
+            {"$ref": "#/$defs/nonemptyStrings"},
+            {
+              "contains": {"const": "merge"}
+            },
+            {
+              "contains": {"const": "deploy"}
+            },
+            {
+              "contains": {"const": "publish"}
+            },
+            {
+              "contains": {"const": "external_send"}
+            },
+            {
+              "contains": {"const": "destructive_change"}
+            },
+            {
+              "contains": {"const": "credential_change"}
+            },
+            {
+              "contains": {"const": "canonical_memory_write"}
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "stop_conditions",
+        "cost_ceiling",
+        "retry_ceiling",
+        "model_routing",
+        "lead_roles",
+        "support_roles_max"
+      ],
+      "properties": {
+        "stop_conditions": {"$ref": "#/$defs/nonemptyStrings"},
+        "cost_ceiling": {"type": "string", "minLength": 1},
+        "retry_ceiling": {"type": "integer", "minimum": 0, "maximum": 10},
+        "model_routing": {"const": "zeref_owned_lowest_cost_capable"},
+        "lead_roles": {"const": 1},
+        "support_roles_max": {"type": "integer", "minimum": 0, "maximum": 3}
+      },
+      "additionalProperties": false
+    },
+    "memory": {
+      "type": "object",
+      "required": ["canonical_promotion"],
+      "properties": {
+        "canonical_promotion": {"const": "approval_required_single_writer"}
+      },
+      "additionalProperties": false
+    },
+    "expected_receipt": {
+      "type": "object",
+      "required": ["schema_id", "expiry_seconds"],
+      "properties": {
+        "schema_id": {"const": "grimoire.zeref.receipt.v1"},
+        "expiry_seconds": {"type": "integer", "minimum": 60, "maximum": 86400}
+      },
+      "additionalProperties": false
+    },
+    "constraint_trace": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["constraint", "source"],
+        "properties": {
+          "constraint": {"type": "string", "minLength": 1},
+          "source": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "strings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "nonemptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "scope": {
+      "type": "object",
+      "required": ["approved", "excluded"],
+      "properties": {
+        "approved": {"$ref": "#/$defs/nonemptyStrings"},
+        "excluded": {"$ref": "#/$defs/nonemptyStrings"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

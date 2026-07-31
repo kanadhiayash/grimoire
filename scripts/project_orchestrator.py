@@ -20,6 +20,11 @@ from grimoire.compiler import render_inert_json  # noqa: E402
 from grimoire.applicability import DecisionState, resolve_applicability  # noqa: E402
 from grimoire.filesystem import atomic_write_directory  # noqa: E402
 from grimoire.registry import load_standard_registry  # noqa: E402
+from grimoire.zeref import (  # noqa: E402
+    ProfileValidationError,
+    build_profile_v2,
+    canonical_pack_hash,
+)
 from grimoire.status import (  # noqa: E402
     CompletionStatus,
     StatusDimension,
@@ -199,6 +204,7 @@ def compile_project(
     *,
     deterministic: bool = False,
     generated_at: str | None = None,
+    zeref_contract: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     validated = validate_manifest(
         manifest.to_dict()
@@ -383,7 +389,6 @@ Read before editing. Remain bound to the approved plan and revision. During codi
                 "legal_compliance_claim": "FORBIDDEN_WITHOUT_QUALIFIED_REVIEW",
             },
         )
-        _write_json(target / "ZEREF_EXECUTION_PROFILE.json", zeref)
         _write_json(
             target / "CONTROL_TRACE.json",
             {
@@ -403,6 +408,26 @@ Read before editing. Remain bound to the approved plan and revision. During codi
                 "status": "BLOCKED" if conflict_entries else "PASS",
             },
         )
+        if zeref_contract is None:
+            _write_json(target / "ZEREF_EXECUTION_PROFILE.json", zeref)
+        else:
+            profile = build_profile_v2(
+                zeref_contract,
+                pack_hash=canonical_pack_hash(target),
+                required_controls=control["selected_controls"],
+                required_documents=docs,
+                acceptance_criteria=outcomes,
+                stop_conditions=zeref["execution"]["stop_on"],
+                grimoire_version=(ROOT / "VERSION").read_text(
+                    encoding="utf-8"
+                ).strip(),
+                mode=manifest_value["zeref"]["mode"],
+                cost_ceiling=manifest_value["zeref"]["cost_ceiling"],
+            )
+            _write_json(
+                target / "ZEREF_EXECUTION_PROFILE.json",
+                profile.to_dict(),
+            )
 
         hashes = {
             name: hashlib.sha256((target / name).read_bytes()).hexdigest()
@@ -430,6 +455,10 @@ def main() -> int:
     parser.add_argument("--output", required=True)
     parser.add_argument("--deterministic", action="store_true")
     parser.add_argument("--generated-at")
+    parser.add_argument(
+        "--zeref-contract",
+        help="JSON plan binding used to emit Zeref execution profile v2",
+    )
     args = parser.parse_args()
     try:
         receipt = compile_project(
@@ -437,9 +466,37 @@ def main() -> int:
             Path(args.output),
             deterministic=args.deterministic,
             generated_at=args.generated_at,
+            zeref_contract=(
+                json.loads(Path(args.zeref_contract).read_text(encoding="utf-8"))
+                if args.zeref_contract
+                else None
+            ),
         )
     except ManifestValidationError as exc:
         print(_json(exc.to_dict()), end="", file=sys.stderr)
+        return 2
+    except (
+        ProfileValidationError,
+        OSError,
+        UnicodeError,
+        json.JSONDecodeError,
+    ) as exc:
+        reason_codes = (
+            list(exc.reason_codes)
+            if isinstance(exc, ProfileValidationError)
+            else ["invalid_contract_document"]
+        )
+        print(
+            _json(
+                {
+                    "status": "INVALID",
+                    "error_code": "GRIM_ZEREF_PROFILE_INVALID",
+                    "reason_codes": reason_codes,
+                }
+            ),
+            end="",
+            file=sys.stderr,
+        )
         return 2
     print(_json(receipt), end="")
     return 0
