@@ -227,6 +227,8 @@
     "project_status_model": "src/grimoire/status.py",
     "safe_filesystem_layer": "src/grimoire/filesystem",
     "project_status_schema": "policies/schemas/project-status.schema.json",
+    "zeref_execution_profile_v2_schema": "policies/schemas/zeref-execution-profile-v2.schema.json",
+    "zeref_execution_profile_v2_model": "src/grimoire/zeref/profile.py",
     "execution_receipt_schema": "policies/schemas/execution-receipt.schema.json",
     "ci_schema_lock": "requirements/ci-schema.txt",
     "ci_schema_check": "checks/json_schema_check.py",
