@@ -161,33 +161,41 @@ class ZerefProfileV2Tests(unittest.TestCase):
         self.assertIn("invalid_grimoire_version", raised.exception.reason_codes)
 
     def test_cli_contract_failure_is_controlled_and_does_not_promote_pack(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            contract = root / "contract.json"
-            output = root / "pack"
-            contract.write_text('{"plan_id":', encoding="utf-8")
-            completed = __import__("subprocess").run(
-                [
-                    sys.executable,
-                    "scripts/project_orchestrator.py",
-                    "--manifest",
-                    "templates/project/project.json",
-                    "--output",
-                    str(output),
-                    "--zeref-contract",
-                    str(contract),
-                ],
-                cwd=ROOT,
-                text=True,
-                capture_output=True,
-                check=False,
-            )
-        self.assertEqual(completed.returncode, 2)
-        self.assertFalse(output.exists())
-        diagnostic = json.loads(completed.stderr)
-        self.assertEqual(diagnostic["status"], "INVALID")
-        self.assertEqual(diagnostic["error_code"], "GRIM_ZEREF_PROFILE_INVALID")
-        self.assertNotIn("Traceback", completed.stderr)
+        for contract_text, reason in (
+            ('{"plan_id":', "invalid_contract_document"),
+            ("[]", "invalid_binding"),
+        ):
+            with self.subTest(reason=reason), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                contract = root / "contract.json"
+                output = root / "pack"
+                contract.write_text(contract_text, encoding="utf-8")
+                completed = __import__("subprocess").run(
+                    [
+                        sys.executable,
+                        "scripts/project_orchestrator.py",
+                        "--manifest",
+                        "templates/project/project.json",
+                        "--output",
+                        str(output),
+                        "--zeref-contract",
+                        str(contract),
+                    ],
+                    cwd=ROOT,
+                    text=True,
+                    capture_output=True,
+                    check=False,
+                )
+                self.assertEqual(completed.returncode, 2)
+                self.assertFalse(output.exists())
+                diagnostic = json.loads(completed.stderr)
+                self.assertEqual(diagnostic["status"], "INVALID")
+                self.assertEqual(
+                    diagnostic["error_code"],
+                    "GRIM_ZEREF_PROFILE_INVALID",
+                )
+                self.assertIn(reason, diagnostic["reason_codes"])
+                self.assertNotIn("Traceback", completed.stderr)
 
     def test_compiler_emits_reproducible_profile_v2(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

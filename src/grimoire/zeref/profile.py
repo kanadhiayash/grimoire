@@ -131,6 +131,8 @@ def build_profile_v2(
 ) -> ZerefExecutionProfileV2:
     """Validate a plan binding and build a deterministic profile v2."""
 
+    if not isinstance(binding, Mapping):
+        raise ProfileValidationError(("invalid_binding",))
     reasons: set[str] = set()
     required = (
         "plan_id",
