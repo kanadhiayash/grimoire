@@ -14,12 +14,16 @@ project manifest
 
 The primary run cannot prove itself. It remains `PARTIAL` with
 `ZEREF_EXECUTION_STATUS=NOT_VERIFIED`. A separate reviewer must rerun the same
-exact-commit inputs and produce a detached attestation before the scoped pilot
-can report `PASS`.
+exact-commit inputs and produce a detached attestation before contract
+reproduction can report `PASS`. The overall pilot remains `PARTIAL` and
+`ZEREF_EXECUTION_STATUS=NOT_VERIFIED` because matching local artifacts do not
+provide an execution trust anchor.
 
-The attestation is an audit record. It does not provide cryptographic reviewer
-identity, change Zeref internals, promote memory, use credentials, deploy,
-publish, or claim that Zeref is a standalone harness.
+The attestation is an audit record. It proves only a matching deterministic
+contract reproduction from inspected inputs. It does not provide cryptographic
+reviewer identity, prove Zeref execution, change Zeref internals, promote
+memory, use credentials, deploy, publish, or claim that Zeref is a standalone
+harness.
 
 ## Run
 
@@ -33,8 +37,8 @@ python3 benchmarks/zeref-pilot/run.py run \
   --timestamp "$PILOT_TIMESTAMP"
 ```
 
-Run the same command into a separate output directory from a clean checkout,
-then attest and verify:
+Run the same command from a separately created clean clone into a separate
+output directory, then attest and verify:
 
 ```bash
 python3 benchmarks/zeref-pilot/run.py run \

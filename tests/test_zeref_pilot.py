@@ -40,7 +40,9 @@ class ZerefEndToEndPilotTests(unittest.TestCase):
         self.assertEqual(result["zeref_execution_status"], "NOT_VERIFIED")
         self.assertIn("independent_reproduction_required", result["reason_codes"])
 
-    def test_separate_reproduction_attestation_completes_scoped_pilot(self) -> None:
+    def test_reproduction_cannot_prove_zeref_execution_without_anchor(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "pilot"
             reproduction = Path(directory) / "reproduction"
@@ -77,8 +79,13 @@ class ZerefEndToEndPilotTests(unittest.TestCase):
                 attestation,
                 now=self.now,
             )
-        self.assertEqual(result["pilot_status"], "PASS")
-        self.assertEqual(result["zeref_execution_status"], "PASS")
+        self.assertEqual(result["pilot_status"], "PARTIAL")
+        self.assertEqual(result["contract_reproduction_status"], "PASS")
+        self.assertEqual(result["zeref_execution_status"], "NOT_VERIFIED")
+        self.assertIn(
+            "execution_trust_anchor_missing",
+            result["reason_codes"],
+        )
         self.assertEqual(
             result["reviewer_identity_status"],
             "DECLARED_NOT_CRYPTOGRAPHICALLY_VERIFIED",

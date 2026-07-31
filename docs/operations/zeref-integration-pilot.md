@@ -15,7 +15,9 @@ external actions.
 - Receipt structure and content binding can pass independently.
 - A self-authenticated receipt cannot prove execution.
 - A separate clean reproduction with a detached attestation is required for
-  the scoped pilot status.
+  `CONTRACT_REPRODUCTION_STATUS=PASS`.
+- Matching local artifacts cannot raise `ZEREF_EXECUTION_STATUS` above
+  `NOT_VERIFIED`; an approved execution trust anchor is still required.
 - The detached attestation records declared reviewer identity but does not
   provide cryptographic identity verification.
 - Project readiness and release assurance remain separate evidence dimensions.

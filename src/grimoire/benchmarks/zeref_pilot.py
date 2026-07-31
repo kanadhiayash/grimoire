@@ -443,9 +443,13 @@ def verify_pilot_reproduction(
             "reviewer_identity_status": "NOT_VERIFIED",
         }
     return {
-        "pilot_status": "PASS",
-        "zeref_execution_status": "PASS",
-        "reason_codes": ["independent_reproduction_matched"],
+        "pilot_status": "PARTIAL",
+        "contract_reproduction_status": "PASS",
+        "zeref_execution_status": "NOT_VERIFIED",
+        "reason_codes": [
+            "declared_reproduction_matched",
+            "execution_trust_anchor_missing",
+        ],
         "reviewer_identity_status": attestation[
             "reviewer_identity_status"
         ],
