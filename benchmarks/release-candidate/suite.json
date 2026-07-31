@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "suite_id": "grimoire-1-0-release-candidate",
+  "sources": [
+    "VERSION",
+    "benchmarks/release-candidate/suite.json",
+    "src/grimoire/benchmarks/release_candidate.py"
+  ],
+  "gates": [
+    {
+      "id": "strict-manifest-500",
+      "category": "validation",
+      "command": [
+        "{python}",
+        "benchmarks/manifest_validation/strict_500.py",
+        "--cases",
+        "500",
+        "--seed",
+        "20260727",
+        "--output",
+        "{run_output}/RAW_OUTPUT/strict-manifest-500.json"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "manifest-fuzz-10000",
+      "category": "validation",
+      "command": [
+        "{python}",
+        "benchmarks/fuzz/manifest_fuzz.py",
+        "--cases",
+        "10000",
+        "--seed",
+        "20260727",
+        "--output",
+        "{run_output}/RAW_OUTPUT/manifest-fuzz-10000"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "compiler-contract",
+      "category": "compiler",
+      "command": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_deterministic_compiler.py",
+        "-v"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "applicability-contract",
+      "category": "compiler",
+      "command": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_applicability_resolver.py",
+        "-v"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "pack-verifier-contract",
+      "category": "verifier",
+      "command": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_project_pack_verifier.py",
+        "-v"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "standards-contract",
+      "category": "standards",
+      "command": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_standard*.py",
+        "-v"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "crosswalk-contract",
+      "category": "crosswalk",
+      "command": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*crosswalk.py",
+        "-v"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "migration-compatibility",
+      "category": "compatibility",
+      "command": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*_migration.py",
+        "-v"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "gold-scenarios",
+      "category": "compiler",
+      "command": [
+        "{python}",
+        "scripts/benchmark_runner.py",
+        "run",
+        "--suite",
+        "benchmarks/suites/gold-scenarios.json",
+        "--output",
+        "{run_output}/RAW_OUTPUT/gold-scenarios",
+        "--commit",
+        "{commit}"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "inert-trust-boundaries",
+      "category": "verifier",
+      "command": [
+        "{python}",
+        "scripts/benchmark_runner.py",
+        "run",
+        "--suite",
+        "benchmarks/suites/trust-boundaries.json",
+        "--output",
+        "{run_output}/RAW_OUTPUT/trust-boundaries",
+        "--commit",
+        "{commit}"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "control-scale",
+      "category": "scale",
+      "command": [
+        "{python}",
+        "benchmarks/performance/run.py",
+        "--sizes",
+        "100",
+        "1000",
+        "10000",
+        "50000",
+        "--seed",
+        "20260730",
+        "--repeats",
+        "7",
+        "--output",
+        "{run_output}/RAW_OUTPUT/control-scale"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "zeref-structural-contract",
+      "category": "zeref",
+      "command": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_zeref*.py",
+        "-v"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "zeref-external-runtime",
+      "category": "zeref",
+      "declared_status": "NOT_VERIFIED",
+      "reason_codes": [
+        "external_runtime_trust_anchor_missing"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "documented-command-contract",
+      "category": "documentation",
+      "command": [
+        "{python}",
+        "scripts/verify_documented_commands.py",
+        "--json"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "full-conformance",
+      "category": "standards",
+      "command": [
+        "{python}",
+        "scripts/grimoire.py",
+        "check",
+        "--json-output",
+        "{run_output}/RAW_OUTPUT/grimoire-check.json"
+      ],
+      "hard_gate": true
+    }
+  ]
+}

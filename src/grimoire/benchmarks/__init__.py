@@ -16,6 +16,12 @@ from .performance import (
     run_scale_benchmark,
     verify_scale_pack,
 )
+from .release_candidate import (
+    compare_release_candidate_runs,
+    load_release_candidate_suite,
+    run_release_candidate,
+    validate_release_candidate_run,
+)
 
 __all__ = [
     "BenchmarkContractError",
@@ -31,4 +37,8 @@ __all__ = [
     "run_scale_benchmark",
     "verify_scale_pack",
     "validate_benchmark_result",
+    "compare_release_candidate_runs",
+    "load_release_candidate_suite",
+    "run_release_candidate",
+    "validate_release_candidate_run",
 ]

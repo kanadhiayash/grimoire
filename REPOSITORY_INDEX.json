@@ -216,6 +216,8 @@
     "benchmark_gold_product_scenarios": "benchmarks/scenarios/gold",
     "benchmark_trust_boundary_suite": "benchmarks/trust-boundaries",
     "benchmark_performance_scale": "benchmarks/performance",
+    "release_candidate_benchmark": "benchmarks/release-candidate",
+    "release_candidate_workflow": ".github/workflows/release-candidate.yml",
     "zeref_end_to_end_pilot": "benchmarks/zeref-pilot",
     "ci_policy_check": "checks/ci_policy_check.py",
     "release_evidence_cli": "scripts/release_evidence.py",
