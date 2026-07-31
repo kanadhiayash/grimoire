@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import platform
 import re
 import subprocess
@@ -13,10 +14,16 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
+from grimoire.benchmarks.runner import (
+    BenchmarkContractError,
+    validate_benchmark_result,
+)
+
 
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 EVIDENCE_ID_PATTERN = re.compile(r"^GRM-RELEASE-[0-9a-f]{12}$")
+SUITE_ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,79}$")
 
 
 class ReleaseEvidenceError(ValueError):
@@ -48,27 +55,52 @@ def _git(root: Path, *arguments: str) -> str:
 
 def _relative_file(root: Path, path: Path) -> tuple[str, Path]:
     resolved_root = root.resolve()
-    resolved = path.resolve()
+    candidate = Path(os.path.abspath(path))
+    resolved = candidate.resolve()
     try:
         relative = resolved.relative_to(resolved_root)
     except ValueError as exc:
         raise ReleaseEvidenceError("release_input_outside_repository") from exc
-    if not resolved.is_file() or resolved.is_symlink():
+    cursor = candidate
+    while cursor != resolved_root:
+        if cursor.is_symlink():
+            raise ReleaseEvidenceError("release_input_not_regular_file")
+        if cursor == cursor.parent:
+            raise ReleaseEvidenceError("release_input_outside_repository")
+        cursor = cursor.parent
+    if not resolved.is_file():
         raise ReleaseEvidenceError("release_input_not_regular_file")
     return str(relative), resolved
 
 
-def _benchmark_status(path: Path) -> str:
+def _benchmark_metadata(
+    path: Path,
+    *,
+    expected_commit: str,
+) -> tuple[str, str, str]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise ReleaseEvidenceError("invalid_benchmark_evidence") from exc
     if not isinstance(value, dict):
         raise ReleaseEvidenceError("invalid_benchmark_evidence")
+    try:
+        validate_benchmark_result(value, evidence_root=path.parent)
+    except (BenchmarkContractError, OSError, TypeError) as exc:
+        raise ReleaseEvidenceError("invalid_benchmark_evidence") from exc
     status = value.get("verdict", value.get("status"))
     if status not in {"PASS", "PARTIAL", "FAIL", "NOT_VERIFIED"}:
         raise ReleaseEvidenceError("invalid_benchmark_status")
-    return str(status)
+    commit = value.get("commit")
+    if commit != expected_commit:
+        raise ReleaseEvidenceError("benchmark_commit_mismatch")
+    suite_id = value.get("suite_id")
+    if (
+        not isinstance(suite_id, str)
+        or not SUITE_ID_PATTERN.fullmatch(suite_id)
+    ):
+        raise ReleaseEvidenceError("invalid_benchmark_suite")
+    return str(status), commit, suite_id
 
 
 def _is_timestamp(value: Any) -> bool:
@@ -129,11 +161,17 @@ def build_release_evidence(
     benchmark_records = []
     for path in benchmarks:
         relative, resolved = _relative_file(root, path)
+        status, commit, suite_id = _benchmark_metadata(
+            resolved,
+            expected_commit=expected_commit,
+        )
         benchmark_records.append(
             {
                 "path": relative,
                 "sha256": _sha256(resolved),
-                "status": _benchmark_status(resolved),
+                "status": status,
+                "commit": commit,
+                "suite_id": suite_id,
             }
         )
     if not artifact_records or not benchmark_records:
@@ -293,23 +331,31 @@ def verify_release_evidence(
     for record in benchmark_records:
         if (
             not isinstance(record, dict)
-            or set(record) != {"path", "sha256", "status"}
+            or set(record)
+            != {"path", "sha256", "status", "commit", "suite_id"}
             or not isinstance(record.get("path"), str)
             or not isinstance(record.get("sha256"), str)
             or not SHA256_PATTERN.fullmatch(record["sha256"])
             or record.get("status")
             not in {"PASS", "PARTIAL", "FAIL", "NOT_VERIFIED"}
+            or record.get("commit") != expected_commit
+            or not isinstance(record.get("suite_id"), str)
+            or not SUITE_ID_PATTERN.fullmatch(record["suite_id"])
         ):
             reasons.add("benchmark_record_invalid")
             continue
         try:
             relative, path = _relative_file(root, root / record["path"])
-            observed_status = _benchmark_status(path)
+            observed_status, observed_commit, observed_suite = (
+                _benchmark_metadata(path, expected_commit=expected_commit)
+            )
             if (
                 relative != record["path"]
                 or _sha256(path) != record["sha256"]
                 or observed_status != record["status"]
                 or observed_status != "PASS"
+                or observed_commit != record["commit"]
+                or observed_suite != record["suite_id"]
             ):
                 reasons.add("benchmark_result_mismatch")
         except ReleaseEvidenceError:

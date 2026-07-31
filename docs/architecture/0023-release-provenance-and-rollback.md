@@ -16,7 +16,8 @@ Release evidence is a closed, dependency-free record bound to:
 - the exact checked-out source commit;
 - the build environment and tracked-tree state;
 - artifact paths, byte sizes, and SHA-256 hashes;
-- benchmark paths, hashes, and controlled statuses;
+- complete benchmark packages, suite identities, hashes, controlled statuses,
+  and the exact source commit;
 - exact release approvals when supplied;
 - a closed permission scope;
 - a canonical integrity digest.
@@ -28,6 +29,9 @@ mission.
 SHA-256 integrity is not an identity signature. Until an independently approved
 signing mechanism and key boundary exist, signature and release assurance remain
 `NOT_VERIFIED`. A `PASS` signature claim is rejected.
+
+Artifact and benchmark inputs must be regular repository files reached without
+symlinks. A generic check result cannot be relabeled as benchmark evidence.
 
 ## Rollback
 

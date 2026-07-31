@@ -13,7 +13,9 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from grimoire.benchmarks.runner import run_benchmark_suite  # noqa: E402
 from grimoire.release.evidence import (  # noqa: E402
+    ReleaseEvidenceError,
     build_release_evidence,
     release_evidence_digest,
     rollback_dry_run,
@@ -39,9 +41,29 @@ class ReleaseEvidenceTests(unittest.TestCase):
     def _inputs(self, directory: Path) -> tuple[Path, Path]:
         artifact = directory / "artifact.json"
         artifact.write_text('{"status":"PASS"}\n', encoding="utf-8")
-        benchmark = directory / "benchmark.json"
-        benchmark.write_text('{"verdict":"PASS"}\n', encoding="utf-8")
-        return artifact, benchmark
+        benchmark_root = directory / "benchmark"
+        run_benchmark_suite(
+            {
+                "schema_version": 1,
+                "suite_id": "release-evidence-test",
+                "sources": [str(artifact.relative_to(ROOT))],
+                "cases": [
+                    {
+                        "id": "controlled-pass",
+                        "command": [
+                            sys.executable,
+                            "-c",
+                            "print('release evidence benchmark')",
+                        ],
+                        "hard_gate": True,
+                    }
+                ],
+            },
+            root=ROOT,
+            output=benchmark_root,
+            commit=self._head(),
+        )
+        return artifact, benchmark_root / "BENCHMARK_RESULTS.json"
 
     def test_reproducible_evidence_is_bound_but_release_not_verified(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
@@ -99,7 +121,7 @@ class ReleaseEvidenceTests(unittest.TestCase):
                 root=ROOT,
                 expected_commit=self._head(),
             )
-            self.assertIn("benchmark_result_mismatch", result["reason_codes"])
+            self.assertIn("benchmark_record_invalid", result["reason_codes"])
 
             evidence["signature"]["status"] = "PASS"
             evidence["integrity"]["digest"] = release_evidence_digest(evidence)
@@ -244,6 +266,47 @@ class ReleaseEvidenceTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 2)
         self.assertIn("unsafe_release_evidence_output", completed.stderr)
         self.assertFalse(Path(outside, "nested", "evidence.json").exists())
+
+    def test_stale_benchmark_commit_cannot_build_or_verify(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
+            artifact, benchmark = self._inputs(Path(directory))
+            value = json.loads(benchmark.read_text(encoding="utf-8"))
+            value["commit"] = "0" * 40
+            value["source_manifest"]["commit"] = "0" * 40
+            benchmark.write_text(
+                json.dumps(value, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                ReleaseEvidenceError,
+                "benchmark_commit_mismatch",
+            ):
+                build_release_evidence(
+                    ROOT,
+                    artifacts=[artifact],
+                    benchmarks=[benchmark],
+                    expected_commit=self._head(),
+                    timestamp="2026-07-31T02:00:00+00:00",
+                )
+
+    def test_symlinked_release_input_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
+            artifact, benchmark = self._inputs(Path(directory))
+            alias = Path(directory) / "artifact-alias.json"
+            alias.symlink_to(artifact)
+
+            with self.assertRaisesRegex(
+                ReleaseEvidenceError,
+                "release_input_not_regular_file",
+            ):
+                build_release_evidence(
+                    ROOT,
+                    artifacts=[alias],
+                    benchmarks=[benchmark],
+                    expected_commit=self._head(),
+                    timestamp="2026-07-31T02:00:00+00:00",
+                )
 
 
 if __name__ == "__main__":
