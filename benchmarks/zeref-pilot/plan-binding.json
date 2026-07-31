@@ -1,0 +1,45 @@
+{
+  "plan_id": "GRM-ZEREF-PILOT-2026-07-30",
+  "plan_revision": 1,
+  "project_repository": "kanadhiayash/grimoire",
+  "project_commit": "1471bac33d18eebdb9e6f29452d2ea85f257b23f",
+  "approved_scope": [
+    "REPOSITORY_INDEX.json",
+    "benchmarks/zeref-pilot",
+    "docs/operations/zeref-integration-pilot.md",
+    "src/grimoire/benchmarks/zeref_pilot.py",
+    "src/grimoire/zeref/receipt.py",
+    "tests/test_zeref_pilot.py"
+  ],
+  "excluded_scope": [
+    "deploy",
+    "publish",
+    "zeref-internals"
+  ],
+  "permitted_tools": [
+    "filesystem-read",
+    "filesystem-write",
+    "git-read",
+    "test-runner"
+  ],
+  "prohibited_tools": [
+    "credential-store",
+    "network-write",
+    "zeref-internal-write"
+  ],
+  "approval_required_for": [
+    "merge",
+    "deploy",
+    "publish",
+    "external_send",
+    "destructive_change",
+    "credential_change",
+    "canonical_memory_write"
+  ],
+  "retry_ceiling": 1,
+  "receipt_expiry_seconds": 3600,
+  "cost_limit": {
+    "amount": 0,
+    "currency": "USD"
+  }
+}
