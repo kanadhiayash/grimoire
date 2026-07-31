@@ -2,7 +2,8 @@
 
 ## Classification
 
-Private internal engineering policy.
+Public-safe engineering policy. Repository visibility is controlled separately
+by the owner.
 
 ## Never commit
 

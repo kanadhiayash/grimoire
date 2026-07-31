@@ -60,7 +60,8 @@ manifest and supplied evidence
 
 ## Compatibility
 
-The 0.5.x CLI entrypoints and twelve generated filenames remain available.
+The 0.5.x CLI entrypoints remain available. The current fifteen-file pack adds
+control trace, conflict, and exclusion evidence.
 Existing scalar `status` fields remain present but now contain the conservative
 aggregate. `pack_generation_status` preserves the narrower generation outcome.
 

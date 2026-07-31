@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "contract_version": "1.0",
+  "commands": [
+    {
+      "id": "status",
+      "argv": ["python3", "scripts/grimoire.py", "status", "--json"],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "catalog",
+      "argv": ["python3", "scripts/grimoire.py", "catalog", "--json"],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "doctor",
+      "argv": ["python3", "scripts/grimoire.py", "doctor"],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "project-boot",
+      "argv": ["python3", "scripts/grimoire.py", "project", "boot"],
+      "status": "PASS",
+      "verification": "tests/test_project_orchestrator.py"
+    },
+    {
+      "id": "project-verify",
+      "argv": ["python3", "scripts/grimoire.py", "project", "verify"],
+      "status": "PASS",
+      "verification": "tests/test_project_pack_verifier.py"
+    },
+    {
+      "id": "project-explain",
+      "argv": ["python3", "scripts/grimoire.py", "project", "explain"],
+      "status": "PASS",
+      "verification": "tests/test_control_trace.py"
+    },
+    {
+      "id": "benchmark-run",
+      "argv": ["python3", "scripts/grimoire.py", "benchmark", "run"],
+      "status": "PASS",
+      "verification": "tests/test_benchmark_runner.py"
+    },
+    {
+      "id": "release-evidence",
+      "argv": ["python3", "scripts/release_evidence.py", "verify"],
+      "status": "PASS",
+      "verification": "tests/test_release_evidence.py"
+    },
+    {
+      "id": "zeref-receipt",
+      "argv": ["python3", "scripts/grimoire.py", "zeref", "verify-receipt"],
+      "status": "PASS",
+      "verification": "tests/test_zeref_receipt.py"
+    },
+    {
+      "id": "browser-pack",
+      "argv": ["python3", "scripts/grimoire.py", "pack", "compile"],
+      "status": "PASS",
+      "verification": "tests/test_browser_source_pack.py"
+    },
+    {
+      "id": "harness-apply",
+      "argv": ["python3", "scripts/grimoire.py", "harness", "apply"],
+      "status": "NOT_VERIFIED",
+      "verification": "docs/operations/quickstart.md"
+    }
+  ]
+}

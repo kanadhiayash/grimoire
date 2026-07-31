@@ -26,7 +26,7 @@ If the repository index conflicts with the filesystem, report the drift. Do not 
 | Change browser packs | Source-pack standard, templates, compiler, verifier, browser-pack tests |
 | Change installer behavior | Installer, activation policy, installer tests, privacy and approval boundaries |
 | Change repository navigation | `REPOSITORY_INDEX.json`, schema, index checker, CLI, agent and human guides |
-| Prepare a release | `GOVERNANCE.md`, `CHANGELOG.md`, `VERSION`, compatibility and migration evidence |
+| Prepare a release | `GOVERNANCE.md`, `CHANGELOG.md`, `VERSION`, `docs/migrations/0.5.x-to-1.0.md`, release evidence, benchmark evidence |
 
 ## Source authority
 
@@ -65,6 +65,12 @@ Full verification:
 python3 scripts/grimoire.py check
 ```
 
+Non-mutating documented-command smoke:
+
+```bash
+python3 scripts/verify_documented_commands.py --json
+```
+
 Use `REPOSITORY_INDEX.json` for the complete command catalog and supported-surface map.
 
 ## Change discipline
@@ -77,6 +83,8 @@ Use `REPOSITORY_INDEX.json` for the complete command catalog and supported-surfa
 - Do not claim a council ran unless independent work actually ran.
 - Do not claim browser simulation is local runtime execution.
 - Do not modify `kanadhiayash/zeref-memory-engine` under an Grimoire task unless the user separately approves that repository and scope.
+- Do not equate the repository release version with the manifest standards
+  policy version. The current policy pin is `0.4.0`.
 
 ## Required completion evidence
 

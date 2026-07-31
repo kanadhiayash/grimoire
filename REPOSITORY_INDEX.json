@@ -24,6 +24,7 @@
     "surface_activation_policy": "policies/surface-activation.json",
     "governance": "GOVERNANCE.md",
     "security": "SECURITY.md",
+    "command_verification": "docs/operations/command-verification.json",
     "capability_map": "docs/operations/standards-orchestrator-capability-map.md",
     "legal_source_registry": "sources/legal/registry.json"
   },
@@ -36,7 +37,9 @@
       "GOVERNANCE.md",
       "SECURITY.md",
       "CHANGELOG.md",
-      "docs/releases/0.4.0.md"
+      "docs/releases/0.5.0.md",
+      "docs/releases/1.0.0.md",
+      "docs/migrations/0.5.x-to-1.0.md"
     ],
     "agent": [
       "AGENTS.md",

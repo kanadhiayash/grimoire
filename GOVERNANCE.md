@@ -2,7 +2,7 @@
 
 ## Canonical authority
 
-This repository is the canonical private source for neutral product engineering standards, machine policy, project compilation, cross-surface adapters, and verification. It is not a source of project facts, legal advice, or Zeref runtime internals.
+This repository is the canonical source for neutral product engineering standards, machine policy, project compilation, cross-surface adapters, and verification. It is not a source of project facts, legal advice, or Zeref runtime internals.
 
 Consuming projects pin a released version or exact reviewed commit. They must not silently follow an unversioned branch or refresh compiled packs without review.
 
