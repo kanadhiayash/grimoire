@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "valid",
+      "expected_verification_status": "PASS",
+      "expected_reason_codes": []
+    },
+    {
+      "id": "plan-mismatch",
+      "expected_verification_status": "FAIL",
+      "expected_reason_codes": ["plan_mismatch"]
+    },
+    {
+      "id": "pack-mismatch",
+      "expected_verification_status": "FAIL",
+      "expected_reason_codes": ["pack_hash_mismatch"]
+    },
+    {
+      "id": "project-mismatch",
+      "expected_verification_status": "FAIL",
+      "expected_reason_codes": ["project_commit_mismatch"]
+    },
+    {
+      "id": "missing-evidence",
+      "expected_verification_status": "FAIL",
+      "expected_reason_codes": ["required_control_evidence_missing"]
+    },
+    {
+      "id": "expired",
+      "expected_verification_status": "FAIL",
+      "expected_reason_codes": ["receipt_expired"]
+    },
+    {
+      "id": "unauthorized-external-action",
+      "expected_verification_status": "FAIL",
+      "expected_reason_codes": ["external_action_unauthorized"]
+    },
+    {
+      "id": "unauthorized-memory-promotion",
+      "expected_verification_status": "FAIL",
+      "expected_reason_codes": ["memory_promotion_unauthorized"]
+    }
+  ]
+}

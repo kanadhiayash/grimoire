@@ -33,12 +33,19 @@ active harness owns actual role, model, tool, retry, and memory operations.
 ## Integrity and trust
 
 - SHA-256 proves content integrity, not author identity.
+- Receipt v1 is verified offline against the exact profile and does not invent
+  a network transport, signer identity, or Zeref-internal capability.
+- Receipt integrity uses canonical JSON with the integrity envelope excluded
+  from its own digest.
 - A future signed release envelope may add identity and provenance without
   changing the profile hash domain.
 - Missing or ambiguous plan, project, scope, tool, or approval data fails
   profile construction. Approved and excluded scope must be disjoint. This
   cross-array invariant is enforced by the typed builder because JSON Schema
   cannot express it portably.
+- Profile v2 carries a numeric amount and ISO currency cost limit. Receipt
+  verification compares measured cost to that limit and rejects a mismatched
+  currency or self-asserted ceiling result.
 - The receipt expiry is bounded between 60 seconds and 24 hours.
 - A receipt may prove Zeref execution only. It cannot raise project readiness,
   release assurance, accessibility, security, or legal status without their

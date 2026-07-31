@@ -144,6 +144,7 @@ def build_profile_v2(
         "permitted_tools",
         "prohibited_tools",
         "approval_required_for",
+        "cost_limit",
     )
     allowed = set(required) | {"retry_ceiling", "receipt_expiry_seconds"}
     if set(binding) - allowed:
@@ -210,6 +211,17 @@ def build_profile_v2(
         reasons.add("invalid_execution_mode")
     if not isinstance(cost_ceiling, str) or not cost_ceiling.strip():
         reasons.add("invalid_cost_ceiling")
+    cost_limit = binding.get("cost_limit")
+    if (
+        not isinstance(cost_limit, Mapping)
+        or not isinstance(cost_limit.get("amount"), (int, float))
+        or isinstance(cost_limit.get("amount"), bool)
+        or cost_limit.get("amount", -1) < 0
+        or not isinstance(cost_limit.get("currency"), str)
+        or len(cost_limit.get("currency", "")) != 3
+        or not cost_limit.get("currency", "").isupper()
+    ):
+        reasons.add("invalid_cost_limit")
 
     controls = _string_list(required_controls)
     documents = _string_list(required_documents)
@@ -242,6 +254,7 @@ def build_profile_v2(
         "approvals.required_for",
         "execution.stop_conditions",
         "execution.cost_ceiling",
+        "execution.cost_limit",
         "execution.retry_ceiling",
         "memory.canonical_promotion",
         "expected_receipt.schema_id",
@@ -273,6 +286,10 @@ def build_profile_v2(
         "execution": {
             "stop_conditions": list(stops),
             "cost_ceiling": cost_ceiling,
+            "cost_limit": {
+                "amount": cost_limit["amount"],
+                "currency": cost_limit["currency"],
+            },
             "retry_ceiling": retry_ceiling,
             "model_routing": "zeref_owned_lowest_cost_capable",
             "lead_roles": 1,

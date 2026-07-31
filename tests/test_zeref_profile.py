@@ -45,6 +45,7 @@ class ZerefProfileV2Tests(unittest.TestCase):
             ],
             "retry_ceiling": 2,
             "receipt_expiry_seconds": 3600,
+            "cost_limit": {"amount": 0, "currency": "USD"},
         }
 
     def manifest(self) -> dict[str, object]:
@@ -82,6 +83,7 @@ class ZerefProfileV2Tests(unittest.TestCase):
             "permitted_tools",
             "prohibited_tools",
             "approval_required_for",
+            "cost_limit",
         )
         for field in required:
             with self.subTest(field=field):

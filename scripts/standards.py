@@ -122,6 +122,25 @@ def build_project_explain_command(*, directory: str, standard_id: str) -> list[s
     ]
 
 
+def build_zeref_verify_command(
+    *,
+    profile: str,
+    receipt: str,
+    now: str | None = None,
+) -> list[str]:
+    command = [
+        sys.executable,
+        "scripts/verify_zeref_receipt.py",
+        "--profile",
+        profile,
+        "--receipt",
+        receipt,
+    ]
+    if now is not None:
+        command.extend(["--now", now])
+    return command
+
+
 def build_benchmark_run_command(
     *,
     suite: str,
@@ -247,6 +266,19 @@ def parser() -> argparse.ArgumentParser:
     benchmark_compare.add_argument("--thresholds", required=True)
     benchmark_compare.add_argument("--output", required=True)
 
+    zeref = subparsers.add_parser(
+        "zeref",
+        help="Verify Grimoire and Zeref boundary artifacts",
+    )
+    zeref_subparsers = zeref.add_subparsers(
+        dest="zeref_action",
+        required=True,
+    )
+    zeref_verify = zeref_subparsers.add_parser("verify-receipt")
+    zeref_verify.add_argument("--profile", required=True)
+    zeref_verify.add_argument("--receipt", required=True)
+    zeref_verify.add_argument("--now")
+
     pack = subparsers.add_parser("pack", help="Compile or verify browser packs")
     pack_subparsers = pack.add_subparsers(dest="pack_action", required=True)
     pack_compile = pack_subparsers.add_parser("compile")
@@ -312,6 +344,13 @@ def main() -> int:
                 thresholds=args.thresholds,
                 output=args.output,
             )
+        return subprocess.run(command, cwd=ROOT, check=False).returncode
+    if args.command == "zeref":
+        command = build_zeref_verify_command(
+            profile=args.profile,
+            receipt=args.receipt,
+            now=args.now,
+        )
         return subprocess.run(command, cwd=ROOT, check=False).returncode
     if args.command == "harness":
         command = build_harness_command(args.action, home=args.home)
