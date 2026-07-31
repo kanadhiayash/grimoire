@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "contract_version": "1.0",
+  "commands": [
+    {
+      "id": "status",
+      "argv": ["python3", "scripts/grimoire.py", "status", "--json"],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "catalog",
+      "argv": ["python3", "scripts/grimoire.py", "catalog", "--json"],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "doctor",
+      "argv": ["python3", "scripts/grimoire.py", "doctor"],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "project-boot",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "project",
+        "boot",
+        "--manifest",
+        "templates/project/project.json",
+        "--output",
+        "{temporary_directory}/project-pack",
+        "--deterministic",
+        "--generated-at",
+        "2026-01-01T00:00:00+00:00"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "project-verify",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "project",
+        "verify",
+        "--directory",
+        "{temporary_directory}/project-pack",
+        "--mode",
+        "offline"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "project-explain",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "project",
+        "explain",
+        "--directory",
+        "{temporary_directory}/project-pack",
+        "--standard-id",
+        "{first_compiled_standard_id}",
+        "--json"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "benchmark-run",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "benchmark",
+        "run",
+        "--suite",
+        "benchmarks/suites/runner-smoke.json",
+        "--output",
+        "{temporary_directory}/benchmark",
+        "--commit",
+        "{head_commit}"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "browser-pack-compile",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "pack",
+        "compile",
+        "--surface",
+        "chatgpt-project",
+        "--project-name",
+        "Documentation Smoke",
+        "--output",
+        "{temporary_directory}/browser-pack",
+        "--grimoire-commit",
+        "{head_commit}",
+        "--zeref-commit",
+        "{structural_fixture_commit}"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "browser-pack-verify",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "pack",
+        "verify",
+        "{temporary_directory}/browser-pack"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "zeref-receipt",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "zeref",
+        "verify-receipt",
+        "--profile",
+        "{temporary_directory}/zeref-profile.json",
+        "--receipt",
+        "{temporary_directory}/zeref-receipt.json",
+        "--now",
+        "2026-07-30T18:30:00+00:00"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "full-check-json",
+      "argv": [
+        "python3",
+        "scripts/grimoire.py",
+        "check",
+        "--json-output",
+        "{temporary_directory}/grimoire-check.json"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "release-evidence-generate",
+      "argv": [
+        "python3",
+        "scripts/release_evidence.py",
+        "generate",
+        "--artifact",
+        "{temporary_directory}/grimoire-check.json",
+        "--benchmark",
+        "{temporary_directory}/benchmark/BENCHMARK_RESULTS.json",
+        "--expected-sha",
+        "{head_commit}",
+        "--output",
+        "{temporary_directory}/release-evidence.json"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "release-evidence-verify",
+      "argv": [
+        "python3",
+        "scripts/release_evidence.py",
+        "verify",
+        "--evidence",
+        "{temporary_directory}/release-evidence.json",
+        "--expected-sha",
+        "{head_commit}"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "release-rollback-dry-run",
+      "argv": [
+        "python3",
+        "scripts/release_evidence.py",
+        "rollback-dry-run",
+        "--evidence",
+        "{temporary_directory}/release-evidence.json",
+        "--expected-sha",
+        "{head_commit}"
+      ],
+      "status": "PASS",
+      "verification": "scripts/verify_documented_commands.py"
+    },
+    {
+      "id": "harness-apply",
+      "argv": ["python3", "scripts/grimoire.py", "harness", "apply"],
+      "status": "NOT_VERIFIED",
+      "verification": "docs/operations/quickstart.md"
+    }
+  ]
+}

@@ -8,17 +8,27 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 ### Added
 
+- Multidimensional status, strict manifest validation, deterministic 10,000-case
+  fuzzing, safe artifact writes, independent pack verification, applicability
+  resolution, control traces, source registries, standards migration, crosswalks,
+  release evidence, supported-runtime CI, and public command verification for
+  the Grimoire 1.0 release candidate.
+- A complete 0.5.x-to-1.0 migration guide and explicit separation between the
+  repository release version and manifest standards policy version.
 - Paste-ready personal instruction pack for Claude Global, Claude Cowork, Claude Projects, Claude Cowork project folders, ChatGPT Global, ChatGPT Projects, and Codex Global customization.
 - Character-budget manifest, cross-surface smoke tests, and repository-native unit tests for instruction precedence, Zeref truthfulness, cost routing, approval boundaries, and completion statuses.
 
-### Planned
+### Changed
 
-- Inventory and reconcile the four legacy practice repositories.
-- Expand reviewed jurisdiction, industry, language, framework, platform, cloud-provider, and user-context overlays.
-- Add a conservative applicability compiler after gold-scenario benchmarks are approved.
-- Generate remaining adapters from machine-readable policy.
-- Add optional connector-backed source refresh after separate approval.
-- Add signed source-pack manifests after a separate security review.
+- Documentation now uses the permanent Grimoire identity and lists the complete
+  fifteen-file project pack.
+- Completion and release claims remain conservative when evidence is absent.
+
+### Still not verified
+
+- External Zeref runtime execution and identity signature.
+- Windows runtime support.
+- The approval-gated 1.0.0 tag and GitHub release.
 
 ## [0.5.0] - 2026-07-27
 

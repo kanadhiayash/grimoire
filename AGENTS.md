@@ -4,7 +4,7 @@ This file is the canonical bootstrap contract for every human, AI model, coding 
 
 ## Repository identity
 
-Grimoire is the neutral, private, versioned Global Product Engineering Standards Orchestrator. It defines reusable product, design, engineering, legal, accessibility, AI, security, privacy, cloud, cost, Git, delivery, and operational standards.
+Grimoire is the neutral, versioned Global Product Engineering Standards Orchestrator. It defines reusable product, design, engineering, legal, accessibility, AI, security, privacy, cloud, cost, Git, delivery, and operational standards.
 
 Zeref Memory Engine is a separate execution and continuity runtime. This repository may compile execution profiles for Zeref but does not own or rewrite Zeref internals.
 
@@ -41,7 +41,10 @@ Do not scan or inject the full repository when the index and compiler identify a
 ```bash
 python3 scripts/grimoire.py status --json
 python3 scripts/grimoire.py catalog --json
-python3 scripts/grimoire.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
+python3 scripts/grimoire.py project boot \
+  --manifest templates/project/project.json \
+  --output artifacts/example-standards-pack
+python3 scripts/verify_documented_commands.py --json
 python3 scripts/grimoire.py check
 ```
 

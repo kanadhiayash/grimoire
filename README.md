@@ -1,42 +1,86 @@
 # Grimoire
 
-Private, neutral, versioned standards and an executable control plane for human and AI product work. The repository will later be renamed **Standards Orchestrator**.
+Grimoire is a versioned, dependency-free Global Product Engineering Standards Orchestrator
+for human and AI product work.
 
-It covers product strategy, research, UX, UI, accessibility, design systems, architecture, frontend, APIs, backend, data, AI and agents, security, privacy, legal applicability, cloud, cost, Git, delivery, release, and operations.
+It turns one validated project manifest into a bounded, evidence-aware context
+pack. The pack identifies applicable standards, required outcomes, documents,
+gates, conflicts, exclusions, verification steps, and Zeref routing metadata.
+Grimoire is the product name. “Standards Orchestrator” describes the capability.
 
-## Core idea
+## What is operational
 
-**Detailed at rest, selective during execution.**
+Grimoire is an executable control plane, not only a standards directory. Its
+Python standard-library runtime can:
 
-The repository may be extensive. A human or AI does not load the full corpus for every task. One project manifest is compiled into one bounded context pack containing only the applicable standards, expected outcomes, documents, gates, evidence, limits, and Zeref execution metadata.
+- validate untrusted project manifests with deterministic diagnostics;
+- resolve standards applicability from versioned registries and predicates;
+- compile reproducible 15-file project packs;
+- verify pack integrity independently from compiler success;
+- explain control decisions without echoing hostile manifest values;
+- run evidence-bound benchmark suites and deterministic fuzz gates;
+- validate Zeref profiles and receipts while preserving the runtime boundary;
+- produce exact-commit release evidence and rehearse rollback without mutation;
+- run the dependency-free conformance surface locally and across a supported
+  CI matrix.
 
-```text
-Standards -> policies and profiles -> project manifest -> compiled pack -> Zeref execution -> verification
-```
+## Quick start
 
-## Start here
+Requirements:
 
-### Human operator
+- Python 3.11, 3.12, or 3.13 for the supported CI contract
+- Git
+- no runtime package installation
+
+Inspect the repository:
 
 ```bash
-python3 scripts/grimoire.py status
+python3 scripts/grimoire.py status --json
+python3 scripts/grimoire.py catalog --json
+```
+
+Run all local checks:
+
+```bash
 python3 scripts/grimoire.py check
 ```
 
-### AI agent
-
-1. Read `AGENTS.md`.
-2. Read `REPOSITORY_INDEX.json`.
-3. Read the project manifest and compiled `AI_CONTEXT.md` when operating in a consuming project.
-4. Use the smallest relevant source set.
-
-### Compile a project pack
+Compile and verify the example project:
 
 ```bash
-python3 scripts/grimoire.py project boot   --manifest templates/project/project.json   --output /tmp/example-standards-pack
+python3 scripts/grimoire.py project boot \
+  --manifest templates/project/project.json \
+  --output artifacts/example-pack \
+  --deterministic \
+  --generated-at 2026-01-01T00:00:00+00:00
+
+python3 scripts/grimoire.py project verify \
+  --directory artifacts/example-pack \
+  --mode offline
 ```
 
-The compiler emits:
+Run the documented-command smoke:
+
+```bash
+python3 scripts/verify_documented_commands.py --json
+```
+
+See [Grimoire Quickstart](docs/operations/quickstart.md) for browser packs,
+harness adapters, benchmarks, release evidence, and conservative status rules.
+
+## Project manifest
+
+The manifest is JSON so the runtime remains portable and dependency-free. Start
+from [templates/project/project.json](templates/project/project.json).
+
+The manifest’s `standards.version` is a standards policy version, not the
+repository release version. The current supported policy pin is `0.4.0`.
+Unsupported or malformed inputs fail with exit code `2` and safe structured
+diagnostics.
+
+## Compiled project pack
+
+`project boot` emits exactly these files:
 
 ```text
 AI_CONTEXT.md
@@ -50,103 +94,129 @@ ACCEPTANCE_MATRIX.md
 VERIFICATION_PLAN.md
 SOURCE_MANIFEST.json
 ZEREF_EXECUTION_PROFILE.json
+CONTROL_TRACE.json
+CONFLICT_REPORT.json
+EXCLUSIONS.json
 EXECUTION_RECEIPT.json
 ```
 
-`AI_CONTEXT.md` is the one-read human and AI contract. Structured files support Zeref, checks, automation, and evidence.
+`AI_CONTEXT.md` is the bounded one-read contract. The structured files support
+verification, traceability, automation, and Zeref routing. Generated packs are
+evidence artifacts, not alternate canonical standards.
 
-## Ownership model
+## Truthful status model
 
-### Standards Orchestrator
+Grimoire keeps generation separate from assurance. The aggregate is
+conservative: `BLOCKED` dominates `NOT_VERIFIED`, which dominates `PARTIAL`,
+which dominates `PASS`.
 
-Defines applicable requirements, expected outcomes, required documents and headings, gates, acceptance criteria, verification, evidence, limits, profiles, and overlays.
+Required dimensions:
 
-### Zeref
+- `PACK_GENERATION_STATUS`
+- `MANIFEST_VALIDATION_STATUS`
+- `APPLICABILITY_STATUS`
+- `CONTROL_VERIFICATION_STATUS`
+- `PROJECT_READINESS_STATUS`
+- `RELEASE_ASSURANCE_STATUS`
+- `LEGAL_REVIEW_STATUS`
+- `ZEREF_EXECUTION_STATUS`
 
-Routes execution through roles, models, tools, skills, approvals, retries, memory, cost limits, and receipts. Zeref remains a separate runtime.
+A generated pack may report `pack_generation_status=PASS` while the aggregate
+remains `NOT_VERIFIED`. Grimoire never converts missing evidence into readiness,
+legal compliance, accessibility compliance, or verified Zeref execution.
 
-### Project repository
+## Architecture
 
-Owns actual product facts, local instructions, project manifest, assumptions, decisions, risks, plan revisions, designs, code, tests, exceptions, deployment state, and evidence.
+```text
+Versioned standards and sources
+        + project manifest
+        + approved project records
+                    |
+                    v
+      validation and applicability
+                    |
+                    v
+        bounded 15-file context pack
+                    |
+                    v
+       Zeref-routed execution boundary
+                    |
+                    v
+         fresh independent evidence
+```
 
-## Implementation stack
+Ownership is explicit:
 
-| Concern | Technology | Reason |
-|---|---|---|
-| Orchestration | Python 3.11+ standard library | Portable and dependency-free |
-| Machine contracts | JSON and JSON Schema draft 2020-12 | Deterministic and language-neutral |
-| Human and AI guidance | Markdown | Reviewable and portable |
-| Shell | Bash or Zsh | Thin launchers only |
-| CI | GitHub Actions YAML | Native verification |
-
-The project manifest is JSON. YAML is not used because adding a parser dependency would violate the current portability contract.
+- Grimoire owns standards, applicability, outcomes, documents, gates,
+  evidence contracts, and limits.
+- Zeref owns activation, model and tool routing, roles, approvals, retries,
+  memory, and execution receipts.
+- A consuming project owns its facts, decisions, implementation, exceptions,
+  deployment state, and evidence.
+- Qualified reviewers own final jurisdiction-specific legal conclusions.
 
 ## Repository map
 
 | Path | Purpose |
 |---|---|
-| `standards/` | Human-readable product, design, engineering, legal, AI, and operational rules |
-| `policies/` | Machine-readable policy and schemas |
+| `src/grimoire/` | Dependency-free validation, registry, compiler, verifier, benchmark, evidence, and Zeref contracts |
+| `scripts/` | Unified CLI and operator entrypoints |
+| `standards/` | Human-readable normative standards |
+| `registry/` | Versioned standard, source, and crosswalk records |
+| `policies/` | Machine policy and Draft 2020-12 schemas |
 | `profiles/` | Risk and applicability profiles |
-| `adapters/` | Harness and browser-surface adapters |
-| `templates/` | Standards, product, design, engineering, governance, and evidence templates |
-| `instructions/global/` | Neutral additive instruction modules for any user or team |
-| `instructions/personal/` | Optional private overlays excluded from neutral packs |
-| `sources/` | Source authority and freshness records |
-| `checks/` | Dependency-free conformance checks |
-| `scripts/` | Unified CLI, compilers, verifiers, and installers |
-| `tests/` | Unit, boundary, adversarial, and compatibility tests |
-| `benchmarks/` | Scenario and efficiency benchmark specifications |
-| `docs/` | Architecture decisions, operations, releases, and migrations |
+| `templates/` | Project, standard, record, evidence, and adapter templates |
+| `checks/` | Repository conformance and CI policy checks |
+| `tests/` | Unit, compatibility, boundary, and regression tests |
+| `benchmarks/` | Executable suites, gold scenarios, scale checks, fuzzing, and pilot evidence |
+| `docs/` | Architecture, operations, audits, migrations, and releases |
 
-## Core guarantees
+## Verification surfaces
 
-A conforming operation must:
-
-- Read context before editing
-- Separate facts, assumptions, unknowns, risks, and conflicts
-- Load only applicable standards
-- Define expected outcomes and required documents
-- Bind execution to an approved plan revision
-- Use Minimum Correct Change during implementation
-- Preserve tests, security, privacy, accessibility, legal, data, and review controls
-- Never invent evidence or runtime capability
-- Verify before claiming completion
-- Require explicit approval for external or destructive actions
-- Keep neutral standards separate from personal overlays
-- Report legal applicability without issuing automated compliance certification
-
-## Standard structure
-
-Every normative standard defines purpose, expected outcome, applicability, non-applicability, inputs, unknowns, actions, decisions, details, documents, document structure, acceptance, verification, evidence, failure conditions, risks, guards, exceptions, costs, dependencies, related standards, sources, ownership, Zeref behavior, examples, and anti-patterns.
-
-## Naming and placement
-
-Stable records use `ADR`, `DEC`, `ASM`, `RSK`, `RES`, `EXP`, `INC`, and `PM-INC` identifiers. Mutable priority, status, and owner values do not belong in filenames. Source code follows official language and framework overlays. Figma token names use nested semantic groups such as `color/semantic/text/primary`, not dotted names.
-
-## Neutral and personal instructions
-
-`instructions/global/` is reusable by any human, team, or AI. `instructions/personal/yash/` is a private optional overlay and is excluded from neutral packs. Personal preferences may customize tone and workflow but cannot weaken neutral safeguards.
-
-## Legal and compliance boundary
-
-The system classifies source authority, identifies potentially applicable controls, detects missing facts, prepares evidence and documents, and escalates to qualified review. It never claims universal legal compliance. The legal source registry is explicitly versioned and not represented as exhaustive.
-
-## Existing capabilities retained
-
-Version 0.4.0 retains the 0.3.0 AI Operations control plane, cross-surface Zeref activation, browser source packs, harness adapters, repository index, and unified CLI. It adds the Standards Orchestrator without modifying Zeref Memory Engine.
-
-## Verification
+Local:
 
 ```bash
-make check
+python3 scripts/grimoire.py doctor
+python3 scripts/grimoire.py test
+python3 scripts/grimoire.py check
+git diff --check
 ```
 
-Expected top-level checks include repository health, surface activation, repository index, Standards Orchestrator, unit tests, and Python compilation.
+CI repeats the dependency-free checks and additionally verifies:
+
+- Draft 2020-12 schemas with a fully hashed CI-only dependency lock;
+- dependency-free runtime behavior;
+- strict manifest acceptance and a deterministic 10,000-case fuzz gate;
+- Ubuntu and macOS on Python 3.11, 3.12, and 3.13;
+- pinned workflow actions and read-only workflow permissions;
+- exact-commit benchmark and release-evidence generation.
+
+Windows remains `NOT_VERIFIED`.
+
+## Zeref boundary
+
+Grimoire can compile and verify Zeref profile and receipt contracts. Zeref
+Memory Engine remains a separate continuity and routing runtime. A
+self-authenticated receipt or browser simulation is not proof that Zeref
+executed. Current repository evidence keeps `ZEREF_EXECUTION_STATUS` at
+`NOT_VERIFIED` unless an approved external trust anchor is supplied.
+
+Grimoire does not modify Zeref internals.
+
+## Release evidence
+
+The release-evidence command binds a clean source commit to regular-file
+artifacts, a complete benchmark package, environment metadata, approval
+records, and a canonical SHA-256 integrity digest. SHA-256 integrity is not an
+identity signature. Signing, publication, deployment, and GitHub release
+creation remain separate approval-gated actions.
+
+See [Release Evidence and Rollback](docs/operations/release-evidence-and-rollback.md).
 
 ## Adoption
 
-A consuming repository pins a released version and adds:
+A consuming repository should pin a released Grimoire version or reviewed
+commit and add:
 
 ```text
 AGENTS.md
@@ -154,10 +224,33 @@ AGENTS.md
 docs/standards-exceptions.md
 ```
 
-Generated packs are artifacts, not alternate canonical standards. They must record version, source status, integrity, and freshness.
+Then compile, review, and verify the generated pack before using it as an
+execution contract. Do not follow an unversioned branch automatically.
 
-## Status
+## Compatibility and migration
 
-Version `0.5.0` establishes the Standards Orchestrator foundation, one-call project compiler, structured standard and document contracts, neutral instructions, private Yash overlay, legal source governance, Minimum Correct Change, Zeref execution profiles, checks, templates, and benchmarks.
+- Existing 0.5.x CLI entrypoints remain available.
+- The deprecated `--engineering-standards-commit` browser-pack alias remains
+  tested through the 0.5.x migration window.
+- Existing 0.5.x manifests remain supported when they use the active `0.4.0`
+  standards policy pin.
+- Status consumers must migrate from a single completion field to the
+  multidimensional model.
 
-Private internal policy. Do not publish repository content without explicit review and redaction.
+See [Migrating 0.5.x to 1.0](docs/migrations/0.5.x-to-1.0.md).
+
+## Current release state
+
+The checked-in repository version remains `0.5.0` until the approval-gated
+1.0.0 release operation is completed. The 1.0 contracts and migration
+documentation are release-candidate material. The repository content is written
+with public-safe wording, which means external-facing copy was reviewed for
+sensitive details. It does not grant a public-use license. The current
+`LICENSE`, repository visibility, and release publication remain authoritative
+owner-controlled contracts and are not changed by this README.
+
+## License and contribution
+
+Use the repository’s license and governance files as the source of truth.
+Material changes require focused branches, tests, exact-head CI, review, and
+evidence-backed completion claims.
