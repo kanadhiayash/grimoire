@@ -28,9 +28,12 @@ jobs:
           python-version: "3.12"
 
       - name: Validate CI policy and dependency boundary
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           python checks/ci_policy_check.py \
-            --json-output artifacts/ci-policy/result.json
+            --json-output artifacts/ci-policy/result.json \
+            --expected-sha "$EXPECTED_SHA"
 
       - name: Upload CI policy evidence
         if: always()

@@ -56,14 +56,40 @@ def _workflow_findings(
         relative = str(path.relative_to(root))
         workflows.append(relative)
         text = path.read_text(encoding="utf-8")
-        if "permissions:\n  contents: read" not in text:
+        lines = text.splitlines()
+        top_level_permissions: list[str] = []
+        permission_block_found = False
+        for index, line in enumerate(lines):
+            if line == "permissions:":
+                permission_block_found = True
+                for permission_line in lines[index + 1 :]:
+                    if permission_line and not permission_line.startswith(" "):
+                        break
+                    stripped = permission_line.strip()
+                    if stripped and not stripped.startswith("#"):
+                        top_level_permissions.append(
+                            stripped.split("#", 1)[0].rstrip()
+                        )
+            elif line[:1].isspace() and line.strip().startswith(
+                "permissions:"
+            ):
+                findings.append(
+                    {
+                        "code": "job_permissions_override",
+                        "path": relative,
+                    }
+                )
+        if (
+            not permission_block_found
+            or top_level_permissions != ["contents: read"]
+        ):
             findings.append(
                 {
                     "code": "workflow_permissions_not_read_only",
                     "path": relative,
                 }
             )
-        if re.search(r"continue-on-error:\s*true", text):
+        if re.search(r"^\s*continue-on-error\s*:", text, re.MULTILINE):
             findings.append(
                 {
                     "code": "workflow_failure_suppressed",
@@ -146,7 +172,11 @@ def _runtime_external_imports(root: Path) -> list[str]:
     return sorted(external)
 
 
-def evaluate_ci_policy(root: Path = ROOT) -> dict[str, Any]:
+def evaluate_ci_policy(
+    root: Path = ROOT,
+    *,
+    expected_sha: str,
+) -> dict[str, Any]:
     workflow_findings, workflows, action_count = _workflow_findings(root)
     lock_findings, dependency_count = _hashed_dependencies(root)
     external_imports = _runtime_external_imports(root)
@@ -164,6 +194,10 @@ def evaluate_ci_policy(root: Path = ROOT) -> dict[str, Any]:
         findings.append(
             {"code": "commit_not_verified", "path": ".git"}
         )
+    if commit != expected_sha:
+        findings.append(
+            {"code": "expected_commit_mismatch", "path": ".git"}
+        )
     permission_status = (
         "FAIL"
         if any(
@@ -176,6 +210,8 @@ def evaluate_ci_policy(root: Path = ROOT) -> dict[str, Any]:
         "schema_version": 1,
         "status": "PASS" if not findings else "FAIL",
         "commit": commit,
+        "expected_commit": expected_sha,
+        "commit_exact": commit == expected_sha,
         "tree_state": (
             "NOT_VERIFIED"
             if tree == "NOT_VERIFIED"
@@ -224,9 +260,10 @@ def _write_json(path: Path, value: dict[str, Any]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json-output")
+    parser.add_argument("--expected-sha", required=True)
     args = parser.parse_args()
     try:
-        result = evaluate_ci_policy()
+        result = evaluate_ci_policy(expected_sha=args.expected_sha)
         if args.json_output:
             _write_json(Path(args.json_output), result)
     except (OSError, SyntaxError, ValueError) as exc:
