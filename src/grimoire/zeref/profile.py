@@ -138,8 +138,14 @@ def build_profile_v2(
         "project_repository",
         "project_commit",
         "approved_scope",
+        "excluded_scope",
+        "permitted_tools",
+        "prohibited_tools",
         "approval_required_for",
     )
+    allowed = set(required) | {"retry_ceiling", "receipt_expiry_seconds"}
+    if set(binding) - allowed:
+        reasons.add("unknown_binding_property")
     for field in required:
         if field not in binding:
             reasons.add(f"missing_{field}")
@@ -166,11 +172,13 @@ def build_profile_v2(
     approved_scope = _string_list(binding.get("approved_scope"))
     if approved_scope is None:
         reasons.add("invalid_approved_scope")
-    excluded_scope = _string_list(binding.get("excluded_scope", ["none"]))
+    excluded_scope = _string_list(binding.get("excluded_scope"))
     if excluded_scope is None:
         reasons.add("invalid_excluded_scope")
-    permitted_tools = _string_list(binding.get("permitted_tools", ["filesystem-read"]))
-    prohibited_tools = _string_list(binding.get("prohibited_tools", ["network"]))
+    elif approved_scope is not None and set(approved_scope) & set(excluded_scope):
+        reasons.add("scope_boundary_conflict")
+    permitted_tools = _string_list(binding.get("permitted_tools"))
+    prohibited_tools = _string_list(binding.get("prohibited_tools"))
     if permitted_tools is None or prohibited_tools is None:
         reasons.add("invalid_tool_boundary")
     elif set(permitted_tools) & set(prohibited_tools):
@@ -201,14 +209,20 @@ def build_profile_v2(
     if not isinstance(cost_ceiling, str) or not cost_ceiling.strip():
         reasons.add("invalid_cost_ceiling")
 
-    controls = tuple(sorted(set(required_controls)))
-    documents = tuple(sorted(set(required_documents)))
-    criteria = tuple(sorted(set(acceptance_criteria)))
-    stops = tuple(sorted(set(stop_conditions)))
-    if not controls:
-        reasons.add("missing_required_controls")
-    if not stops:
-        reasons.add("missing_stop_conditions")
+    controls = _string_list(required_controls)
+    documents = _string_list(required_documents)
+    criteria = _string_list(acceptance_criteria)
+    stops = _string_list(stop_conditions)
+    if controls is None:
+        reasons.add("invalid_required_controls")
+    if documents is None:
+        reasons.add("invalid_required_documents")
+    if criteria is None:
+        reasons.add("invalid_acceptance_criteria")
+    if stops is None:
+        reasons.add("invalid_stop_conditions")
+    if not isinstance(grimoire_version, str) or not grimoire_version.strip():
+        reasons.add("invalid_grimoire_version")
     if reasons:
         raise ProfileValidationError(reasons)
 
@@ -233,7 +247,7 @@ def build_profile_v2(
     value = {
         "schema_id": "grimoire.zeref.profile.v2",
         "schema_version": "2.0",
-        "grimoire_version": grimoire_version,
+        "grimoire_version": grimoire_version.strip(),
         "pack_hash_algorithm": "sha256-framed-pack-v1",
         "pack_hash": pack_hash,
         "project": {

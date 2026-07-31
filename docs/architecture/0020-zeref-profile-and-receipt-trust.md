@@ -36,7 +36,9 @@ active harness owns actual role, model, tool, retry, and memory operations.
 - A future signed release envelope may add identity and provenance without
   changing the profile hash domain.
 - Missing or ambiguous plan, project, scope, tool, or approval data fails
-  profile construction.
+  profile construction. Approved and excluded scope must be disjoint. This
+  cross-array invariant is enforced by the typed builder because JSON Schema
+  cannot express it portably.
 - The receipt expiry is bounded between 60 seconds and 24 hours.
 - A receipt may prove Zeref execution only. It cannot raise project readiness,
   release assurance, accessibility, security, or legal status without their

@@ -78,6 +78,9 @@ class ZerefProfileV2Tests(unittest.TestCase):
             "project_repository",
             "project_commit",
             "approved_scope",
+            "excluded_scope",
+            "permitted_tools",
+            "prohibited_tools",
             "approval_required_for",
         )
         for field in required:
@@ -116,6 +119,75 @@ class ZerefProfileV2Tests(unittest.TestCase):
             )
         self.assertIn("approval_boundary_weakened", raised.exception.reason_codes)
         self.assertIn("tool_boundary_conflict", raised.exception.reason_codes)
+
+    def test_scope_overlap_and_malformed_contract_arrays_fail_closed(self) -> None:
+        overlap = self.binding()
+        overlap["excluded_scope"] = ["docs/pilot.md"]
+        malformed = self.binding()
+        malformed["approved_scope"] = ["docs/pilot.md", 7]
+        for value, expected in (
+            (overlap, "scope_boundary_conflict"),
+            (malformed, "invalid_approved_scope"),
+        ):
+            with self.subTest(expected=expected):
+                with self.assertRaises(ProfileValidationError) as raised:
+                    build_profile_v2(
+                        value,
+                        pack_hash="b" * 64,
+                        required_controls=("GRM-UNI-001",),
+                        required_documents=("Implementation plan",),
+                        acceptance_criteria=("Tests pass",),
+                        stop_conditions=("missing evidence",),
+                        grimoire_version="0.5.0",
+                        mode="standard",
+                        cost_ceiling="bounded",
+                    )
+                self.assertIn(expected, raised.exception.reason_codes)
+
+    def test_invalid_derived_sequences_return_stable_profile_error(self) -> None:
+        with self.assertRaises(ProfileValidationError) as raised:
+            build_profile_v2(
+                self.binding(),
+                pack_hash="b" * 64,
+                required_controls=("GRM-UNI-001", 7),  # type: ignore[arg-type]
+                required_documents=("Implementation plan",),
+                acceptance_criteria=("Tests pass",),
+                stop_conditions=("missing evidence",),
+                grimoire_version="",
+                mode="standard",
+                cost_ceiling="bounded",
+            )
+        self.assertIn("invalid_required_controls", raised.exception.reason_codes)
+        self.assertIn("invalid_grimoire_version", raised.exception.reason_codes)
+
+    def test_cli_contract_failure_is_controlled_and_does_not_promote_pack(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            contract = root / "contract.json"
+            output = root / "pack"
+            contract.write_text('{"plan_id":', encoding="utf-8")
+            completed = __import__("subprocess").run(
+                [
+                    sys.executable,
+                    "scripts/project_orchestrator.py",
+                    "--manifest",
+                    "templates/project/project.json",
+                    "--output",
+                    str(output),
+                    "--zeref-contract",
+                    str(contract),
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+        self.assertEqual(completed.returncode, 2)
+        self.assertFalse(output.exists())
+        diagnostic = json.loads(completed.stderr)
+        self.assertEqual(diagnostic["status"], "INVALID")
+        self.assertEqual(diagnostic["error_code"], "GRIM_ZEREF_PROFILE_INVALID")
+        self.assertNotIn("Traceback", completed.stderr)
 
     def test_compiler_emits_reproducible_profile_v2(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -20,7 +20,11 @@ from grimoire.compiler import render_inert_json  # noqa: E402
 from grimoire.applicability import DecisionState, resolve_applicability  # noqa: E402
 from grimoire.filesystem import atomic_write_directory  # noqa: E402
 from grimoire.registry import load_standard_registry  # noqa: E402
-from grimoire.zeref import build_profile_v2, canonical_pack_hash  # noqa: E402
+from grimoire.zeref import (  # noqa: E402
+    ProfileValidationError,
+    build_profile_v2,
+    canonical_pack_hash,
+)
 from grimoire.status import (  # noqa: E402
     CompletionStatus,
     StatusDimension,
@@ -470,6 +474,29 @@ def main() -> int:
         )
     except ManifestValidationError as exc:
         print(_json(exc.to_dict()), end="", file=sys.stderr)
+        return 2
+    except (
+        ProfileValidationError,
+        OSError,
+        UnicodeError,
+        json.JSONDecodeError,
+    ) as exc:
+        reason_codes = (
+            list(exc.reason_codes)
+            if isinstance(exc, ProfileValidationError)
+            else ["invalid_contract_document"]
+        )
+        print(
+            _json(
+                {
+                    "status": "INVALID",
+                    "error_code": "GRIM_ZEREF_PROFILE_INVALID",
+                    "reason_codes": reason_codes,
+                }
+            ),
+            end="",
+            file=sys.stderr,
+        )
         return 2
     print(_json(receipt), end="")
     return 0
