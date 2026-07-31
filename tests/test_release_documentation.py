@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import unittest
@@ -89,6 +90,8 @@ class ReleaseDocumentationTests(unittest.TestCase):
                 evidence = ROOT / command["verification"]
                 self.assertTrue(evidence.is_file())
 
+        if os.environ.get("GRIMOIRE_DOC_SMOKE_ACTIVE") == "1":
+            self.skipTest("nested documented-command smoke is suppressed")
         completed = subprocess.run(
             [
                 sys.executable,
@@ -106,6 +109,33 @@ class ReleaseDocumentationTests(unittest.TestCase):
         self.assertTrue(result["commands"])
         self.assertTrue(
             all(item["status"] == "PASS" for item in result["commands"])
+        )
+        expected = {
+            item["id"]
+            for item in manifest["commands"]
+            if item["status"] == "PASS"
+        }
+        observed = {item["id"] for item in result["commands"]}
+        self.assertEqual(observed, expected)
+
+    def test_release_runbook_builds_every_required_input_in_order(self) -> None:
+        runbook = (
+            ROOT / "docs/operations/release-evidence-and-rollback.md"
+        ).read_text(encoding="utf-8")
+        check = "artifacts/release-inputs/grimoire-check.json"
+        benchmark = (
+            "artifacts/release-inputs/benchmark/BENCHMARK_RESULTS.json"
+        )
+
+        self.assertGreaterEqual(runbook.count(check), 2)
+        self.assertGreaterEqual(runbook.count(benchmark), 1)
+        self.assertLess(
+            runbook.index("scripts/grimoire.py check"),
+            runbook.index("scripts/release_evidence.py generate"),
+        )
+        self.assertLess(
+            runbook.index("scripts/benchmark_runner.py run"),
+            runbook.index("scripts/release_evidence.py generate"),
         )
 
     def test_migration_docs_use_fifteen_file_pack_and_legacy_tests(self) -> None:

@@ -21,7 +21,8 @@ Python standard-library runtime can:
 - run evidence-bound benchmark suites and deterministic fuzz gates;
 - validate Zeref profiles and receipts while preserving the runtime boundary;
 - produce exact-commit release evidence and rehearse rollback without mutation;
-- run the same conformance surface locally and in a supported CI matrix.
+- run the dependency-free conformance surface locally and across a supported
+  CI matrix.
 
 ## Quick start
 
@@ -181,7 +182,7 @@ python3 scripts/grimoire.py check
 git diff --check
 ```
 
-CI verifies:
+CI repeats the dependency-free checks and additionally verifies:
 
 - Draft 2020-12 schemas with a fully hashed CI-only dependency lock;
 - dependency-free runtime behavior;
@@ -243,8 +244,10 @@ See [Migrating 0.5.x to 1.0](docs/migrations/0.5.x-to-1.0.md).
 The checked-in repository version remains `0.5.0` until the approval-gated
 1.0.0 release operation is completed. The 1.0 contracts and migration
 documentation are release-candidate material. The repository content is written
-to be public-safe, but repository visibility and release publication are owner
-operations and are not implied by this README.
+with public-safe wording, which means external-facing copy was reviewed for
+sensitive details. It does not grant a public-use license. The current
+`LICENSE`, repository visibility, and release publication remain authoritative
+owner-controlled contracts and are not changed by this README.
 
 ## License and contribution
 

@@ -5,6 +5,9 @@ exact-commit inputs:
 
 ```bash
 COMMIT="$(git rev-parse HEAD)"
+python3 scripts/grimoire.py check \
+  --json-output artifacts/release-inputs/grimoire-check.json
+
 python3 scripts/benchmark_runner.py run \
   --suite benchmarks/suites/runner-smoke.json \
   --output artifacts/release-inputs/benchmark \
