@@ -10,6 +10,66 @@ permissions:
   contents: read
 
 jobs:
+  release-evidence:
+    name: private release evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out exact requested commit
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Build exact release inputs
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python scripts/grimoire.py check \
+            --json-output artifacts/release-inputs/grimoire-check.json
+          python checks/ci_policy_check.py \
+            --json-output artifacts/release-inputs/ci-policy.json \
+            --expected-sha "$EXPECTED_SHA"
+          python scripts/benchmark_runner.py run \
+            --suite benchmarks/suites/runner-smoke.json \
+            --output artifacts/release-inputs/benchmark \
+            --commit "$EXPECTED_SHA"
+
+      - name: Generate and verify private evidence
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python scripts/release_evidence.py generate \
+            --artifact artifacts/release-inputs/grimoire-check.json \
+            --artifact artifacts/release-inputs/ci-policy.json \
+            --benchmark \
+              artifacts/release-inputs/benchmark/BENCHMARK_RESULTS.json \
+            --expected-sha "$EXPECTED_SHA" \
+            --output artifacts/release/evidence.json
+          python scripts/release_evidence.py verify \
+            --evidence artifacts/release/evidence.json \
+            --expected-sha "$EXPECTED_SHA"
+          python scripts/release_evidence.py rollback-dry-run \
+            --evidence artifacts/release/evidence.json \
+            --expected-sha "$EXPECTED_SHA"
+
+      - name: Upload private release evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            artifacts/release-inputs
+            artifacts/release
+          if-no-files-found: error
+          retention-days: 14
+
   ci-policy:
     name: non-cyber CI policy
     runs-on: ubuntu-latest
