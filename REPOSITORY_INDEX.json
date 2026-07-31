@@ -214,6 +214,7 @@
     "benchmark_trust_boundary_suite": "benchmarks/trust-boundaries",
     "benchmark_performance_scale": "benchmarks/performance",
     "zeref_end_to_end_pilot": "benchmarks/zeref-pilot",
+    "ci_policy_check": "checks/ci_policy_check.py",
     "control_trace_schema": "policies/schemas/control-trace.schema.json",
     "project_trace_explainer": "scripts/project_explain.py",
     "corpus_classification": "inventory/standards-classification.json",
