@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "Grimoire Zeref Boundary Pilot",
+    "lifecycle_stage": "BUILD_READY",
+    "product_types": ["internal-tool"]
+  },
+  "users": ["authenticated"],
+  "markets": [],
+  "platforms": ["web"],
+  "stack": {
+    "languages": ["python"],
+    "frameworks": [],
+    "services": []
+  },
+  "data": {
+    "personal_data": false,
+    "sensitive": []
+  },
+  "ai": {
+    "user_facing": false,
+    "automated_decisions": false,
+    "external_models": false
+  },
+  "risk": {"level": "moderate"},
+  "standards": {"version": "0.4.0"},
+  "zeref": {"mode": "strict", "cost_ceiling": "zero-cost local pilot"},
+  "unknowns": []
+}
