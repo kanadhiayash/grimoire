@@ -173,7 +173,7 @@ class ZerefReceiptVerifierTests(unittest.TestCase):
             },
         )
 
-    def test_valid_receipt_passes_only_zeref_execution_dimension(self) -> None:
+    def test_self_authenticated_receipt_cannot_prove_zeref_execution(self) -> None:
         profile = self.profile()
         result = verify_zeref_receipt(
             self.receipt(profile),
@@ -181,7 +181,9 @@ class ZerefReceiptVerifierTests(unittest.TestCase):
             now=self.now,
         ).to_dict()
         self.assertEqual(result["verification_status"], "PASS")
-        self.assertEqual(result["zeref_execution_status"], "PASS")
+        self.assertEqual(result["receipt_completion_status"], "PASS")
+        self.assertEqual(result["zeref_execution_status"], "NOT_VERIFIED")
+        self.assertIn("execution_trust_anchor_missing", result["reason_codes"])
         self.assertEqual(
             result["assurance_ceiling"],
             {
@@ -309,6 +311,25 @@ class ZerefReceiptVerifierTests(unittest.TestCase):
         self.assertIn("required_control_evidence_missing", result.reason_codes)
         self.assertIn("external_action_unauthorized", result.reason_codes)
         self.assertIn("runtime_capability_not_verified", result.reason_codes)
+
+    def test_nested_malformed_evidence_and_traversal_paths_are_controlled(self) -> None:
+        profile = self.profile()
+        receipt = self.receipt(profile)
+        receipt["evidence"][0]["control_id"] = []
+        receipt["files_changed"] = ["docs/../../outside"]
+        self.rehash(receipt)
+        result = verify_zeref_receipt(receipt, profile, now=self.now)
+        self.assertEqual(result.verification_status, "FAIL")
+        self.assertIn("invalid_evidence_record", result.reason_codes)
+        self.assertIn("invalid_file_scope", result.reason_codes)
+
+    def test_non_finite_cost_is_rejected(self) -> None:
+        profile = self.profile()
+        receipt = self.receipt(profile)
+        receipt["cost"]["amount"] = float("nan")
+        self.rehash(receipt)
+        result = verify_zeref_receipt(receipt, profile, now=self.now)
+        self.assertIn("invalid_cost_record", result.reason_codes)
 
     def test_cli_returns_machine_diagnostic_without_network(self) -> None:
         profile = self.profile()

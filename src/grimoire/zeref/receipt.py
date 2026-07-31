@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
@@ -41,12 +42,14 @@ def receipt_integrity_hash(receipt: Mapping[str, Any]) -> str:
 class ZerefReceiptVerification:
     verification_status: str
     zeref_execution_status: str
+    receipt_completion_status: str
     reason_codes: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "verification_status": self.verification_status,
             "zeref_execution_status": self.zeref_execution_status,
+            "receipt_completion_status": self.receipt_completion_status,
             "reason_codes": list(self.reason_codes),
             "transport_status": "OFFLINE_ONLY",
             "assurance_ceiling": {
@@ -94,6 +97,21 @@ def _path_is_allowed(path: str, scopes: Sequence[str]) -> bool:
             and path.startswith(scope.rstrip("/") + "/")
         )
         for scope in scopes
+    )
+
+
+def _safe_repo_path(value: str) -> bool:
+    if (
+        value.startswith("/")
+        or value.endswith("/")
+        or "\\" in value
+        or any(ord(character) < 32 for character in value)
+    ):
+        return False
+    parts = value.split("/")
+    return bool(parts) and all(
+        part not in {"", ".", ".."} and not part.endswith(":")
+        for part in parts
     )
 
 
@@ -185,7 +203,12 @@ def verify_zeref_receipt(
     approved_scope = (
         _strings(scope.get("approved")) if isinstance(scope, Mapping) else None
     )
-    if not files or not approved_scope:
+    if (
+        not files
+        or not approved_scope
+        or any(not _safe_repo_path(path) for path in files)
+        or any(not _safe_repo_path(path) for path in approved_scope)
+    ):
         reasons.add("invalid_file_scope")
     elif any(not _path_is_allowed(path, approved_scope) for path in files):
         reasons.add("file_scope_unauthorized")
@@ -217,17 +240,29 @@ def verify_zeref_receipt(
     if evidence is None or not required_controls:
         reasons.add("invalid_evidence_record")
     else:
-        passing_controls = {
-            item.get("control_id")
-            for item in evidence
-            if item.get("result") == "PASS"
-            and isinstance(item.get("id"), str)
-            and isinstance(item.get("subject_commit"), str)
-            and item.get("subject_commit") == commit_after
-            and isinstance(item.get("command"), str)
-            and isinstance(item.get("reviewer"), str)
-            and _parse_time(item.get("timestamp")) is not None
-        }
+        passing_controls: set[str] = set()
+        for item in evidence:
+            evidence_time = _parse_time(item.get("timestamp"))
+            if (
+                not isinstance(item.get("id"), str)
+                or not item.get("id")
+                or not isinstance(item.get("control_id"), str)
+                or not item.get("control_id")
+                or not isinstance(item.get("subject_commit"), str)
+                or not isinstance(item.get("command"), str)
+                or not item.get("command")
+                or item.get("result") not in {"PASS", "FAIL", "NOT_VERIFIED"}
+                or evidence_time is None
+                or not isinstance(item.get("reviewer"), str)
+                or not item.get("reviewer")
+            ):
+                reasons.add("invalid_evidence_record")
+                continue
+            if (
+                item.get("result") == "PASS"
+                and item.get("subject_commit") == commit_after
+            ):
+                passing_controls.add(item["control_id"])
         if not set(required_controls).issubset(passing_controls):
             reasons.add("required_control_evidence_missing")
 
@@ -281,6 +316,7 @@ def verify_zeref_receipt(
         not isinstance(cost.get("amount"), (int, float))
         or isinstance(cost.get("amount"), bool)
         or cost.get("amount", -1) < 0
+        or not math.isfinite(cost.get("amount", float("nan")))
         or not isinstance(cost.get("currency"), str)
     ):
         reasons.add("invalid_cost_record")
@@ -397,5 +433,15 @@ def _result(
 ) -> ZerefReceiptVerification:
     failures = tuple(sorted(reasons))
     if failures:
-        return ZerefReceiptVerification("FAIL", "BLOCKED", failures)
-    return ZerefReceiptVerification("PASS", completion, ())
+        return ZerefReceiptVerification(
+            "FAIL",
+            "BLOCKED",
+            completion,
+            failures,
+        )
+    return ZerefReceiptVerification(
+        "PASS",
+        "NOT_VERIFIED",
+        completion,
+        ("execution_trust_anchor_missing",),
+    )

@@ -146,6 +146,38 @@ class ZerefProfileV2Tests(unittest.TestCase):
                     )
                 self.assertIn(expected, raised.exception.reason_codes)
 
+    def test_scope_paths_and_cost_limit_are_safe_and_finite(self) -> None:
+        for mutate, expected in (
+            (
+                lambda value: value.update(
+                    {"approved_scope": ["docs/../../outside"]}
+                ),
+                "invalid_approved_scope_path",
+            ),
+            (
+                lambda value: value.update(
+                    {"cost_limit": {"amount": float("nan"), "currency": "USD"}}
+                ),
+                "invalid_cost_limit",
+            ),
+        ):
+            value = self.binding()
+            mutate(value)
+            with self.subTest(expected=expected):
+                with self.assertRaises(ProfileValidationError) as raised:
+                    build_profile_v2(
+                        value,
+                        pack_hash="b" * 64,
+                        required_controls=("GRM-UNI-001",),
+                        required_documents=("Implementation plan",),
+                        acceptance_criteria=("Tests pass",),
+                        stop_conditions=("missing evidence",),
+                        grimoire_version="0.5.0",
+                        mode="standard",
+                        cost_ceiling="bounded",
+                    )
+                self.assertIn(expected, raised.exception.reason_codes)
+
     def test_invalid_derived_sequences_return_stable_profile_error(self) -> None:
         with self.assertRaises(ProfileValidationError) as raised:
             build_profile_v2(

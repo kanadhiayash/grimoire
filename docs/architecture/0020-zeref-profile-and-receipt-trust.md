@@ -37,6 +37,9 @@ active harness owns actual role, model, tool, retry, and memory operations.
   a network transport, signer identity, or Zeref-internal capability.
 - Receipt integrity uses canonical JSON with the integrity envelope excluded
   from its own digest.
+- A self-authenticated receipt may pass structural verification but leaves
+  `ZEREF_EXECUTION_STATUS=NOT_VERIFIED`. Only a separately reproduced pilot
+  trust record may raise that dimension.
 - A future signed release envelope may add identity and provenance without
   changing the profile hash domain.
 - Missing or ambiguous plan, project, scope, tool, or approval data fails
@@ -46,6 +49,9 @@ active harness owns actual role, model, tool, retry, and memory operations.
 - Profile v2 carries a numeric amount and ISO currency cost limit. Receipt
   verification compares measured cost to that limit and rejects a mismatched
   currency or self-asserted ceiling result.
+- Approved, excluded, and changed paths must be normalized repository-relative
+  paths without absolute roots, traversal segments, control characters, or
+  platform-specific separators.
 - The receipt expiry is bounded between 60 seconds and 24 hours.
 - A receipt may prove Zeref execution only. It cannot raise project readiness,
   release assurance, accessibility, security, or legal status without their

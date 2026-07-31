@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -103,6 +104,21 @@ def _string_list(value: Any) -> tuple[str, ...] | None:
     return normalized if len(normalized) == len(value) else None
 
 
+def _safe_repo_scope(value: str) -> bool:
+    if (
+        value.startswith("/")
+        or value.endswith("/")
+        or "\\" in value
+        or any(ord(character) < 32 for character in value)
+    ):
+        return False
+    parts = value.split("/")
+    return bool(parts) and all(
+        part not in {"", ".", ".."} and not part.endswith(":")
+        for part in parts
+    )
+
+
 def _source_trace(fields: Sequence[str]) -> list[dict[str, str]]:
     return [
         {
@@ -175,9 +191,13 @@ def build_profile_v2(
     approved_scope = _string_list(binding.get("approved_scope"))
     if approved_scope is None:
         reasons.add("invalid_approved_scope")
+    elif any(not _safe_repo_scope(value) for value in approved_scope):
+        reasons.add("invalid_approved_scope_path")
     excluded_scope = _string_list(binding.get("excluded_scope"))
     if excluded_scope is None:
         reasons.add("invalid_excluded_scope")
+    elif any(not _safe_repo_scope(value) for value in excluded_scope):
+        reasons.add("invalid_excluded_scope_path")
     elif approved_scope is not None and set(approved_scope) & set(excluded_scope):
         reasons.add("scope_boundary_conflict")
     permitted_tools = _string_list(binding.get("permitted_tools"))
@@ -217,6 +237,7 @@ def build_profile_v2(
         or not isinstance(cost_limit.get("amount"), (int, float))
         or isinstance(cost_limit.get("amount"), bool)
         or cost_limit.get("amount", -1) < 0
+        or not math.isfinite(cost_limit.get("amount", float("nan")))
         or not isinstance(cost_limit.get("currency"), str)
         or len(cost_limit.get("currency", "")) != 3
         or not cost_limit.get("currency", "").isupper()
