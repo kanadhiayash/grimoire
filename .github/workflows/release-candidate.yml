@@ -2,11 +2,6 @@ name: Release Candidate Reproduction
 
 on:
   pull_request:
-    paths:
-      - "benchmarks/release-candidate/**"
-      - "src/grimoire/benchmarks/release_candidate.py"
-      - "tests/test_release_candidate_benchmark.py"
-      - ".github/workflows/release-candidate.yml"
   workflow_dispatch:
 
 permissions:
@@ -52,6 +47,32 @@ jobs:
             --expected-commit "$EXPECTED_SHA" \
             --run-id "$RUN_ID"
 
+      - name: Publish conservative artifact verdict
+        if: always()
+        env:
+          RUN_ID: ${{ matrix.run-id }}
+        run: |
+          python3 - "$RUN_ID" "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          run_id, summary_path = sys.argv[1:]
+          result_path = pathlib.Path(
+              "artifacts/release-candidate"
+          ) / run_id / "RELEASE_CANDIDATE_RESULTS.json"
+          result = json.loads(result_path.read_text(encoding="utf-8"))
+          with pathlib.Path(summary_path).open("a", encoding="utf-8") as stream:
+              stream.write(
+                  "## Release-candidate evidence\n\n"
+                  f"- Run: `{run_id}`\n"
+                  f"- Artifact verdict: `{result['verdict']}`\n"
+                  f"- Hard gates: `{result['hard_gate_status']}`\n\n"
+                  "A green workflow means evidence collection succeeded. "
+                  "The artifact verdict remains authoritative.\n"
+              )
+          PY
+
       - name: Upload complete run package
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -95,6 +116,27 @@ jobs:
             --run artifacts/download/release-candidate-run-3 \
             --expected-commit "$EXPECTED_SHA" \
             --output artifacts/release-candidate-comparison/comparison.json
+
+      - name: Publish comparison verdict
+        if: always()
+        run: |
+          python3 - "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          result_path = pathlib.Path(
+              "artifacts/release-candidate-comparison/comparison.json"
+          )
+          result = json.loads(result_path.read_text(encoding="utf-8"))
+          with pathlib.Path(sys.argv[1]).open("a", encoding="utf-8") as stream:
+              stream.write(
+                  "## Three-run comparison\n\n"
+                  f"- Artifact verdict: `{result['verdict']}`\n"
+                  f"- Status variance: `{result['status_variance']}`\n"
+                  f"- Aggregate product score: `not emitted`\n"
+              )
+          PY
 
       - name: Upload comparison
         if: always()

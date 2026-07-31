@@ -232,6 +232,7 @@ class ReleaseCandidateBenchmarkTests(unittest.TestCase):
         workflow = (
             ROOT / ".github" / "workflows" / "release-candidate.yml"
         ).read_text(encoding="utf-8")
+        self.assertIn("  pull_request:\n  workflow_dispatch:", workflow)
         self.assertIn("run-id: [run-1, run-2, run-3]", workflow)
         self.assertIn(
             "ref: ${{ github.event.pull_request.head.sha || github.sha }}",
@@ -240,6 +241,8 @@ class ReleaseCandidateBenchmarkTests(unittest.TestCase):
         self.assertIn("git status --porcelain", workflow)
         self.assertIn("compare", workflow)
         self.assertIn("release-candidate-comparison", workflow)
+        self.assertIn("GITHUB_STEP_SUMMARY", workflow)
+        self.assertIn("Artifact verdict", workflow)
 
 
 if __name__ == "__main__":
