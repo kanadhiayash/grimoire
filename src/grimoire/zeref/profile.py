@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -103,6 +104,21 @@ def _string_list(value: Any) -> tuple[str, ...] | None:
     return normalized if len(normalized) == len(value) else None
 
 
+def _safe_repo_scope(value: str) -> bool:
+    if (
+        value.startswith("/")
+        or value.endswith("/")
+        or "\\" in value
+        or any(ord(character) < 32 for character in value)
+    ):
+        return False
+    parts = value.split("/")
+    return bool(parts) and all(
+        part not in {"", ".", ".."} and not part.endswith(":")
+        for part in parts
+    )
+
+
 def _source_trace(fields: Sequence[str]) -> list[dict[str, str]]:
     return [
         {
@@ -144,6 +160,7 @@ def build_profile_v2(
         "permitted_tools",
         "prohibited_tools",
         "approval_required_for",
+        "cost_limit",
     )
     allowed = set(required) | {"retry_ceiling", "receipt_expiry_seconds"}
     if set(binding) - allowed:
@@ -174,9 +191,13 @@ def build_profile_v2(
     approved_scope = _string_list(binding.get("approved_scope"))
     if approved_scope is None:
         reasons.add("invalid_approved_scope")
+    elif any(not _safe_repo_scope(value) for value in approved_scope):
+        reasons.add("invalid_approved_scope_path")
     excluded_scope = _string_list(binding.get("excluded_scope"))
     if excluded_scope is None:
         reasons.add("invalid_excluded_scope")
+    elif any(not _safe_repo_scope(value) for value in excluded_scope):
+        reasons.add("invalid_excluded_scope_path")
     elif approved_scope is not None and set(approved_scope) & set(excluded_scope):
         reasons.add("scope_boundary_conflict")
     permitted_tools = _string_list(binding.get("permitted_tools"))
@@ -210,6 +231,18 @@ def build_profile_v2(
         reasons.add("invalid_execution_mode")
     if not isinstance(cost_ceiling, str) or not cost_ceiling.strip():
         reasons.add("invalid_cost_ceiling")
+    cost_limit = binding.get("cost_limit")
+    if (
+        not isinstance(cost_limit, Mapping)
+        or not isinstance(cost_limit.get("amount"), (int, float))
+        or isinstance(cost_limit.get("amount"), bool)
+        or cost_limit.get("amount", -1) < 0
+        or not math.isfinite(cost_limit.get("amount", float("nan")))
+        or not isinstance(cost_limit.get("currency"), str)
+        or len(cost_limit.get("currency", "")) != 3
+        or not cost_limit.get("currency", "").isupper()
+    ):
+        reasons.add("invalid_cost_limit")
 
     controls = _string_list(required_controls)
     documents = _string_list(required_documents)
@@ -242,6 +275,7 @@ def build_profile_v2(
         "approvals.required_for",
         "execution.stop_conditions",
         "execution.cost_ceiling",
+        "execution.cost_limit",
         "execution.retry_ceiling",
         "memory.canonical_promotion",
         "expected_receipt.schema_id",
@@ -273,6 +307,10 @@ def build_profile_v2(
         "execution": {
             "stop_conditions": list(stops),
             "cost_ceiling": cost_ceiling,
+            "cost_limit": {
+                "amount": cost_limit["amount"],
+                "currency": cost_limit["currency"],
+            },
             "retry_ceiling": retry_ceiling,
             "model_routing": "zeref_owned_lowest_cost_capable",
             "lead_roles": 1,

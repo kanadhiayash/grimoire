@@ -229,6 +229,8 @@
     "project_status_schema": "policies/schemas/project-status.schema.json",
     "zeref_execution_profile_v2_schema": "policies/schemas/zeref-execution-profile-v2.schema.json",
     "zeref_execution_profile_v2_model": "src/grimoire/zeref/profile.py",
+    "zeref_execution_receipt_v1_schema": "policies/schemas/zeref-execution-receipt-v1.schema.json",
+    "zeref_execution_receipt_v1_verifier": "src/grimoire/zeref/receipt.py",
     "execution_receipt_schema": "policies/schemas/execution-receipt.schema.json",
     "ci_schema_lock": "requirements/ci-schema.txt",
     "ci_schema_check": "checks/json_schema_check.py",

@@ -45,6 +45,7 @@ class ZerefProfileV2Tests(unittest.TestCase):
             ],
             "retry_ceiling": 2,
             "receipt_expiry_seconds": 3600,
+            "cost_limit": {"amount": 0, "currency": "USD"},
         }
 
     def manifest(self) -> dict[str, object]:
@@ -82,6 +83,7 @@ class ZerefProfileV2Tests(unittest.TestCase):
             "permitted_tools",
             "prohibited_tools",
             "approval_required_for",
+            "cost_limit",
         )
         for field in required:
             with self.subTest(field=field):
@@ -129,6 +131,38 @@ class ZerefProfileV2Tests(unittest.TestCase):
             (overlap, "scope_boundary_conflict"),
             (malformed, "invalid_approved_scope"),
         ):
+            with self.subTest(expected=expected):
+                with self.assertRaises(ProfileValidationError) as raised:
+                    build_profile_v2(
+                        value,
+                        pack_hash="b" * 64,
+                        required_controls=("GRM-UNI-001",),
+                        required_documents=("Implementation plan",),
+                        acceptance_criteria=("Tests pass",),
+                        stop_conditions=("missing evidence",),
+                        grimoire_version="0.5.0",
+                        mode="standard",
+                        cost_ceiling="bounded",
+                    )
+                self.assertIn(expected, raised.exception.reason_codes)
+
+    def test_scope_paths_and_cost_limit_are_safe_and_finite(self) -> None:
+        for mutate, expected in (
+            (
+                lambda value: value.update(
+                    {"approved_scope": ["docs/../../outside"]}
+                ),
+                "invalid_approved_scope_path",
+            ),
+            (
+                lambda value: value.update(
+                    {"cost_limit": {"amount": float("nan"), "currency": "USD"}}
+                ),
+                "invalid_cost_limit",
+            ),
+        ):
+            value = self.binding()
+            mutate(value)
             with self.subTest(expected=expected):
                 with self.assertRaises(ProfileValidationError) as raised:
                     build_profile_v2(
