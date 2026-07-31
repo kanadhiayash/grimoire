@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -205,6 +206,44 @@ class ZerefEndToEndPilotTests(unittest.TestCase):
         self.assertEqual(result["pilot_status"], "FAIL")
         self.assertIn("pilot_artifact_hash_mismatch", result["reason_codes"])
         self.assertIn("reproduction_result_not_eligible", result["reason_codes"])
+
+    def test_successful_attestation_cli_returns_zero(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "pilot"
+            reproduction = Path(directory) / "reproduction"
+            attestation = Path(directory) / "attestation.json"
+            for target in (output, reproduction):
+                run_pilot(
+                    ROOT,
+                    target,
+                    commit_after="c" * 40,
+                    files_changed=("tests/test_zeref_pilot.py",),
+                    timestamp=self.timestamp,
+                )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "benchmarks/zeref-pilot/run.py",
+                    "attest",
+                    "--primary",
+                    str(output),
+                    "--reproduction",
+                    str(reproduction),
+                    "--output",
+                    str(attestation),
+                    "--reviewer",
+                    "independent-agent",
+                    "--producer",
+                    "primary-agent",
+                    "--timestamp",
+                    "2026-07-31T02:10:00+00:00",
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+        self.assertEqual(completed.returncode, 0, completed.stdout)
 
 
 if __name__ == "__main__":

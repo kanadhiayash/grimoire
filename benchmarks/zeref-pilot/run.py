@@ -132,6 +132,8 @@ def main() -> int:
         )
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
+    if args.action == "attest":
+        return 0 if result.get("result") == "MATCH" else 2
     return 0 if result.get("pilot_status") in {"PASS", "PARTIAL"} else 2
 
 
