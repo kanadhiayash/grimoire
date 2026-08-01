@@ -7,6 +7,7 @@ from .evidence import (
     rollback_dry_run,
     verify_release_evidence,
 )
+from .gate import evaluate_final_release, verify_release_tag
 
 __all__ = [
     "ReleaseEvidenceError",
@@ -14,4 +15,6 @@ __all__ = [
     "release_evidence_digest",
     "rollback_dry_run",
     "verify_release_evidence",
+    "evaluate_final_release",
+    "verify_release_tag",
 ]
