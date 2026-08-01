@@ -1,18 +1,206 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Standards Orchestrator Policy",
+  "title": "Grimoire Standards Orchestrator Policy",
   "type": "object",
-  "required": ["schema_version", "module_version", "identity", "principles", "lifecycle", "completion_statuses", "applicability_statuses", "authority_classes", "zeref_boundary"],
+  "required": [
+    "$schema",
+    "schema_version",
+    "module_version",
+    "identity",
+    "principles",
+    "lifecycle",
+    "completion_statuses",
+    "applicability_statuses",
+    "authority_classes",
+    "priority",
+    "zeref_boundary",
+    "external_action_approval"
+  ],
   "properties": {
+    "$schema": {
+      "const": "schemas/standards-orchestrator.schema.json"
+    },
     "schema_version": {"const": 1},
-    "module_version": {"type": "string"},
-    "identity": {"type": "object"},
-    "principles": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-    "lifecycle": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-    "completion_statuses": {"type": "array", "items": {"enum": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]}},
-    "applicability_statuses": {"type": "array", "items": {"type": "string"}},
-    "authority_classes": {"type": "array", "items": {"type": "string"}},
-    "zeref_boundary": {"type": "object"}
+    "module_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "identity": {
+      "type": "object",
+      "required": ["display_name", "descriptor", "repository"],
+      "properties": {
+        "display_name": {"const": "Grimoire"},
+        "descriptor": {
+          "const": "Global Product Engineering Standards Orchestrator"
+        },
+        "repository": {"const": "kanadhiayash/grimoire"}
+      },
+      "additionalProperties": false
+    },
+    "principles": {
+      "const": [
+        "detailed_at_rest_selective_in_execution",
+        "one_canonical_repository",
+        "one_project_manifest",
+        "one_compiled_context_pack",
+        "evidence_before_assertion",
+        "minimum_correct_change",
+        "neutral_global_personal_overlay",
+        "no_automated_legal_compliance_claim"
+      ],
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "lifecycle": {
+      "const": [
+        "DISCOVER",
+        "DEFINE",
+        "DESIGN",
+        "VALIDATE",
+        "DECISION_LOCKED",
+        "BUILD_READY",
+        "BUILDING",
+        "VERIFYING",
+        "RELEASE_READY",
+        "SHIPPED",
+        "OPERATING",
+        "RETIRED"
+      ],
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "completion_statuses": {
+      "const": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"],
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]
+      }
+    },
+    "applicability_statuses": {
+      "const": [
+        "APPLICABLE",
+        "POTENTIALLY_APPLICABLE",
+        "NOT_APPLICABLE",
+        "INSUFFICIENT_FACTS",
+        "COUNSEL_REVIEW_REQUIRED",
+        "SOURCE_STALE",
+        "SOURCE_CONFLICT"
+      ],
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "authority_classes": {
+      "const": [
+        "BINDING_LAW",
+        "BINDING_REGULATION",
+        "COURT_OR_ENFORCEMENT_DECISION",
+        "REGULATOR_GUIDANCE",
+        "CONSENSUS_STANDARD",
+        "CERTIFICATION_SCHEME",
+        "INDUSTRY_FRAMEWORK",
+        "BEST_PRACTICE",
+        "EMERGING_TREND",
+        "PROPOSAL",
+        "DRAFT",
+        "SUPERSEDED"
+      ],
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "priority": {
+      "type": "object",
+      "required": ["P0", "P1", "P2", "P3"],
+      "properties": {
+        "P0": {
+          "const": "active incident, safety risk, data loss, exploitable security exposure, regulatory breach, or critical service unavailable"
+        },
+        "P1": {
+          "const": "release blocker or major harm requiring the next active work window"
+        },
+        "P2": {"const": "planned product or engineering work"},
+        "P3": {
+          "const": "valid backlog, research, or low-impact optimization"
+        }
+      },
+      "additionalProperties": false
+    },
+    "zeref_boundary": {
+      "type": "object",
+      "required": ["orchestrator_owns", "zeref_owns", "forbidden"],
+      "properties": {
+        "orchestrator_owns": {
+          "const": [
+            "requirements",
+            "expected_outcomes",
+            "required_documents",
+            "gates",
+            "acceptance",
+            "evidence",
+            "limits"
+          ],
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "zeref_owns": {
+          "const": [
+            "activation",
+            "routing",
+            "roles",
+            "models",
+            "tools",
+            "skills",
+            "approvals",
+            "retries",
+            "memory",
+            "execution_receipts"
+          ],
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "forbidden": {
+          "const": [
+            "modify zeref repository without separate approval",
+            "duplicate zeref internals",
+            "claim browser simulation as local runtime"
+          ],
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "external_action_approval": {
+      "const": [
+        "merge",
+        "deploy",
+        "publish",
+        "external_send",
+        "destructive_change",
+        "credential_change",
+        "canonical_memory_write"
+      ],
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    }
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }

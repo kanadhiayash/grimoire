@@ -26,6 +26,20 @@ PACKAGE_FILES = {
     "SCORECARD.md",
     "SOURCE_MANIFEST.json",
 }
+RESULT_FIELDS = {
+    "schema_version",
+    "suite_id",
+    "run_id",
+    "commit",
+    "environment",
+    "source_manifest",
+    "raw_artifact_manifest",
+    "gates",
+    "hard_gate_status",
+    "verdict",
+    "overall_score",
+    "score_reason",
+}
 
 
 def _canonical_json(value: Any) -> str:
@@ -170,6 +184,7 @@ def _environment(expected_commit: str, run_id: str) -> dict[str, Any]:
         "python": platform.python_version(),
         "run_id": run_id,
         "repository_clean_before_run": True,
+        "repository_clean_after_run": True,
     }
 
 
@@ -186,6 +201,27 @@ def _source_manifest(
         ],
         "tree": _run_git(root, "rev-parse", f"{expected_commit}^{{tree}}"),
     }
+
+
+def _raw_artifact_manifest(output: Path) -> list[dict[str, str]]:
+    raw_root = output / "RAW_OUTPUT"
+    artifacts: list[dict[str, str]] = []
+    for path in sorted(raw_root.rglob("*")):
+        if path.is_symlink():
+            raise BenchmarkContractError("unsafe_raw_artifact")
+        if path.is_dir():
+            continue
+        if not path.is_file():
+            raise BenchmarkContractError("unsafe_raw_artifact")
+        artifacts.append(
+            {
+                "path": path.relative_to(output).as_posix(),
+                "sha256": _sha256_path(path),
+            }
+        )
+    if not artifacts:
+        raise BenchmarkContractError("missing_raw_output")
+    return artifacts
 
 
 def _expand_command(
@@ -301,7 +337,9 @@ def run_release_candidate(
                 "stderr_sha256": _sha256_bytes(completed.stderr),
             }
         )
+    _verify_repository(root, expected_commit)
     hard_gate_status, verdict = _aggregate(gate_results)
+    raw_artifact_manifest = _raw_artifact_manifest(output)
     result = {
         "schema_version": 1,
         "suite_id": suite["suite_id"],
@@ -309,6 +347,7 @@ def run_release_candidate(
         "commit": expected_commit,
         "environment": environment,
         "source_manifest": source_manifest,
+        "raw_artifact_manifest": raw_artifact_manifest,
         "gates": gate_results,
         "hard_gate_status": hard_gate_status,
         "verdict": verdict,
@@ -354,6 +393,8 @@ def validate_release_candidate_run(
     """Validate one release-candidate package without trusting its verdict."""
 
     evidence_root = evidence_root.resolve()
+    if set(result) != RESULT_FIELDS or result.get("schema_version") != 1:
+        raise BenchmarkContractError("invalid_release_candidate_result")
     if result.get("commit") != expected_commit:
         raise BenchmarkContractError("commit_mismatch")
     if result.get("overall_score") is not None:
@@ -369,6 +410,7 @@ def validate_release_candidate_run(
         environment != result["environment"]
         or environment.get("commit") != expected_commit
         or environment.get("repository_clean_before_run") is not True
+        or environment.get("repository_clean_after_run") is not True
     ):
         raise BenchmarkContractError("invalid_environment")
     source_path = evidence_root / "SOURCE_MANIFEST.json"
@@ -418,6 +460,10 @@ def validate_release_candidate_run(
                 or _sha256_path(raw_path) != gate[hash_field]
             ):
                 raise BenchmarkContractError("missing_raw_output")
+    if result.get("raw_artifact_manifest") != _raw_artifact_manifest(
+        evidence_root
+    ):
+        raise BenchmarkContractError("raw_artifact_manifest_mismatch")
     hard_gate_status, verdict = _aggregate(gates)
     if (
         result.get("hard_gate_status") != hard_gate_status

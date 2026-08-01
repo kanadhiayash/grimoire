@@ -4,7 +4,7 @@
   "module_version": "0.4.0",
   "identity": {
     "display_name": "Grimoire",
-    "future_name": "Standards Orchestrator",
+    "descriptor": "Global Product Engineering Standards Orchestrator",
     "repository": "kanadhiayash/grimoire"
   },
   "principles": [
