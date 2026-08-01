@@ -130,6 +130,66 @@ class ReleaseCandidateBenchmarkTests(unittest.TestCase):
                     expected_commit=commit,
                 )
 
+    def test_generated_raw_artifacts_are_hashed_and_tamper_evident(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, commit = self._repository(directory)
+            suite = self._suite()
+            suite["gates"][0]["command"] = [
+                "{python}",
+                "-c",
+                (
+                    "import pathlib,sys; "
+                    "pathlib.Path(sys.argv[1]).write_text('derived\\n')"
+                ),
+                "{run_output}/RAW_OUTPUT/derived.json",
+            ]
+            output = Path(directory) / "run"
+            result = run_release_candidate(
+                suite,
+                root=root,
+                output=output,
+                expected_commit=commit,
+                run_id="run-1",
+            )
+            paths = {
+                item["path"] for item in result["raw_artifact_manifest"]
+            }
+            self.assertIn("RAW_OUTPUT/derived.json", paths)
+            (output / "RAW_OUTPUT" / "derived.json").write_text(
+                "tampered\n", encoding="utf-8"
+            )
+            with self.assertRaisesRegex(
+                BenchmarkContractError, "raw_artifact_manifest_mismatch"
+            ):
+                validate_release_candidate_run(
+                    result,
+                    evidence_root=output,
+                    expected_commit=commit,
+                )
+            derived = output / "RAW_OUTPUT" / "derived.json"
+            derived.write_text("derived\n", encoding="utf-8")
+            added = output / "RAW_OUTPUT" / "added.json"
+            added.write_text("added\n", encoding="utf-8")
+            with self.assertRaisesRegex(
+                BenchmarkContractError, "raw_artifact_manifest_mismatch"
+            ):
+                validate_release_candidate_run(
+                    result,
+                    evidence_root=output,
+                    expected_commit=commit,
+                )
+            added.unlink()
+            derived.unlink()
+            derived.symlink_to(output / "SCORECARD.md")
+            with self.assertRaisesRegex(
+                BenchmarkContractError, "unsafe_raw_artifact"
+            ):
+                validate_release_candidate_run(
+                    result,
+                    evidence_root=output,
+                    expected_commit=commit,
+                )
+
     def test_dirty_or_mismatched_commit_is_rejected_before_execution(self):
         with tempfile.TemporaryDirectory() as directory:
             root, commit = self._repository(directory)
@@ -151,6 +211,29 @@ class ReleaseCandidateBenchmarkTests(unittest.TestCase):
                     self._suite(),
                     root=root,
                     output=Path(directory) / "dirty",
+                    expected_commit=commit,
+                    run_id="run-1",
+                )
+
+    def test_gate_cannot_dirty_exact_source_and_still_emit_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, commit = self._repository(directory)
+            suite = self._suite()
+            suite["gates"][0]["command"] = [
+                "{python}",
+                "-c",
+                (
+                    "from pathlib import Path; "
+                    "Path('VERSION').write_text('changed\\n')"
+                ),
+            ]
+            with self.assertRaisesRegex(
+                BenchmarkContractError, "dirty_repository"
+            ):
+                run_release_candidate(
+                    suite,
+                    root=root,
+                    output=Path(directory) / "post-run-dirty",
                     expected_commit=commit,
                     run_id="run-1",
                 )
@@ -227,6 +310,20 @@ class ReleaseCandidateBenchmarkTests(unittest.TestCase):
         )
         self.assertEqual(external["declared_status"], "NOT_VERIFIED")
         self.assertTrue(external["hard_gate"])
+        declared = {
+            gate["id"]: gate
+            for gate in suite["gates"]
+            if "declared_status" in gate
+        }
+        for gate_id in (
+            "gold-quality-metrics",
+            "scale-resource-budgets",
+            "zeref-external-runtime",
+        ):
+            self.assertEqual(
+                "NOT_VERIFIED", declared[gate_id]["declared_status"]
+            )
+            self.assertTrue(declared[gate_id]["hard_gate"])
 
     def test_workflow_runs_three_clean_exact_head_reproductions(self):
         workflow = (

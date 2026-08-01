@@ -15,6 +15,10 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
   the Grimoire 1.0 release candidate.
 - A complete 0.5.x-to-1.0 migration guide and explicit separation between the
   repository release version and manifest standards policy version.
+- MIT licensing for public source use and a final operational audit register.
+- Complete raw-artifact hashing for release-candidate evidence and explicit
+  hard `NOT_VERIFIED` gates for unmeasured gold and scale outcomes.
+- Exact clean-source verification both before and after candidate gate execution.
 - Paste-ready personal instruction pack for Claude Global, Claude Cowork, Claude Projects, Claude Cowork project folders, ChatGPT Global, ChatGPT Projects, and Codex Global customization.
 - Character-budget manifest, cross-surface smoke tests, and repository-native unit tests for instruction precedence, Zeref truthfulness, cost routing, approval boundaries, and completion statuses.
 
@@ -23,6 +27,8 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 - Documentation now uses the permanent Grimoire identity and lists the complete
   fifteen-file project pack.
 - Completion and release claims remain conservative when evidence is absent.
+- The active orchestrator policy schema is closed, identity-bound, and
+  independently validated in schema CI.
 
 ### Still not verified
 

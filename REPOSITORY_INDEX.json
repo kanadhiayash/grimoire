@@ -262,7 +262,8 @@
     "browser_pack_compiler": "scripts/compile_surface_pack.py",
     "browser_pack_verifier": "scripts/verify_surface_pack.py",
     "harness_installer": "scripts/install_ai_harness_standards.py",
-    "audit_baseline_2026_07_27": "docs/audits/2026-07-27/BASELINE.json"
+    "audit_baseline_2026_07_27": "docs/audits/2026-07-27/BASELINE.json",
+    "final_operational_audit_2026_08_01": "docs/audits/2026-08-01/FINAL_OPERATIONAL_AUDIT.md"
   },
   "verification": {
     "required_commands": [

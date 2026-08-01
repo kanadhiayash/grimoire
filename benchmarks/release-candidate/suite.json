@@ -150,6 +150,15 @@
       "hard_gate": true
     },
     {
+      "id": "gold-quality-metrics",
+      "category": "compiler",
+      "declared_status": "NOT_VERIFIED",
+      "reason_codes": [
+        "overall_recall_precision_and_counsel_routing_unverified"
+      ],
+      "hard_gate": true
+    },
+    {
       "id": "inert-trust-boundaries",
       "category": "verifier",
       "command": [
@@ -182,6 +191,15 @@
         "7",
         "--output",
         "{run_output}/RAW_OUTPUT/control-scale"
+      ],
+      "hard_gate": true
+    },
+    {
+      "id": "scale-resource-budgets",
+      "category": "scale",
+      "declared_status": "NOT_VERIFIED",
+      "reason_codes": [
+        "memory_and_context_token_thresholds_unapproved"
       ],
       "hard_gate": true
     },

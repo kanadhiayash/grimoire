@@ -32,6 +32,13 @@ Requirements:
 - Git
 - no runtime package installation
 
+Clone the repository and enter it:
+
+```bash
+git clone https://github.com/kanadhiayash/grimoire.git
+cd grimoire
+```
+
 Inspect the repository:
 
 ```bash
@@ -245,12 +252,12 @@ The checked-in repository version remains `0.5.0` until the approval-gated
 1.0.0 release operation is completed. The 1.0 contracts and migration
 documentation are release-candidate material. The repository content is written
 with public-safe wording, which means external-facing copy was reviewed for
-sensitive details. It does not grant a public-use license. The current
-`LICENSE`, repository visibility, and release publication remain authoritative
-owner-controlled contracts and are not changed by this README.
+sensitive details. Source use is granted under the MIT License. Repository
+visibility and release publication remain separate owner-controlled actions.
 
 ## License and contribution
 
-Use the repository’s license and governance files as the source of truth.
+Grimoire is available under the [MIT License](LICENSE). Use the governance and
+security files as the source of truth for contributions and responsible use.
 Material changes require focused branches, tests, exact-head CI, review, and
 evidence-backed completion claims.

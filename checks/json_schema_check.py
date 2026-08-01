@@ -19,6 +19,8 @@ AI_POLICY = ROOT / "policies" / "ai-operations.json"
 AI_SCHEMA = SCHEMA_ROOT / "ai-operations.schema.json"
 PROJECT_TEMPLATE = ROOT / "templates" / "project" / "project.json"
 PROJECT_SCHEMA = SCHEMA_ROOT / "project-manifest.schema.json"
+ORCHESTRATOR_POLICY = ROOT / "policies" / "standards-orchestrator.json"
+ORCHESTRATOR_SCHEMA = SCHEMA_ROOT / "standards-orchestrator.schema.json"
 STANDARD_REGISTRY = ROOT / "registry" / "standards"
 STANDARD_SCHEMA = SCHEMA_ROOT / "standards" / "standard-registry-record.schema.json"
 SOURCE_REGISTRY = ROOT / "registry" / "sources"
@@ -109,6 +111,19 @@ def validate() -> list[str]:
     ):
         failures.append(
             f"{PROJECT_TEMPLATE.relative_to(ROOT)} "
+            f"{json_path(list(error.path))}: {error.validator}"
+        )
+
+    orchestrator_policy = load_json(ORCHESTRATOR_POLICY)
+    orchestrator_validator = Draft202012Validator(
+        load_json(ORCHESTRATOR_SCHEMA)
+    )
+    for error in sorted(
+        orchestrator_validator.iter_errors(orchestrator_policy),
+        key=lambda item: (list(item.path), item.validator or ""),
+    ):
+        failures.append(
+            f"{ORCHESTRATOR_POLICY.relative_to(ROOT)} "
             f"{json_path(list(error.path))}: {error.validator}"
         )
 
