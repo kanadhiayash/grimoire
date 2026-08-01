@@ -19,6 +19,9 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 - Complete raw-artifact hashing for release-candidate evidence and explicit
   hard `NOT_VERIFIED` gates for unmeasured gold and scale outcomes.
 - Exact clean-source verification both before and after candidate gate execution.
+- A dependency-free, non-mutating final release blocker report that binds the
+  canonical suite, recomputes the three-run comparison, and reports version,
+  hard-gate, evidence, signature, freshness, approval, or tag-binding gaps.
 - Paste-ready personal instruction pack for Claude Global, Claude Cowork, Claude Projects, Claude Cowork project folders, ChatGPT Global, ChatGPT Projects, and Codex Global customization.
 - Character-budget manifest, cross-surface smoke tests, and repository-native unit tests for instruction precedence, Zeref truthfulness, cost routing, approval boundaries, and completion statuses.
 

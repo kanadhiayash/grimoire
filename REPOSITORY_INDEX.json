@@ -122,6 +122,31 @@
       ],
       "purpose": "Compare benchmark metrics against explicit historical regression thresholds."
     },
+    "release_preflight": {
+      "entrypoint": "scripts/release_preflight.py",
+      "argv": [
+        "python3",
+        "scripts/release_preflight.py",
+        "preflight",
+        "--candidate-run",
+        "artifacts/release-candidate/run-1",
+        "--candidate-run",
+        "artifacts/release-candidate/run-2",
+        "--candidate-run",
+        "artifacts/release-candidate/run-3",
+        "--comparison",
+        "artifacts/release-candidate/comparison.json",
+        "--release-evidence",
+        "artifacts/release/evidence.json",
+        "--expected-sha",
+        "<exact-commit>",
+        "--version",
+        "1.0.0",
+        "--tag",
+        "v1.0.0"
+      ],
+      "purpose": "Report incomplete canonical final release evidence without mutating Git or GitHub."
+    },
     "project_boot": {
       "entrypoint": "scripts/grimoire.py",
       "argv": [
@@ -221,6 +246,7 @@
     "zeref_end_to_end_pilot": "benchmarks/zeref-pilot",
     "ci_policy_check": "checks/ci_policy_check.py",
     "release_evidence_cli": "scripts/release_evidence.py",
+    "final_release_preflight": "scripts/release_preflight.py",
     "release_evidence_schema": "policies/schemas/release-evidence.schema.json",
     "control_trace_schema": "policies/schemas/control-trace.schema.json",
     "project_trace_explainer": "scripts/project_explain.py",

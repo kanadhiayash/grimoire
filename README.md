@@ -218,6 +218,28 @@ records, and a canonical SHA-256 integrity digest. SHA-256 integrity is not an
 identity signature. Signing, publication, deployment, and GitHub release
 creation remain separate approval-gated actions.
 
+After producing three exact-commit release-candidate runs, their comparison,
+and the release-evidence package, report the complete final boundary without
+creating a tag or changing GitHub:
+
+```bash
+python3 scripts/release_preflight.py preflight \
+  --candidate-run artifacts/release-candidate/run-1 \
+  --candidate-run artifacts/release-candidate/run-2 \
+  --candidate-run artifacts/release-candidate/run-3 \
+  --comparison artifacts/release-candidate/comparison.json \
+  --release-evidence artifacts/release/evidence.json \
+  --expected-sha "$(git rev-parse HEAD)" \
+  --version 1.0.0 \
+  --tag v1.0.0
+```
+
+The v1 preflight is deliberately a blocker report, not release authorization.
+It binds candidate evidence to the exact checked-in canonical suite and returns
+`BLOCKED` while external signature and independently trusted freshness
+contracts are unavailable. It never creates a tag, release, deployment, or
+publication.
+
 See [Release Evidence and Rollback](docs/operations/release-evidence-and-rollback.md).
 
 ## Adoption
