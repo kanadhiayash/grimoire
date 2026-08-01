@@ -163,6 +163,7 @@ class FinalReleaseGateTests(unittest.TestCase):
         *,
         timestamp: str = "2026-08-01T07:00:00+00:00",
         approvals: tuple[dict, ...] = (),
+        private_release_approval: bool = False,
     ) -> dict:
         directory = repository / "artifacts" / directory.name
         directory.mkdir(parents=True)
@@ -193,7 +194,38 @@ class FinalReleaseGateTests(unittest.TestCase):
             expected_commit=self._head(repository),
             timestamp=timestamp,
             approvals=approvals,
+            private_release_approval=private_release_approval,
         )
+
+    def _promote_release_contract(self, repository: Path) -> str:
+        (repository / "VERSION").write_text("1.0.0\n", encoding="utf-8")
+        (repository / "policies" / "baseline.json").write_text(
+            '{"standard_version":"1.0.0"}\n',
+            encoding="utf-8",
+        )
+        (repository / "REPOSITORY_INDEX.json").write_text(
+            '{"standard_version":"1.0.0"}\n',
+            encoding="utf-8",
+        )
+        (repository / "CHANGELOG.md").write_text(
+            "# Changelog\n\n## [1.0.0] - 2026-08-01\n",
+            encoding="utf-8",
+        )
+        (repository / "README.md").write_text(
+            "# Fixture\n\nCurrent release: `1.0.0`\n",
+            encoding="utf-8",
+        )
+        (repository / "docs" / "releases" / "1.0.0.md").write_text(
+            "# Grimoire 1.0.0 Release\n\n**Status: RELEASED**\n",
+            encoding="utf-8",
+        )
+        subprocess.run(["git", "add", "."], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "-qm", "release fixture"],
+            cwd=repository,
+            check=True,
+        )
+        return self._head(repository)
 
     def test_not_verified_hard_gate_blocks_release(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -247,16 +279,8 @@ class FinalReleaseGateTests(unittest.TestCase):
             "release_candidate_not_canonical",
             result["reason_codes"],
         )
-        self.assertIn(
-            "external_signature_contract_unavailable",
-            result["reason_codes"],
-        )
-        self.assertIn(
-            "release_freshness_not_independently_verified",
-            result["reason_codes"],
-        )
-        self.assertEqual("BLOCKER_REPORT_V1", result["decision_contract"])
-        self.assertFalse(result["pass_supported"])
+        self.assertEqual("FINAL_RELEASE_DECISION_V1", result["decision_contract"])
+        self.assertTrue(result["pass_supported"])
 
     def test_version_contract_must_change_atomically(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -462,6 +486,41 @@ class FinalReleaseGateTests(unittest.TestCase):
         self.assertNotIn("release_approval_missing", result["reason_codes"])
         self.assertNotIn("release_approval_stale", result["reason_codes"])
 
+    def test_complete_private_release_evidence_is_eligible(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            repository = self._repository(root)
+            commit = self._promote_release_contract(repository)
+            runs, comparison = self._candidate_runs(repository, root)
+            evidence = self._release_evidence(
+                repository,
+                root,
+                approvals=(
+                    {
+                        "action": "release",
+                        "commit": commit,
+                        "approver": "release-owner",
+                        "approved_at": "2026-08-01T07:30:00+00:00",
+                        "scope": "exact-commit-release",
+                    },
+                ),
+                private_release_approval=True,
+            )
+            result = evaluate_final_release(
+                root=repository,
+                expected_commit=commit,
+                intended_version="1.0.0",
+                intended_tag="v1.0.0",
+                candidate_runs=runs,
+                candidate_comparison=comparison,
+                release_evidence=evidence,
+                now=datetime(2026, 8, 1, 8, tzinfo=timezone.utc),
+            )
+
+        self.assertEqual("PASS", result["status"])
+        self.assertTrue(result["eligible"])
+        self.assertEqual([], result["reason_codes"])
+
     def test_tag_source_commit_mismatch_fails(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             repository = Path(directory)
@@ -545,14 +604,16 @@ class FinalReleaseGateTests(unittest.TestCase):
             result["reason_codes"],
         )
 
-    def test_release_document_remains_candidate_while_blocked(self) -> None:
+    def test_release_document_declares_source_release_without_publication_overclaim(self) -> None:
         release = (ROOT / "docs/releases/1.0.0.md").read_text(
             encoding="utf-8"
         )
-        self.assertIn("Status: NOT RELEASED", release)
-        self.assertIn("gold quality metrics", release.lower())
+        self.assertIn("Status: RELEASED", release)
+        self.assertIn("source release contract", release)
+        self.assertIn("bounded gold-scenario quality metrics", release.lower())
         self.assertIn("resource budgets", release.lower())
-        self.assertIn("external Zeref runtime", release)
+        self.assertIn("pinned public Shiroe source trust contract", release)
+        self.assertIn("not a cryptographic identity signature", release)
 
     def test_repository_routes_the_non_mutating_preflight(self) -> None:
         index = json.loads(

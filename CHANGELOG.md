@@ -6,6 +6,31 @@ The format follows Keep a Changelog principles. Versions follow Semantic Version
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-08-01
+
+### Added
+
+- Final Shiroe runtime-boundary migration for active policy, release evidence,
+  release-candidate gates, and public-facing documentation.
+- Executable release-candidate gates for bounded gold-scenario quality metrics,
+  release-target resource budgets, and pinned public Shiroe trust verification.
+- Private exact-commit release approval evidence that remains explicit about
+  not being a cryptographic identity signature.
+
+### Changed
+
+- Repository release version advanced to 1.0.0.
+- Final release preflight can return `PASS` when exact-commit release evidence,
+  freshness, approval, version declarations, and all candidate hard gates agree.
+- Active runtime boundary language now uses Shiroe while legacy Zeref profile
+  and receipt fields remain available for the 0.5.x compatibility window.
+
+### Not verified
+
+- Windows runtime support.
+- Cryptographic identity signing, package publication, deployment, and GitHub
+  Release object creation.
+
 ### Added
 
 - Multidimensional status, strict manifest validation, deterministic 10,000-case

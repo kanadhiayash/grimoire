@@ -142,6 +142,7 @@ def build_release_evidence(
     expected_commit: str,
     timestamp: str,
     approvals: Iterable[Mapping[str, Any]] = (),
+    private_release_approval: bool = False,
 ) -> dict[str, Any]:
     root = root.resolve()
     observed_commit = _git(root, "rev-parse", "HEAD")
@@ -207,11 +208,22 @@ def build_release_evidence(
             ],
             "prohibited": ["deploy", "publish", "release", "sign"],
         },
-        "signature": {
-            "status": "NOT_VERIFIED",
-            "method": "EXTERNAL_NOT_CONFIGURED",
-            "reason": "release_signing_not_authorized_in_evidence_pr",
-        },
+        "signature": (
+            {
+                "status": "APPROVED_NOT_CRYPTOGRAPHIC",
+                "method": "PRIVATE_OWNER_APPROVAL_V1",
+                "reason": (
+                    "private_release_uses_exact_commit_owner_approval_not_"
+                    "cryptographic_identity_signature"
+                ),
+            }
+            if private_release_approval
+            else {
+                "status": "NOT_VERIFIED",
+                "method": "EXTERNAL_NOT_CONFIGURED",
+                "reason": "release_signing_not_authorized_in_evidence_pr",
+            }
+        ),
     }
     value["integrity"] = {
         "algorithm": "sha256-canonical-json-v1",
@@ -380,7 +392,10 @@ def verify_release_evidence(
         )
     ):
         reasons.add("signature_record_invalid")
-    elif signature.get("status") != "NOT_VERIFIED":
+    elif signature.get("status") not in {
+        "NOT_VERIFIED",
+        "APPROVED_NOT_CRYPTOGRAPHIC",
+    }:
         reasons.add("unsupported_signature_claim")
     approvals = evidence.get("approvals")
     if not isinstance(approvals, list):

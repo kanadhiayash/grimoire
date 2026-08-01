@@ -5,7 +5,7 @@ for human and AI product work.
 
 It turns one validated project manifest into a bounded, evidence-aware context
 pack. The pack identifies applicable standards, required outcomes, documents,
-gates, conflicts, exclusions, verification steps, and Zeref routing metadata.
+gates, conflicts, exclusions, verification steps, and Shiroe routing metadata.
 Grimoire is the product name. “Standards Orchestrator” describes the capability.
 
 ## What is operational
@@ -19,7 +19,7 @@ Python standard-library runtime can:
 - verify pack integrity independently from compiler success;
 - explain control decisions without echoing hostile manifest values;
 - run evidence-bound benchmark suites and deterministic fuzz gates;
-- validate Zeref profiles and receipts while preserving the runtime boundary;
+- validate Shiroe-compatible profiles and receipts while preserving the runtime boundary;
 - produce exact-commit release evidence and rehearse rollback without mutation;
 - run the dependency-free conformance surface locally and across a supported
   CI matrix.
@@ -108,7 +108,7 @@ EXECUTION_RECEIPT.json
 ```
 
 `AI_CONTEXT.md` is the bounded one-read contract. The structured files support
-verification, traceability, automation, and Zeref routing. Generated packs are
+verification, traceability, automation, and Shiroe routing. Generated packs are
 evidence artifacts, not alternate canonical standards.
 
 ## Truthful status model
@@ -130,7 +130,7 @@ Required dimensions:
 
 A generated pack may report `pack_generation_status=PASS` while the aggregate
 remains `NOT_VERIFIED`. Grimoire never converts missing evidence into readiness,
-legal compliance, accessibility compliance, or verified Zeref execution.
+legal compliance, accessibility compliance, or verified Shiroe execution.
 
 ## Architecture
 
@@ -146,7 +146,7 @@ Versioned standards and sources
         bounded 15-file context pack
                     |
                     v
-       Zeref-routed execution boundary
+       Shiroe-routed execution boundary
                     |
                     v
          fresh independent evidence
@@ -156,7 +156,7 @@ Ownership is explicit:
 
 - Grimoire owns standards, applicability, outcomes, documents, gates,
   evidence contracts, and limits.
-- Zeref owns activation, model and tool routing, roles, approvals, retries,
+- Shiroe owns activation, model and tool routing, roles, approvals, retries,
   memory, and execution receipts.
 - A consuming project owns its facts, decisions, implementation, exceptions,
   deployment state, and evidence.
@@ -166,7 +166,7 @@ Ownership is explicit:
 
 | Path | Purpose |
 |---|---|
-| `src/grimoire/` | Dependency-free validation, registry, compiler, verifier, benchmark, evidence, and Zeref contracts |
+| `src/grimoire/` | Dependency-free validation, registry, compiler, verifier, benchmark, evidence, and Shiroe-compatible contracts |
 | `scripts/` | Unified CLI and operator entrypoints |
 | `standards/` | Human-readable normative standards |
 | `registry/` | Versioned standard, source, and crosswalk records |
@@ -200,15 +200,16 @@ CI repeats the dependency-free checks and additionally verifies:
 
 Windows remains `NOT_VERIFIED`.
 
-## Zeref boundary
+## Shiroe Boundary
 
-Grimoire can compile and verify Zeref profile and receipt contracts. Zeref
-Memory Engine remains a separate continuity and routing runtime. A
-self-authenticated receipt or browser simulation is not proof that Zeref
-executed. Current repository evidence keeps `ZEREF_EXECUTION_STATUS` at
-`NOT_VERIFIED` unless an approved external trust anchor is supplied.
+Grimoire can compile and verify Shiroe-compatible profile, receipt, and trust
+contracts. Shiroe remains a separate local-first AI work control plane. A
+self-authenticated receipt or browser simulation is not proof that Shiroe
+executed. Current repository evidence pins the public Shiroe source contract
+used for routing and preserves legacy `ZEREF_EXECUTION_STATUS` fields during
+the 0.5.x compatibility window.
 
-Grimoire does not modify Zeref internals.
+Grimoire does not modify Shiroe internals.
 
 ## Release evidence
 
@@ -234,11 +235,10 @@ python3 scripts/release_preflight.py preflight \
   --tag v1.0.0
 ```
 
-The v1 preflight is deliberately a blocker report, not release authorization.
-It binds candidate evidence to the exact checked-in canonical suite and returns
-`BLOCKED` while external signature and independently trusted freshness
-contracts are unavailable. It never creates a tag, release, deployment, or
-publication.
+The preflight binds candidate evidence to the exact checked-in canonical suite
+and returns `PASS` only when release evidence, approval, freshness, version
+files, and release-candidate gates all agree. It never creates a tag, release,
+deployment, or publication.
 
 See [Release Evidence and Rollback](docs/operations/release-evidence-and-rollback.md).
 
@@ -270,12 +270,12 @@ See [Migrating 0.5.x to 1.0](docs/migrations/0.5.x-to-1.0.md).
 
 ## Current release state
 
-The checked-in repository version remains `0.5.0` until the approval-gated
-1.0.0 release operation is completed. The 1.0 contracts and migration
-documentation are release-candidate material. The repository content is written
-with public-safe wording, which means external-facing copy was reviewed for
-sensitive details. Source use is granted under the MIT License. Repository
-visibility and release publication remain separate owner-controlled actions.
+Current release: `1.0.0`.
+
+The repository content is written with public-safe wording, which means
+external-facing copy was reviewed for sensitive details. Source use is granted
+under the MIT License. Repository visibility and release publication remain
+separate owner-controlled actions.
 
 ## License and contribution
 

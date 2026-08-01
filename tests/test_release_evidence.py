@@ -152,6 +152,41 @@ class ReleaseEvidenceTests(unittest.TestCase):
             ["deploy", "publish", "release", "sign"],
         )
 
+    def test_private_release_approval_can_satisfy_assurance_without_signature_claim(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
+            artifact, benchmark = self._inputs(Path(directory))
+            commit = self._head()
+            evidence = build_release_evidence(
+                ROOT,
+                artifacts=[artifact],
+                benchmarks=[benchmark],
+                expected_commit=commit,
+                timestamp="2026-08-01T07:00:00+00:00",
+                approvals=(
+                    {
+                        "action": "release",
+                        "commit": commit,
+                        "approver": "kanadhiayash",
+                        "approved_at": "2026-08-01T07:00:00+00:00",
+                        "scope": "exact-commit-release",
+                    },
+                ),
+                private_release_approval=True,
+            )
+            result = verify_release_evidence(
+                evidence,
+                root=ROOT,
+                expected_commit=commit,
+            )
+
+        self.assertEqual("APPROVED_NOT_CRYPTOGRAPHIC", evidence["signature"]["status"])
+        self.assertEqual("PASS", result["verification_status"])
+        self.assertEqual("PASS", result["release_assurance_status"])
+        self.assertEqual("PASS", result["package_status"])
+        self.assertEqual([], result["reason_codes"])
+
     def test_private_rollback_dry_run_is_non_mutating(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
             artifact, benchmark = self._inputs(Path(directory))

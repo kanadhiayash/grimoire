@@ -50,9 +50,9 @@ class ReleaseDocumentationTests(unittest.TestCase):
             self.assertIn("repository release version", value.lower())
             self.assertIn("standards policy version", value.lower())
             self.assertIn("0.4.0", value)
-        self.assertIn("NOT RELEASED", release)
+        self.assertIn("RELEASED", release)
         self.assertIn("release assurance", release.lower())
-        self.assertIn("NOT_VERIFIED", release)
+        self.assertIn("not a cryptographic identity signature", release)
 
     def test_repository_index_routes_current_and_candidate_docs(self) -> None:
         index = json.loads(

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "standard_version": "0.3.0",
   "policy": "surface-activation",
-  "runtime_owner": "zeref-memory-engine",
+  "runtime_owner": "shiroe",
   "activation_owner": "engineering-standards",
   "canonical_sources": {
     "grimoire": "https://github.com/kanadhiayash/grimoire",
-    "zeref_memory_engine": "https://github.com/kanadhiayash/zeref-memory-engine"
+    "shiroe": "https://github.com/kanadhiayash/shiroe"
   },
   "surface_classes": {
     "local_harness": ["claude-code", "codex", "gemini-cli", "cursor", "windsurf", "github-copilot", "generic-agent"],

@@ -60,7 +60,7 @@ class FinalOperationalAuditTests(unittest.TestCase):
             schema["properties"]["identity"]["additionalProperties"]
         )
         self.assertFalse(
-            schema["properties"]["zeref_boundary"]["additionalProperties"]
+            schema["properties"]["shiroe_boundary"]["additionalProperties"]
         )
         self.assertIn("external_action_approval", schema["properties"])
 
@@ -90,11 +90,11 @@ class FinalOperationalAuditTests(unittest.TestCase):
                 self.assertEqual(
                     policy[name], schema["properties"][name]["const"]
                 )
-        for name, expected in policy["zeref_boundary"].items():
-            with self.subTest(zeref=name):
+        for name, expected in policy["shiroe_boundary"].items():
+            with self.subTest(shiroe=name):
                 self.assertEqual(
                     expected,
-                    schema["properties"]["zeref_boundary"][
+                    schema["properties"]["shiroe_boundary"][
                         "properties"
                     ][name]["const"],
                 )
@@ -130,9 +130,9 @@ class FinalOperationalAuditTests(unittest.TestCase):
         replaced_approval = copy.deepcopy(policy)
         replaced_approval["external_action_approval"] = ["noop"]
         candidates.append(replaced_approval)
-        replaced_zeref = copy.deepcopy(policy)
-        replaced_zeref["zeref_boundary"]["forbidden"] = ["noop"]
-        candidates.append(replaced_zeref)
+        replaced_shiroe = copy.deepcopy(policy)
+        replaced_shiroe["shiroe_boundary"]["forbidden"] = ["noop"]
+        candidates.append(replaced_shiroe)
         for candidate in candidates:
             self.assertTrue(list(validator.iter_errors(candidate)))
 

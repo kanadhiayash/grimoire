@@ -79,6 +79,9 @@ def parser() -> argparse.ArgumentParser:
     generate.add_argument("--benchmark", action="append", required=True)
     generate.add_argument("--expected-sha", required=True)
     generate.add_argument("--timestamp")
+    generate.add_argument("--approval-approver")
+    generate.add_argument("--approval-timestamp")
+    generate.add_argument("--private-release-approval", action="store_true")
     generate.add_argument("--output", required=True)
     verify = subparsers.add_parser("verify")
     verify.add_argument("--evidence", required=True)
@@ -93,6 +96,19 @@ def main() -> int:
     args = parser().parse_args()
     try:
         if args.action == "generate":
+            approvals = []
+            if args.approval_approver or args.approval_timestamp:
+                if not (args.approval_approver and args.approval_timestamp):
+                    raise ReleaseEvidenceError("release_approval_invalid")
+                approvals.append(
+                    {
+                        "action": "release",
+                        "commit": args.expected_sha,
+                        "approver": args.approval_approver,
+                        "approved_at": args.approval_timestamp,
+                        "scope": "exact-commit-release",
+                    }
+                )
             result = build_release_evidence(
                 ROOT,
                 artifacts=[ROOT / item for item in args.artifact],
@@ -102,6 +118,8 @@ def main() -> int:
                     args.timestamp
                     or datetime.now(timezone.utc).isoformat()
                 ),
+                approvals=approvals,
+                private_release_approval=args.private_release_approval,
             )
             _write(Path(args.output), result)
             status = 0

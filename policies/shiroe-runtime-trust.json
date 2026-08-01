@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "runtime": "shiroe",
+  "runtime_repository": "kanadhiayash/shiroe",
+  "repository_url": "https://github.com/kanadhiayash/shiroe",
+  "commit": "a4549e06d3a4b398fb2476039026eda49501176a",
+  "release": "3.0.0-alpha.1",
+  "required_files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "31f39b37fa36534742e269ae659cad87573300507765e4669fa6163f92bb3d23"
+    },
+    {
+      "path": "CODEX.md",
+      "sha256": "439a46aed7c0245ff7ba106532c47d3cd3b1455eac9bebf4d0fbaaa97f2cc433"
+    },
+    {
+      "path": "shiroe-registry.json",
+      "sha256": "561bedca565aeb84a3a9ff9e00f24a6df6afb36ad0e47a30624c4648bf18c166"
+    }
+  ],
+  "required_registry": {
+    "version": "3.0.0-alpha.1",
+    "skills_minimum": 15,
+    "commands_minimum": 8
+  },
+  "claims": {
+    "verified": [
+      "pinned_public_source_reachable",
+      "canonical_agent_spec_hash_matches",
+      "codex_adapter_hash_matches",
+      "registry_hash_matches",
+      "registry_declares_expected_release"
+    ],
+    "not_claimed": [
+      "shiroe_executed_grimoire_release",
+      "canonical_memory_write",
+      "hosted_service",
+      "cryptographic_identity_signature"
+    ]
+  }
+}

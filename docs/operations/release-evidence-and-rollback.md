@@ -17,6 +17,13 @@ python3 scripts/release_evidence.py generate \
   --artifact artifacts/release-inputs/grimoire-check.json \
   --benchmark artifacts/release-inputs/benchmark/BENCHMARK_RESULTS.json \
   --expected-sha "$COMMIT" \
+  --approval-approver kanadhiayash \
+  --approval-timestamp "$(python3 - <<'PY'
+from datetime import datetime, timezone
+print(datetime.now(timezone.utc).isoformat())
+PY
+)" \
+  --private-release-approval \
   --output artifacts/release/evidence.json
 ```
 
@@ -47,11 +54,12 @@ python3 scripts/release_preflight.py preflight \
   --tag v1.0.0
 ```
 
-The current `BLOCKER_REPORT_V1` contract returns exit code `1` and status
-`BLOCKED`; its stable reason codes identify the unsatisfied boundaries. Exit
-code `0` is reserved for a future approved eligibility contract and is not
-reachable in v1. Exit code `2` means the input package is malformed or
-unreadable. Use `--require-tag` only for post-tag reporting, or run:
+The `FINAL_RELEASE_DECISION_V1` contract returns exit code `0` only when the
+exact commit, three candidate runs, comparison, release evidence, version
+files, freshness, approval, and every hard gate agree. It returns exit code `1`
+and status `BLOCKED` with stable reason codes when a boundary is unsatisfied.
+Exit code `2` means the input package is malformed or unreadable. Use
+`--require-tag` only for post-tag reporting, or run:
 
 ```bash
 python3 scripts/release_preflight.py verify-tag \
@@ -60,9 +68,10 @@ python3 scripts/release_preflight.py verify-tag \
 ```
 
 The evidence command cannot sign, publish, deploy, create a tag, or create a
-GitHub release. A successful evidence verification is not release approval.
-Signature and release assurance remain `NOT_VERIFIED` until their separate
-owner-approved gates are satisfied. Benchmark evidence must be a complete
+GitHub release. A successful evidence verification is not release approval
+unless the exact-commit approval record is present and current. The
+`APPROVED_NOT_CRYPTOGRAPHIC` marker is private release assurance, not a
+cryptographic identity signature. Benchmark evidence must be a complete
 Grimoire benchmark package bound to the same commit. Symlinked release inputs
 are rejected.
 
@@ -72,5 +81,5 @@ one reviewed commit. It binds all three packages to the checked-in canonical
 suite and source tree, recomputes the comparison rather than trusting the
 supplied summary, rejects any hard gate below `PASS`, reports approval and
 self-attested timestamp gaps, and can independently verify the tag binding.
-External identity signature and trusted freshness are not configured inputs,
-so v1 cannot authorize the release.
+It does not create a tag, release object, package, deployment, publication, or
+cryptographic signature.

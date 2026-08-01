@@ -2,14 +2,14 @@
 
 ## Canonical authority
 
-This repository is the canonical source for neutral product engineering standards, machine policy, project compilation, cross-surface adapters, and verification. It is not a source of project facts, legal advice, or Zeref runtime internals.
+This repository is the canonical source for neutral product engineering standards, machine policy, project compilation, cross-surface adapters, and verification. It is not a source of project facts, legal advice, or Shiroe runtime internals.
 
 Consuming projects pin a released version or exact reviewed commit. They must not silently follow an unversioned branch or refresh compiled packs without review.
 
 ## Ownership boundaries
 
 - Standards Orchestrator: requirements, profiles, overlays, expected outcomes, document contracts, gates, evidence, and limits.
-- Zeref: activation, roles, models, tools, skills, approvals, retries, memory, and execution receipts.
+- Shiroe: activation, roles, models, tools, skills, approvals, retries, memory, and execution receipts.
 - Project repository: facts, decisions, plans, code, designs, exceptions, and evidence.
 - Qualified legal reviewers: final jurisdiction-specific legal interpretation and compliance conclusions.
 
@@ -34,7 +34,7 @@ Breaking policy, precedence, lifecycle, command semantics, schema, completion vo
 3. Identify affected standards, policies, schemas, profiles, adapters, templates, instructions, sources, checks, and tests.
 4. Write or update tests before or with behavior changes.
 5. Record architecture decisions.
-6. Include compatibility, migration, privacy, accessibility, security, legal, cost, and Zeref-boundary analysis.
+6. Include compatibility, migration, privacy, accessibility, security, legal, cost, and Shiroe-boundary analysis.
 7. Open a reviewable pull request.
 8. Run all required checks.
 9. Verify protected external repositories remain unchanged.
