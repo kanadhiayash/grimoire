@@ -140,6 +140,11 @@ def main() -> int:
     policy = json.loads((ROOT / "policies/standards-orchestrator.json").read_text(encoding="utf-8"))
     if "COMPLIANT" in policy.get("applicability_statuses", []):
         failures.append("automated legal COMPLIANT status is forbidden")
+    boundary = policy.get("shiroe_boundary", {})
+    if boundary.get("runtime_repository") != "kanadhiayash/shiroe":
+        failures.append("active runtime boundary must target kanadhiayash/shiroe")
+    if "zeref_boundary" in policy:
+        failures.append("active orchestrator policy must not use zeref_boundary")
     for name in ("project-status.schema.json", "execution-receipt.schema.json"):
         schema = json.loads(
             (ROOT / "policies" / "schemas" / name).read_text(encoding="utf-8")

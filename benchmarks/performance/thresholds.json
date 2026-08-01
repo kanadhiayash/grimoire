@@ -3,6 +3,6 @@
   "compile_median_max_ms": 100.0,
   "compile_p95_max_ms": 250.0,
   "verify_max_ms": 500.0,
-  "memory_max_bytes": null,
-  "context_token_ceiling": null
+  "memory_max_bytes": 8388608,
+  "context_token_ceiling": 350000
 }

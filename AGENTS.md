@@ -6,7 +6,7 @@ This file is the canonical bootstrap contract for every human, AI model, coding 
 
 Grimoire is the neutral, versioned Global Product Engineering Standards Orchestrator. It defines reusable product, design, engineering, legal, accessibility, AI, security, privacy, cloud, cost, Git, delivery, and operational standards.
 
-Zeref Memory Engine is a separate execution and continuity runtime. This repository may compile execution profiles for Zeref but does not own or rewrite Zeref internals.
+Shiroe is a separate local-first execution and continuity runtime. This repository may compile execution profiles for Shiroe-compatible operation but does not own or rewrite Shiroe internals.
 
 ## Core operating model
 
@@ -16,7 +16,7 @@ Detailed at rest, selective during execution:
 Canonical standards + project manifest + approved project records
     -> applicability and context compiler
     -> one bounded AI context pack
-    -> Zeref-routed execution
+    -> Shiroe-routed execution
     -> fresh verification evidence
 ```
 
@@ -107,12 +107,12 @@ During coding, apply `standards/engineering/minimum-correct-change.md`:
 
 Do not assume jurisdiction, law, industry, user age, data category, or compliance status. Distinguish binding authority from guidance, standards, best practices, trends, proposals, drafts, and superseded sources. Use official sources. Automated systems may report applicability and evidence status but must not issue a final legal-compliance certification.
 
-## Zeref boundary
+## Shiroe boundary
 
-The Orchestrator defines requirements, outcomes, documents, gates, evidence, and limits. Zeref owns activation, roles, model and tool routing, skills, approvals, retries, memory, and execution receipts.
+The Orchestrator defines requirements, outcomes, documents, gates, evidence, and limits. Shiroe owns activation, roles, model and tool routing, skills, approvals, retries, memory, and execution receipts.
 
-- Do not modify `kanadhiayash/zeref-memory-engine` without separate approval.
-- Do not duplicate Zeref internals.
+- Do not modify `kanadhiayash/shiroe` without separate approval.
+- Do not duplicate Shiroe internals.
 - Do not call browser simulation verified local runtime execution.
 - Do not let personal overlays weaken neutral standards.
 

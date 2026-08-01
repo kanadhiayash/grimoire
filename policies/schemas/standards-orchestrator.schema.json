@@ -13,7 +13,7 @@
     "applicability_statuses",
     "authority_classes",
     "priority",
-    "zeref_boundary",
+    "shiroe_boundary",
     "external_action_approval"
   ],
   "properties": {
@@ -135,10 +135,11 @@
       },
       "additionalProperties": false
     },
-    "zeref_boundary": {
+    "shiroe_boundary": {
       "type": "object",
-      "required": ["orchestrator_owns", "zeref_owns", "forbidden"],
+      "required": ["runtime_repository", "orchestrator_owns", "shiroe_owns", "forbidden"],
       "properties": {
+        "runtime_repository": {"const": "kanadhiayash/shiroe"},
         "orchestrator_owns": {
           "const": [
             "requirements",
@@ -154,7 +155,7 @@
           "uniqueItems": true,
           "items": {"type": "string", "minLength": 1}
         },
-        "zeref_owns": {
+        "shiroe_owns": {
           "const": [
             "activation",
             "routing",
@@ -174,8 +175,8 @@
         },
         "forbidden": {
           "const": [
-            "modify zeref repository without separate approval",
-            "duplicate zeref internals",
+            "modify shiroe repository without separate approval",
+            "duplicate shiroe internals",
             "claim browser simulation as local runtime"
           ],
           "type": "array",

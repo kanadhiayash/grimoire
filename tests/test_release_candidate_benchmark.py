@@ -299,31 +299,24 @@ class ReleaseCandidateBenchmarkTests(unittest.TestCase):
                 "crosswalk",
                 "compatibility",
                 "scale",
-                "zeref",
+                "shiroe",
                 "documentation",
             }.issubset(categories)
         )
-        external = next(
-            gate
-            for gate in suite["gates"]
-            if gate["id"] == "zeref-external-runtime"
-        )
-        self.assertEqual(external["declared_status"], "NOT_VERIFIED")
-        self.assertTrue(external["hard_gate"])
-        declared = {
-            gate["id"]: gate
-            for gate in suite["gates"]
-            if "declared_status" in gate
+        executable = {
+            gate["id"]: gate for gate in suite["gates"] if "command" in gate
         }
         for gate_id in (
-            "gold-quality-metrics",
+            "gold-scenario-quality-metrics",
             "scale-resource-budgets",
-            "zeref-external-runtime",
+            "shiroe-external-runtime",
         ):
-            self.assertEqual(
-                "NOT_VERIFIED", declared[gate_id]["declared_status"]
-            )
-            self.assertTrue(declared[gate_id]["hard_gate"])
+            self.assertIn(gate_id, executable)
+            self.assertTrue(executable[gate_id]["hard_gate"])
+        self.assertEqual(
+            [],
+            [gate for gate in suite["gates"] if "declared_status" in gate],
+        )
 
     def test_workflow_runs_three_clean_exact_head_reproductions(self):
         workflow = (

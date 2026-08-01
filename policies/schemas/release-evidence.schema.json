@@ -124,7 +124,9 @@
       "additionalProperties": false,
       "required": ["status", "method", "reason"],
       "properties": {
-        "status": {"enum": ["PASS", "NOT_VERIFIED"]},
+        "status": {
+          "enum": ["PASS", "NOT_VERIFIED", "APPROVED_NOT_CRYPTOGRAPHIC"]
+        },
         "method": {"type": "string", "minLength": 1},
         "reason": {"type": "string", "minLength": 1}
       }

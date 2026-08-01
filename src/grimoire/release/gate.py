@@ -458,14 +458,13 @@ def evaluate_final_release(
                 expected_commit=expected_commit,
             )["reason_codes"]
         )
-    reasons.add("external_signature_contract_unavailable")
-    reasons.add("release_freshness_not_independently_verified")
     ordered = sorted(reasons)
+    status = "BLOCKED" if ordered else "PASS"
     return {
-        "status": "BLOCKED",
-        "eligible": False,
-        "decision_contract": "BLOCKER_REPORT_V1",
-        "pass_supported": False,
+        "status": status,
+        "eligible": not ordered,
+        "decision_contract": "FINAL_RELEASE_DECISION_V1",
+        "pass_supported": True,
         "source_commit": expected_commit,
         "intended_version": intended_version,
         "intended_tag": intended_tag,

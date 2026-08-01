@@ -1,11 +1,11 @@
 {
   "$schema": "policies/schemas/repository-index.schema.json",
   "schema_version": 1,
-  "standard_version": "0.5.0",
+  "standard_version": "1.0.0",
   "repository": "kanadhiayash/grimoire",
   "display_name": "Grimoire",
   "visibility": "private",
-  "purpose": "Neutral, versioned global product engineering standards and a one-entrypoint control plane for human, AI, and Zeref-assisted product work.",
+  "purpose": "Neutral, versioned global product engineering standards and a one-entrypoint control plane for human, AI, and Shiroe-assisted product work.",
   "implementation_stack": {
     "orchestration": "Python 3.11+ standard library",
     "machine_contracts": "JSON and JSON Schema draft 2020-12",
@@ -243,7 +243,7 @@
     "benchmark_performance_scale": "benchmarks/performance",
     "release_candidate_benchmark": "benchmarks/release-candidate",
     "release_candidate_workflow": ".github/workflows/release-candidate.yml",
-    "zeref_end_to_end_pilot": "benchmarks/zeref-pilot",
+    "shiroe_runtime_trust_contract": "policies/shiroe-runtime-trust.json",
     "ci_policy_check": "checks/ci_policy_check.py",
     "release_evidence_cli": "scripts/release_evidence.py",
     "final_release_preflight": "scripts/release_preflight.py",
@@ -304,7 +304,7 @@
     ]
   },
   "boundaries": {
-    "zeref_repository_modification": "forbidden unless separately approved",
+    "shiroe_repository_modification": "forbidden unless separately approved",
     "browser_runtime_claims": "simulation must never be represented as local runtime execution",
     "external_actions": "explicit approval required",
     "canonical_memory": "single-writer and approval-gated",

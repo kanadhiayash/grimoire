@@ -27,10 +27,11 @@
     "P2": "planned product or engineering work",
     "P3": "valid backlog, research, or low-impact optimization"
   },
-  "zeref_boundary": {
+  "shiroe_boundary": {
+    "runtime_repository": "kanadhiayash/shiroe",
     "orchestrator_owns": ["requirements", "expected_outcomes", "required_documents", "gates", "acceptance", "evidence", "limits"],
-    "zeref_owns": ["activation", "routing", "roles", "models", "tools", "skills", "approvals", "retries", "memory", "execution_receipts"],
-    "forbidden": ["modify zeref repository without separate approval", "duplicate zeref internals", "claim browser simulation as local runtime"]
+    "shiroe_owns": ["activation", "routing", "roles", "models", "tools", "skills", "approvals", "retries", "memory", "execution_receipts"],
+    "forbidden": ["modify shiroe repository without separate approval", "duplicate shiroe internals", "claim browser simulation as local runtime"]
   },
   "external_action_approval": ["merge", "deploy", "publish", "external_send", "destructive_change", "credential_change", "canonical_memory_write"]
 }

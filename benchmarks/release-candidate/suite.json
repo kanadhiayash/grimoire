@@ -4,6 +4,11 @@
   "sources": [
     "VERSION",
     "benchmarks/release-candidate/suite.json",
+    "benchmarks/performance/thresholds.json",
+    "checks/gold_quality_check.py",
+    "checks/scale_resource_budget_check.py",
+    "checks/shiroe_trust_check.py",
+    "policies/shiroe-runtime-trust.json",
     "src/grimoire/benchmarks/release_candidate.py"
   ],
   "gates": [
@@ -150,11 +155,13 @@
       "hard_gate": true
     },
     {
-      "id": "gold-quality-metrics",
+      "id": "gold-scenario-quality-metrics",
       "category": "compiler",
-      "declared_status": "NOT_VERIFIED",
-      "reason_codes": [
-        "overall_recall_precision_and_counsel_routing_unverified"
+      "command": [
+        "{python}",
+        "checks/gold_quality_check.py",
+        "--output",
+        "{run_output}/RAW_OUTPUT/gold-quality.json"
       ],
       "hard_gate": true
     },
@@ -197,15 +204,19 @@
     {
       "id": "scale-resource-budgets",
       "category": "scale",
-      "declared_status": "NOT_VERIFIED",
-      "reason_codes": [
-        "memory_and_context_token_thresholds_unapproved"
+      "command": [
+        "{python}",
+        "checks/scale_resource_budget_check.py",
+        "--input",
+        "{run_output}/RAW_OUTPUT/control-scale/PERFORMANCE_RESULTS.json",
+        "--output",
+        "{run_output}/RAW_OUTPUT/scale-resource-budgets.json"
       ],
       "hard_gate": true
     },
     {
-      "id": "zeref-structural-contract",
-      "category": "zeref",
+      "id": "shiroe-structural-contract",
+      "category": "shiroe",
       "command": [
         "{python}",
         "-m",
@@ -220,11 +231,15 @@
       "hard_gate": true
     },
     {
-      "id": "zeref-external-runtime",
-      "category": "zeref",
-      "declared_status": "NOT_VERIFIED",
-      "reason_codes": [
-        "external_runtime_trust_anchor_missing"
+      "id": "shiroe-external-runtime",
+      "category": "shiroe",
+      "command": [
+        "{python}",
+        "checks/shiroe_trust_check.py",
+        "--contract",
+        "policies/shiroe-runtime-trust.json",
+        "--output",
+        "{run_output}/RAW_OUTPUT/shiroe-trust.json"
       ],
       "hard_gate": true
     },
