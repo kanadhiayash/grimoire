@@ -196,10 +196,8 @@ class FinalReleaseGateTests(unittest.TestCase):
         )
 
     def test_not_verified_hard_gate_blocks_release(self) -> None:
-        with tempfile.TemporaryDirectory(
-            dir=ROOT / "artifacts"
-        ) as directory:
-            root = Path(directory)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
             repository = self._repository(root)
             runs, comparison = self._candidate_runs(
                 repository,
@@ -226,10 +224,8 @@ class FinalReleaseGateTests(unittest.TestCase):
         )
 
     def test_missing_approval_and_signature_block_release(self) -> None:
-        with tempfile.TemporaryDirectory(
-            dir=ROOT / "artifacts"
-        ) as directory:
-            root = Path(directory)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
             repository = self._repository(root)
             runs, comparison = self._candidate_runs(repository, root)
             evidence = self._release_evidence(repository, root)
@@ -263,10 +259,8 @@ class FinalReleaseGateTests(unittest.TestCase):
         self.assertFalse(result["pass_supported"])
 
     def test_version_contract_must_change_atomically(self) -> None:
-        with tempfile.TemporaryDirectory(
-            dir=ROOT / "artifacts"
-        ) as directory:
-            root = Path(directory)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
             repository = self._repository(root)
             runs, comparison = self._candidate_runs(repository, root)
             evidence = self._release_evidence(repository, root)
@@ -295,8 +289,8 @@ class FinalReleaseGateTests(unittest.TestCase):
         )
 
     def test_reduced_suite_cannot_substitute_for_canonical_candidate(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
-            root = Path(directory)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
             repository = self._repository(root)
             suite_path = (
                 repository / "benchmarks" / "release-candidate" / "suite.json"
@@ -358,8 +352,8 @@ class FinalReleaseGateTests(unittest.TestCase):
         )
 
     def test_substituted_canonical_source_hash_is_rejected(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
-            root = Path(directory)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
             repository = self._repository(root)
             runs, _ = self._candidate_runs(repository, root)
             for path in runs:
@@ -399,8 +393,8 @@ class FinalReleaseGateTests(unittest.TestCase):
         )
 
     def test_stale_candidate_and_release_evidence_block_release(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
-            root = Path(directory)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
             repository = self._repository(root)
             runs, _ = self._candidate_runs(repository, root)
             for path in runs:
@@ -436,8 +430,8 @@ class FinalReleaseGateTests(unittest.TestCase):
         self.assertIn("release_evidence_stale", result["reason_codes"])
 
     def test_fresh_exact_commit_approval_satisfies_approval_boundary(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "artifacts") as directory:
-            root = Path(directory)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
             repository = self._repository(root)
             commit = self._head(repository)
             runs, comparison = self._candidate_runs(repository, root)
