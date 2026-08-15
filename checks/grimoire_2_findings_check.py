@@ -17,6 +17,9 @@ SCHEMA_PATH = ROOT / "policies" / "schemas" / "audit-finding.schema.json"
 EXPECTED_BASELINE_COMMIT = "dcc1017757d53615b29921967e6a9afd08fee38a"
 EXPECTED_AUDIT_DATE = "2026-08-15"
 EXPECTED_VISIBILITY = "public"
+EXPECTED_FINDING_IDS = {
+    f"GRM2-P10-{index:03d}" for index in range(1, 21)
+}
 
 ROOT_FIELDS = {
     "schema_version",
@@ -181,6 +184,11 @@ def validate_findings() -> list[str]:
                 failures.append(f"{evidence_prefix}.reference must be non-empty")
             if not _nonempty_string(item.get("observation")):
                 failures.append(f"{evidence_prefix}.observation must be non-empty")
+
+    if seen != EXPECTED_FINDING_IDS or len(findings) != len(EXPECTED_FINDING_IDS):
+        failures.append(
+            "accepted baseline finding set mismatch: expected exactly GRM2-P10-001 through GRM2-P10-020"
+        )
 
     return failures
 
