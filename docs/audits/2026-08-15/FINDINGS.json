@@ -1,0 +1,353 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-08-15",
+  "baseline_commit": "dcc1017757d53615b29921967e6a9afd08fee38a",
+  "observed_repository_visibility": "public",
+  "findings": [
+    {
+      "id": "GRM2-P10-001",
+      "severity": "P1",
+      "affected_gate": "repository_metadata",
+      "status": "CLOSED",
+      "title": "Repository visibility metadata did not match observed GitHub state",
+      "evidence": [
+        {
+          "type": "external_verification",
+          "reference": "GitHub repository metadata observed 2026-08-15",
+          "observation": "GitHub reported kanadhiayash/grimoire visibility as public while the baseline REPOSITORY_INDEX.json declared private."
+        },
+        {
+          "type": "test",
+          "reference": "tests/test_grimoire_2_baseline.py",
+          "observation": "The RED commit reproduced the mismatch as private != public."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 10,
+      "close_condition": "REPOSITORY_INDEX.json declares public visibility and exact-head checks pass."
+    },
+    {
+      "id": "GRM2-P10-002",
+      "severity": "P1",
+      "affected_gate": "runtime_boundary",
+      "status": "OPEN",
+      "title": "Active authoritative surfaces retain Zeref-era runtime naming",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "AGENTS.md; README.md; REPOSITORY_INDEX.json; policies/; standards/; adapters/; src/; templates/; checks/",
+          "observation": "Active current-state surfaces contain Zeref or ZEREF_ runtime references while the intended active runtime boundary is Shiroe."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 12,
+      "close_condition": "Active v2 policy and output use a runtime-neutral execution contract, Shiroe is isolated behind an adapter, and Zeref remains only in explicit compatibility or historical paths."
+    },
+    {
+      "id": "GRM2-P10-003",
+      "severity": "P1",
+      "affected_gate": "standard_authoring_enforcement",
+      "status": "OPEN",
+      "title": "Normative authoring contract is not enforced corpus-wide",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "standards/universal/standard-authoring.md; inventory/standards-classification.json; standards/engineering/testing.md",
+          "observation": "The authoring contract requires 25 sections for every normative standard, while multiple normative documents do not contain those sections and current checks do not reject them."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 11,
+      "close_condition": "Every normative record is validated against an explicit record kind and complete machine contract, with human rendering parity enforced."
+    },
+    {
+      "id": "GRM2-P10-004",
+      "severity": "P1",
+      "affected_gate": "stack_overlay_migration",
+      "status": "OPEN",
+      "title": "Four supported stack overlays remain migration-required",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "inventory/standards-classification.json",
+          "observation": "Node-TypeScript, Python, React Native-Expo, and SwiftUI-iOS are classified LEGACY_NORMATIVE with review_status MIGRATION_REQUIRED."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 14,
+      "close_condition": "All four supported stack overlays are migrated to current v2 OVERLAY contracts with supported-version, source, deprecation, verification, and compatibility metadata."
+    },
+    {
+      "id": "GRM2-P10-005",
+      "severity": "P1",
+      "affected_gate": "official_source_provenance",
+      "status": "OPEN",
+      "title": "Normative source registry lacks adopted official-source records",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "registry/sources/foundation.json",
+          "observation": "Current source records are local_policy records pointing back to local Grimoire standards; no official_source record exists under registry/sources at the baseline commit."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 13,
+      "close_condition": "Every externally-derived release-blocking requirement maps to verified current official-source records and local policy is clearly distinguished from external authority."
+    },
+    {
+      "id": "GRM2-P10-006",
+      "severity": "P1",
+      "affected_gate": "machine_contract_completeness",
+      "status": "OPEN",
+      "title": "Machine contract completeness is optional outside universal governance",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "src/grimoire/registry/standards.py; policies/schemas/standards/standard-registry-record.schema.json",
+          "observation": "The registry requires the full eight-field contract only for universal-governance; other normative domains can omit contract or provide a partial object."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 11,
+      "close_condition": "Every normative record kind has a closed required machine contract and incomplete normative records fail validation."
+    },
+    {
+      "id": "GRM2-P10-007",
+      "severity": "P2",
+      "affected_gate": "domain_coverage_gate",
+      "status": "OPEN",
+      "title": "Legal-compliance is omitted from the required standard-area check",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "checks/standards_check.py",
+          "observation": "REQUIRED_STANDARD_AREAS includes universal, engineering, github, ai-development, product-ux, and stacks but not standards/legal-compliance."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 14,
+      "close_condition": "Work-type/domain coverage is driven by the canonical work-type registry and all declared supported domains are fail-closed release gates."
+    },
+    {
+      "id": "GRM2-P10-008",
+      "severity": "P2",
+      "affected_gate": "canonical_vocabulary",
+      "status": "OPEN",
+      "title": "Evidence-confidence vocabulary is duplicated and inconsistent",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "standards/universal/priority-severity-risk.md; standards/universal/source-discipline.md",
+          "observation": "The repository uses overlapping but different evidence labels across normative standards instead of one canonical machine vocabulary."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 11,
+      "close_condition": "One canonical vocabulary source defines evidence confidence and all policies, schemas, standards, compiler output, and tests consume it without divergent duplicates."
+    },
+    {
+      "id": "GRM2-P10-009",
+      "severity": "P2",
+      "affected_gate": "canonical_vocabulary",
+      "status": "OPEN",
+      "title": "Approval action classes are duplicated across policies",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "policies/baseline.json; policies/ai-operations.json",
+          "observation": "Approval-gated action lists are maintained in more than one policy surface with different breadth."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 11,
+      "close_condition": "Approval action classes are defined once in canonical vocabularies and referenced by all policies and schemas."
+    },
+    {
+      "id": "GRM2-P10-010",
+      "severity": "P2",
+      "affected_gate": "authority_precedence",
+      "status": "OPEN",
+      "title": "Source precedence is repeated across authoritative surfaces",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "AGENTS.md; policies/ai-operations.json; policies/standards-orchestrator.json",
+          "observation": "Authority and source-precedence concepts are encoded in multiple locations, creating drift risk even where current ordering is similar."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 11,
+      "close_condition": "One canonical precedence model is machine-defined and other surfaces render or reference it without redefining the ordering."
+    },
+    {
+      "id": "GRM2-P10-011",
+      "severity": "P1",
+      "affected_gate": "source_currentness",
+      "status": "OPEN",
+      "title": "Source review cadence is too coarse for fast-changing authority",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "registry/sources/foundation.json",
+          "observation": "Current local source records generally use roughly one-year review expiry regardless of domain volatility."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 13,
+      "close_condition": "Source records carry risk-sensitive review policy and currentness states, with release-blocking adopted sources required to be CURRENT."
+    },
+    {
+      "id": "GRM2-P10-012",
+      "severity": "P1",
+      "affected_gate": "legal_temporal_routing",
+      "status": "OPEN",
+      "title": "Legal source coverage is explicitly non-exhaustive and lacks a temporal applicability engine",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "sources/legal/registry.json; src/grimoire/applicability/",
+          "observation": "The legal registry declares foundation-not-exhaustive coverage and current applicability logic does not provide a dedicated effective-date and transition-window engine."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 13,
+      "close_condition": "Official legal sources are current and temporal applicability supports publication, effective dates, transition windows, future-effective requirements, and supersession."
+    },
+    {
+      "id": "GRM2-P10-013",
+      "severity": "P1",
+      "affected_gate": "work_type_coverage",
+      "status": "OPEN",
+      "title": "Product and UX coverage is foundation-level rather than complete by declared work type",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "docs/operations/standards-orchestrator-capability-map.md; standards/product-ux/",
+          "observation": "The capability map describes foundation or planned expansion in product strategy, research, design systems, and related product work instead of executable FULL work-type coverage."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 14,
+      "close_condition": "Every declared supported product/design work type has a machine work-type record, complete controls, sources, evidence classes, scenarios, and FULL coverage status."
+    },
+    {
+      "id": "GRM2-P10-014",
+      "severity": "P1",
+      "affected_gate": "work_type_coverage",
+      "status": "OPEN",
+      "title": "Engineering and operations coverage lacks explicit work-type completeness",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "docs/operations/standards-orchestrator-capability-map.md; standards/engineering/",
+          "observation": "Engineering coverage is described by broad foundation standards and does not expose a machine release gate for incident operations, infrastructure/platform overlays, identity, data/ML lifecycle, and other declared 2.0 work types."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 14,
+      "close_condition": "Every declared supported engineering/operations work type has complete machine coverage and representative verification scenarios."
+    },
+    {
+      "id": "GRM2-P10-015",
+      "severity": "P1",
+      "affected_gate": "human_machine_parity",
+      "status": "OPEN",
+      "title": "Human normative Markdown and machine records lack universal parity enforcement",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "checks/corpus_classification_check.py; registry/standards/; standards/",
+          "observation": "Current corpus checks verify classification and registry mapping but do not universally prove that human normative content is a rendering of the canonical machine contract."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 11,
+      "close_condition": "Normative Markdown is generated or parity-checked from canonical machine records and drift fails CI."
+    },
+    {
+      "id": "GRM2-P10-016",
+      "severity": "P1",
+      "affected_gate": "contradiction_detection",
+      "status": "OPEN",
+      "title": "No dedicated cross-standard contradiction engine exists",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "src/grimoire/validation/; checks/",
+          "observation": "The baseline has no dedicated deterministic validation surface for opposing modalities, duplicate requirement ownership, active superseded requirements, or canonical vocabulary contradictions across standards."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 14,
+      "close_condition": "A deterministic contradiction engine blocks structurally provable conflicts and emits non-provable semantic conflicts for human review."
+    },
+    {
+      "id": "GRM2-P10-017",
+      "severity": "P1",
+      "affected_gate": "platform_matrix",
+      "status": "OPEN",
+      "title": "Windows remains outside the verified runtime matrix",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": ".github/workflows/standards-ci.yml; README.md",
+          "observation": "Required runtime jobs cover Ubuntu and macOS, while README explicitly reports Windows as NOT_VERIFIED."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 16,
+      "close_condition": "Windows is part of the required blocking CI matrix and passes all supported Python jobs on the release candidate."
+    },
+    {
+      "id": "GRM2-P10-018",
+      "severity": "P2",
+      "affected_gate": "python_matrix",
+      "status": "OPEN",
+      "title": "Required Python support matrix ends at 3.13",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": ".github/workflows/standards-ci.yml; README.md",
+          "observation": "The baseline supported contract is Python 3.11, 3.12, and 3.13 only."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 16,
+      "close_condition": "The approved Grimoire 2.0 Python support matrix includes every required supported version and passes on all required operating systems."
+    },
+    {
+      "id": "GRM2-P10-019",
+      "severity": "P2",
+      "affected_gate": "human_ai_experience",
+      "status": "OPEN",
+      "title": "Compiled pack lacks a dedicated human-first entrypoint and complete explainability UX",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "README.md; src/grimoire/compiler/context.py; scripts/project_orchestrator.py",
+          "observation": "The baseline pack exposes AI_CONTEXT.md and structured artifacts but does not provide the planned START_HERE.md hierarchy or work-type/source explain commands for progressive human and AI use."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 15,
+      "close_condition": "Human and AI entrypoints, explainability commands, stable recovery language, and representative journey tests pass."
+    },
+    {
+      "id": "GRM2-P10-020",
+      "severity": "P3",
+      "affected_gate": "security_reporting",
+      "status": "OPEN",
+      "title": "Security policy does not expose a complete supported-version and private-reporting contract",
+      "evidence": [
+        {
+          "type": "repository",
+          "reference": "SECURITY.md",
+          "observation": "The policy defines defensive handling expectations but does not provide a complete supported-version table and explicit private vulnerability-reporting contact path."
+        }
+      ],
+      "owner": "Standards Orchestrator",
+      "remediation_phase": 17,
+      "close_condition": "Public security documentation states supported versions and an owner-approved private reporting path without exposing sensitive information."
+    }
+  ]
+}
