@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "policy_id": "grimoire-2-release-gates",
+  "target_release": "2.0.0",
+  "completion_statuses": [
+    "PASS",
+    "PARTIAL",
+    "BLOCKED",
+    "NOT_VERIFIED"
+  ],
+  "eligibility": {
+    "required_status": "PASS",
+    "missing_required_status": "NOT_VERIFIED",
+    "required_non_pass_blocks": true,
+    "owner_approval_separate": true,
+    "owner_approval_scope": "exact-commit-release",
+    "release_action_permitted": false
+  },
+  "dimensions": [
+    {
+      "id": "repository_identity",
+      "required": true,
+      "implementation_phase": 10,
+      "finding_ids": ["GRM2-P10-001"],
+      "evidence_requirement": "Repository identity and current metadata must match independently observed repository state.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "canonical_vocabulary",
+      "required": true,
+      "implementation_phase": 11,
+      "finding_ids": ["GRM2-P10-008", "GRM2-P10-009"],
+      "evidence_requirement": "Canonical machine vocabularies must be singular, closed, and consumed without divergent duplicates.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "authority_precedence",
+      "required": true,
+      "implementation_phase": 11,
+      "finding_ids": ["GRM2-P10-010"],
+      "evidence_requirement": "One machine-defined authority precedence model must govern conflicts and source ordering.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "normative_schema_conformance",
+      "required": true,
+      "implementation_phase": 11,
+      "finding_ids": ["GRM2-P10-003", "GRM2-P10-006"],
+      "evidence_requirement": "Every active normative record kind must satisfy its complete closed machine contract.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "human_machine_parity",
+      "required": true,
+      "implementation_phase": 11,
+      "finding_ids": ["GRM2-P10-015"],
+      "evidence_requirement": "Required human renderings must be generated or parity-verified against canonical machine requirements.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "work_type_coverage",
+      "required": true,
+      "implementation_phase": 14,
+      "finding_ids": ["GRM2-P10-004", "GRM2-P10-007", "GRM2-P10-013", "GRM2-P10-014"],
+      "evidence_requirement": "Every declared supported work type and stack overlay must have complete executable coverage and representative scenarios.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "runtime_boundary",
+      "required": true,
+      "implementation_phase": 12,
+      "finding_ids": ["GRM2-P10-002"],
+      "evidence_requirement": "Default v2 outputs must use runtime-neutral execution semantics with runtime adapters outside universal ownership.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "legacy_compatibility_isolation",
+      "required": true,
+      "implementation_phase": 12,
+      "finding_ids": [],
+      "evidence_requirement": "Legacy 1.x and Zeref behavior must be available only through explicit versioned compatibility paths that cannot weaken controls.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "official_source_provenance",
+      "required": true,
+      "implementation_phase": 13,
+      "finding_ids": ["GRM2-P10-005"],
+      "evidence_requirement": "Externally derived normative requirements must map to governed current official-source records and local adoption decisions.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "source_currentness",
+      "required": true,
+      "implementation_phase": 13,
+      "finding_ids": ["GRM2-P10-011"],
+      "evidence_requirement": "Release-blocking adopted sources must pass currentness, supersession, and review-cadence checks.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "temporal_legal_routing",
+      "required": true,
+      "implementation_phase": 13,
+      "finding_ids": ["GRM2-P10-012"],
+      "evidence_requirement": "Legal applicability must preserve publication, effective dates, transition windows, future-effective requirements, and supersession without automated compliance claims.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "applicability",
+      "required": true,
+      "implementation_phase": 14,
+      "finding_ids": [],
+      "evidence_requirement": "Applicability decisions must be deterministic, evidence-backed, and fail closed on material unknowns or conflicts.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "contradiction_detection",
+      "required": true,
+      "implementation_phase": 14,
+      "finding_ids": ["GRM2-P10-016"],
+      "evidence_requirement": "Deterministic cross-requirement contradiction checks must block structurally provable conflicts and surface unresolved semantic conflicts for review.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "compiler_determinism",
+      "required": true,
+      "implementation_phase": 15,
+      "finding_ids": [],
+      "evidence_requirement": "Equivalent canonical inputs must produce byte-stable compiled outputs under the documented deterministic contract.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "project_pack_verification",
+      "required": true,
+      "implementation_phase": 15,
+      "finding_ids": [],
+      "evidence_requirement": "Compiled project packs must pass integrity, completeness, traceability, and tamper-detection verification.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "human_ai_experience",
+      "required": true,
+      "implementation_phase": 15,
+      "finding_ids": ["GRM2-P10-019"],
+      "evidence_requirement": "Human and AI entrypoints must provide bounded onboarding, explainability, recovery, and representative journey evidence.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "bounded_ai_context",
+      "required": true,
+      "implementation_phase": 15,
+      "finding_ids": [],
+      "evidence_requirement": "AI-facing compiled context must remain selective, provenance-preserving, size-bounded, and protected from untrusted instruction injection.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "shiroe_handoff_receipt",
+      "required": true,
+      "implementation_phase": 15,
+      "finding_ids": [],
+      "evidence_requirement": "Current Shiroe adapter handoff and receipt verification must be demonstrated without treating self-attestation as independent runtime proof.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "python_platform_matrix",
+      "required": true,
+      "implementation_phase": 16,
+      "finding_ids": ["GRM2-P10-017", "GRM2-P10-018"],
+      "evidence_requirement": "Every approved supported Python version and operating system must pass the blocking release-candidate matrix.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "release_candidate_benchmarks",
+      "required": true,
+      "implementation_phase": 16,
+      "finding_ids": [],
+      "evidence_requirement": "Canonical release-candidate benchmark and fuzz suites must pass reproducibly on the exact candidate commit.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "exact_head_ci",
+      "required": true,
+      "implementation_phase": 16,
+      "finding_ids": [],
+      "evidence_requirement": "All required CI evidence must bind to the exact candidate commit and pass without soft-failure substitution.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "independent_reproduction_audit",
+      "required": true,
+      "implementation_phase": 16,
+      "finding_ids": [],
+      "evidence_requirement": "Release-critical evidence must be independently reproduced or explicitly remain NOT_VERIFIED when independent execution is unavailable.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "security_reporting",
+      "required": true,
+      "implementation_phase": 17,
+      "finding_ids": ["GRM2-P10-020"],
+      "evidence_requirement": "Public security documentation must define supported versions and an owner-approved private vulnerability reporting path.",
+      "owner": "Standards Orchestrator"
+    },
+    {
+      "id": "open_release_blocking_findings",
+      "required": true,
+      "implementation_phase": 17,
+      "finding_ids": [],
+      "evidence_requirement": "No open release-blocking finding may remain unresolved, accepted without explicit governance, or omitted from the release decision.",
+      "owner": "Standards Orchestrator"
+    }
+  ]
+}
