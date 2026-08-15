@@ -1,10 +1,18 @@
 import json
 import re
+import sys
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CHECKS = ROOT / "checks"
+if str(CHECKS) not in sys.path:
+    sys.path.insert(0, str(CHECKS))
+
+from grimoire_2_findings_check import validate_findings  # noqa: E402
+
+
 FINDINGS_PATH = ROOT / "docs" / "audits" / "2026-08-15" / "FINDINGS.json"
 FINDING_SCHEMA = ROOT / "policies" / "schemas" / "audit-finding.schema.json"
 OBSERVED_REPOSITORY_VISIBILITY = "public"
@@ -59,6 +67,9 @@ class Grimoire2BaselineTests(unittest.TestCase):
     def test_baseline_finding_artifacts_exist(self):
         self.assertTrue(FINDINGS_PATH.is_file(), "Phase 10 finding register is missing")
         self.assertTrue(FINDING_SCHEMA.is_file(), "audit finding schema is missing")
+
+    def test_finding_register_passes_dependency_free_checker(self):
+        self.assertEqual(validate_findings(), [])
 
     def test_repository_visibility_matches_observed_public_state(self):
         index = load_json(ROOT / "REPOSITORY_INDEX.json")
