@@ -1,0 +1,144 @@
+{
+  "$schema": "schemas/canonical-vocabularies.schema.json",
+  "schema_version": 1,
+  "policy_id": "canonical-vocabularies",
+  "evidence_confidence": [
+    "VERIFIED",
+    "SUPPORTED",
+    "ASSUMPTION",
+    "UNKNOWN",
+    "CONFLICTED"
+  ],
+  "source_precedence": [
+    {
+      "rank": 1,
+      "id": "platform_system",
+      "description": "Applicable law, platform safety, and system requirements."
+    },
+    {
+      "rank": 2,
+      "id": "current_user_instruction",
+      "description": "The repository owner's latest explicit instruction for the current task."
+    },
+    {
+      "rank": 3,
+      "id": "approved_task_plan",
+      "description": "The exact approved plan and revision."
+    },
+    {
+      "rank": 4,
+      "id": "repository_contract",
+      "description": "Repository-local AGENTS.md, security, privacy, governance, and active profile."
+    },
+    {
+      "rank": 5,
+      "id": "project_instructions",
+      "description": "Project-folder instructions and active project configuration."
+    },
+    {
+      "rank": 6,
+      "id": "global_instructions",
+      "description": "Stable owner-level operating preferences."
+    },
+    {
+      "rank": 7,
+      "id": "canonical_memory",
+      "description": "Verified decisions, risks, conflicts, and current state."
+    },
+    {
+      "rank": 8,
+      "id": "historical_handoff",
+      "description": "Prior handoffs and archived context."
+    },
+    {
+      "rank": 9,
+      "id": "external_reference",
+      "description": "External prompts, examples, and operating references."
+    },
+    {
+      "rank": 10,
+      "id": "general_knowledge",
+      "description": "General model knowledge and recommendations."
+    }
+  ],
+  "same_level_conflict": {
+    "status": "CONFLICTED",
+    "behavior": "halt_and_arbitrate",
+    "silent_resolution": "forbidden"
+  },
+  "approval_action_classes": [
+    "commit",
+    "push",
+    "issue_write",
+    "pull_request_write",
+    "merge",
+    "deploy",
+    "release",
+    "publish",
+    "send",
+    "schedule",
+    "delete",
+    "archive",
+    "rename",
+    "overwrite",
+    "migration",
+    "credential_change",
+    "infrastructure_change",
+    "canonical_memory_promotion",
+    "public_metric"
+  ],
+  "approval_action_groups": {
+    "repository_write": [
+      "commit",
+      "push"
+    ],
+    "merge": [
+      "merge"
+    ],
+    "deploy": [
+      "deploy",
+      "infrastructure_change"
+    ],
+    "publish": [
+      "release",
+      "publish",
+      "public_metric"
+    ],
+    "external_send": [
+      "issue_write",
+      "pull_request_write",
+      "send",
+      "schedule"
+    ],
+    "destructive_change": [
+      "delete",
+      "archive",
+      "rename",
+      "overwrite",
+      "migration"
+    ],
+    "credential_change": [
+      "credential_change"
+    ],
+    "canonical_memory_write": [
+      "canonical_memory_promotion"
+    ]
+  },
+  "approval_action_aliases": {
+    "destructive_migration": "migration"
+  },
+  "external_authority_classes": [
+    "BINDING_LAW",
+    "BINDING_REGULATION",
+    "COURT_OR_ENFORCEMENT_DECISION",
+    "REGULATOR_GUIDANCE",
+    "CONSENSUS_STANDARD",
+    "CERTIFICATION_SCHEME",
+    "INDUSTRY_FRAMEWORK",
+    "BEST_PRACTICE",
+    "EMERGING_TREND",
+    "PROPOSAL",
+    "DRAFT",
+    "SUPERSEDED"
+  ]
+}
