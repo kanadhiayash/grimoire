@@ -189,6 +189,7 @@
     },
     "external_action_approval": {
       "const": [
+        "repository_write",
         "merge",
         "deploy",
         "publish",
