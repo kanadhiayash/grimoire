@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/audit-finding.schema.json",
+  "title": "Grimoire 2.0 Audit Finding Register",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "audit_date",
+    "baseline_commit",
+    "observed_repository_visibility",
+    "findings"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "audit_date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "baseline_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "observed_repository_visibility": {
+      "enum": ["private", "public", "internal"]
+    },
+    "findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/finding"}
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": [
+        "id",
+        "severity",
+        "affected_gate",
+        "status",
+        "title",
+        "evidence",
+        "owner",
+        "remediation_phase",
+        "close_condition"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^GRM2-P10-[0-9]{3}$"
+        },
+        "severity": {
+          "enum": ["P0", "P1", "P2", "P3"]
+        },
+        "affected_gate": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "status": {
+          "enum": ["OPEN", "CLOSED", "ACCEPTED_RISK", "NOT_APPLICABLE"]
+        },
+        "title": {"type": "string", "minLength": 1},
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/evidence"}
+        },
+        "owner": {"type": "string", "minLength": 1},
+        "remediation_phase": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 18
+        },
+        "close_condition": {"type": "string", "minLength": 1},
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["type", "reference", "observation"],
+      "properties": {
+        "type": {
+          "enum": [
+            "repository",
+            "test",
+            "external_verification",
+            "issue",
+            "workflow"
+          ]
+        },
+        "reference": {"type": "string", "minLength": 1},
+        "observation": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
