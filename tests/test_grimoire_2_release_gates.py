@@ -6,6 +6,11 @@ import json
 import unittest
 from pathlib import Path
 
+try:
+    from jsonschema import Draft202012Validator
+except ImportError:  # Runtime remains dependency-free; CI installs the validator.
+    Draft202012Validator = None
+
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "policies" / "grimoire-2-release-gates.json"
@@ -181,6 +186,19 @@ class Grimoire2ReleaseGateTests(unittest.TestCase):
         forbidden = {"status", "current_status", "observed_status", "result"}
         for dimension in policy["dimensions"]:
             self.assertTrue(forbidden.isdisjoint(dimension))
+
+    @unittest.skipIf(Draft202012Validator is None, "jsonschema is installed only for schema validation")
+    def test_policy_validates_under_closed_draft_2020_12_schema(self):
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        policy = json.loads(POLICY.read_text(encoding="utf-8"))
+        Draft202012Validator.check_schema(schema)
+        errors = list(Draft202012Validator(schema).iter_errors(policy))
+
+        self.assertEqual(errors, [])
+        self.assertEqual(schema.get("$schema"), "https://json-schema.org/draft/2020-12/schema")
+        self.assertFalse(schema.get("additionalProperties"))
+        self.assertFalse(schema["properties"]["eligibility"].get("additionalProperties"))
+        self.assertFalse(schema["$defs"]["dimension"].get("additionalProperties"))
 
 
 if __name__ == "__main__":
