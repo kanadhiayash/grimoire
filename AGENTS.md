@@ -120,7 +120,7 @@ The Orchestrator defines requirements, outcomes, documents, gates, evidence, and
 
 ## External actions
 
-Explicit approval is required for merge, deploy, publish, external send, destructive changes, credentials, and canonical memory promotion.
+Canonical approval groups are defined in `policies/canonical-vocabularies.json`. Explicit approval is required for `repository_write`, `merge`, `deploy`, `publish`, `external_send`, `destructive_change`, `credential_change`, and `canonical_memory_write`. Detailed gated actions and their one-to-one group mapping are machine-defined in that policy.
 
 ## Completion report
 
