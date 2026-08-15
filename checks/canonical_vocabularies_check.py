@@ -91,7 +91,7 @@ def _markdown_evidence_labels(path: Path, heading: str, next_heading: str | None
     section = text.split(heading, 1)[1]
     if next_heading and next_heading in section:
         section = section.split(next_heading, 1)[0]
-    return re.findall(r"`([A-Z_]+)`", section)
+    return re.findall(r"^- `([A-Z_]+)`(?::|$)", section, flags=re.MULTILINE)
 
 
 def _agents_section(heading: str) -> str:
