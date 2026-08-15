@@ -33,5 +33,5 @@
     "shiroe_owns": ["activation", "routing", "roles", "models", "tools", "skills", "approvals", "retries", "memory", "execution_receipts"],
     "forbidden": ["modify shiroe repository without separate approval", "duplicate shiroe internals", "claim browser simulation as local runtime"]
   },
-  "external_action_approval": ["merge", "deploy", "publish", "external_send", "destructive_change", "credential_change", "canonical_memory_write"]
+  "external_action_approval": ["repository_write", "merge", "deploy", "publish", "external_send", "destructive_change", "credential_change", "canonical_memory_write"]
 }

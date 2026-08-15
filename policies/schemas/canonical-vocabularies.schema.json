@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/canonical-vocabularies.schema.json",
+  "title": "Grimoire Canonical Vocabularies",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schema_version",
+    "policy_id",
+    "evidence_confidence",
+    "source_precedence",
+    "same_level_conflict",
+    "approval_action_classes",
+    "approval_action_groups",
+    "approval_action_aliases",
+    "external_authority_classes"
+  ],
+  "properties": {
+    "$schema": {"const": "schemas/canonical-vocabularies.schema.json"},
+    "schema_version": {"const": 1},
+    "policy_id": {"const": "canonical-vocabularies"},
+    "evidence_confidence": {
+      "const": ["VERIFIED", "SUPPORTED", "ASSUMPTION", "UNKNOWN", "CONFLICTED"],
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true
+    },
+    "source_precedence": {
+      "const": [
+        {"rank": 1, "id": "platform_system", "description": "Applicable law, platform safety, and system requirements."},
+        {"rank": 2, "id": "current_user_instruction", "description": "The repository owner's latest explicit instruction for the current task."},
+        {"rank": 3, "id": "approved_task_plan", "description": "The exact approved plan and revision."},
+        {"rank": 4, "id": "repository_contract", "description": "Repository-local AGENTS.md, security, privacy, governance, and active profile."},
+        {"rank": 5, "id": "project_instructions", "description": "Project-folder instructions and active project configuration."},
+        {"rank": 6, "id": "global_instructions", "description": "Stable owner-level operating preferences."},
+        {"rank": 7, "id": "canonical_memory", "description": "Verified decisions, risks, conflicts, and current state."},
+        {"rank": 8, "id": "historical_handoff", "description": "Prior handoffs and archived context."},
+        {"rank": 9, "id": "external_reference", "description": "External prompts, examples, and operating references."},
+        {"rank": 10, "id": "general_knowledge", "description": "General model knowledge and recommendations."}
+      ],
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "same_level_conflict": {
+      "type": "object",
+      "required": ["status", "behavior", "silent_resolution"],
+      "properties": {
+        "status": {"const": "CONFLICTED"},
+        "behavior": {"const": "halt_and_arbitrate"},
+        "silent_resolution": {"const": "forbidden"}
+      },
+      "additionalProperties": false
+    },
+    "approval_action_classes": {
+      "const": [
+        "commit", "push", "issue_write", "pull_request_write", "merge", "deploy",
+        "release", "publish", "send", "schedule", "delete", "archive", "rename",
+        "overwrite", "migration", "credential_change", "infrastructure_change",
+        "canonical_memory_promotion", "public_metric"
+      ],
+      "type": "array",
+      "minItems": 19,
+      "maxItems": 19,
+      "uniqueItems": true
+    },
+    "approval_action_groups": {
+      "type": "object",
+      "required": [
+        "repository_write", "merge", "deploy", "publish", "external_send",
+        "destructive_change", "credential_change", "canonical_memory_write"
+      ],
+      "properties": {
+        "repository_write": {"const": ["commit", "push"]},
+        "merge": {"const": ["merge"]},
+        "deploy": {"const": ["deploy", "infrastructure_change"]},
+        "publish": {"const": ["release", "publish", "public_metric"]},
+        "external_send": {"const": ["issue_write", "pull_request_write", "send", "schedule"]},
+        "destructive_change": {"const": ["delete", "archive", "rename", "overwrite", "migration"]},
+        "credential_change": {"const": ["credential_change"]},
+        "canonical_memory_write": {"const": ["canonical_memory_promotion"]}
+      },
+      "additionalProperties": false
+    },
+    "approval_action_aliases": {
+      "type": "object",
+      "required": ["destructive_migration"],
+      "properties": {
+        "destructive_migration": {"const": "migration"}
+      },
+      "additionalProperties": false
+    },
+    "external_authority_classes": {
+      "const": [
+        "BINDING_LAW", "BINDING_REGULATION", "COURT_OR_ENFORCEMENT_DECISION",
+        "REGULATOR_GUIDANCE", "CONSENSUS_STANDARD", "CERTIFICATION_SCHEME",
+        "INDUSTRY_FRAMEWORK", "BEST_PRACTICE", "EMERGING_TREND", "PROPOSAL",
+        "DRAFT", "SUPERSEDED"
+      ],
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}
