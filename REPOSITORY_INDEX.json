@@ -4,7 +4,7 @@
   "standard_version": "1.0.0",
   "repository": "kanadhiayash/grimoire",
   "display_name": "Grimoire",
-  "visibility": "private",
+  "visibility": "public",
   "purpose": "Neutral, versioned global product engineering standards and a one-entrypoint control plane for human, AI, and Shiroe-assisted product work.",
   "implementation_stack": {
     "orchestration": "Python 3.11+ standard library",
@@ -289,7 +289,11 @@
     "browser_pack_verifier": "scripts/verify_surface_pack.py",
     "harness_installer": "scripts/install_ai_harness_standards.py",
     "audit_baseline_2026_07_27": "docs/audits/2026-07-27/BASELINE.json",
-    "final_operational_audit_2026_08_01": "docs/audits/2026-08-01/FINAL_OPERATIONAL_AUDIT.md"
+    "final_operational_audit_2026_08_01": "docs/audits/2026-08-01/FINAL_OPERATIONAL_AUDIT.md",
+    "grimoire_2_baseline_2026_08_15": "docs/audits/2026-08-15/GRIMOIRE_2_0_BASELINE.md",
+    "grimoire_2_findings_2026_08_15": "docs/audits/2026-08-15/FINDINGS.json",
+    "audit_finding_schema": "policies/schemas/audit-finding.schema.json",
+    "grimoire_2_findings_check": "checks/grimoire_2_findings_check.py"
   },
   "verification": {
     "required_commands": [
