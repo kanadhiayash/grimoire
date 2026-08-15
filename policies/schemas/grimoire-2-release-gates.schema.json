@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanadhiayash/grimoire/policies/schemas/grimoire-2-release-gates.schema.json",
+  "title": "Grimoire 2.0 Release Eligibility Gates",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "target_release",
+    "completion_statuses",
+    "eligibility",
+    "dimensions"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "policy_id": {"const": "grimoire-2-release-gates"},
+    "target_release": {"const": "2.0.0"},
+    "completion_statuses": {
+      "const": ["PASS", "PARTIAL", "BLOCKED", "NOT_VERIFIED"]
+    },
+    "eligibility": {
+      "type": "object",
+      "required": [
+        "required_status",
+        "missing_required_status",
+        "required_non_pass_blocks",
+        "owner_approval_separate",
+        "owner_approval_scope",
+        "release_action_permitted"
+      ],
+      "properties": {
+        "required_status": {"const": "PASS"},
+        "missing_required_status": {"const": "NOT_VERIFIED"},
+        "required_non_pass_blocks": {"const": true},
+        "owner_approval_separate": {"const": true},
+        "owner_approval_scope": {"const": "exact-commit-release"},
+        "release_action_permitted": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/dimension"}
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "required": [
+        "id",
+        "required",
+        "implementation_phase",
+        "finding_ids",
+        "evidence_requirement",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "required": {"type": "boolean"},
+        "implementation_phase": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 18
+        },
+        "finding_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^GRM2-P10-[0-9]{3}$"
+          }
+        },
+        "evidence_requirement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
