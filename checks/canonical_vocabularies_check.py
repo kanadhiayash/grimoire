@@ -94,15 +94,27 @@ def _markdown_evidence_labels(path: Path, heading: str, next_heading: str | None
     return re.findall(r"`([A-Z_]+)`", section)
 
 
-def _agents_precedence_ids() -> list[str]:
+def _agents_section(heading: str) -> str:
     text = AGENTS.read_text(encoding="utf-8")
-    marker = "## Source-of-truth order"
-    if marker not in text:
-        return []
-    section = text.split(marker, 1)[1]
+    if heading not in text:
+        return ""
+    section = text.split(heading, 1)[1]
     if "\n## " in section:
         section = section.split("\n## ", 1)[0]
-    return re.findall(r"^\d+\.\s+`([a-z0-9_]+)`:", section, flags=re.MULTILINE)
+    return section
+
+
+def _agents_precedence_ids() -> list[str]:
+    return re.findall(
+        r"^\d+\.\s+`([a-z0-9_]+)`:",
+        _agents_section("## Source-of-truth order"),
+        flags=re.MULTILINE,
+    )
+
+
+def _agents_approval_groups() -> list[str]:
+    section = _agents_section("## External actions")
+    return [group for group in EXPECTED_GROUPS if f"`{group}`" in section]
 
 
 def validate() -> list[str]:
@@ -207,9 +219,11 @@ def validate() -> list[str]:
 
     agents_text = AGENTS.read_text(encoding="utf-8")
     if "policies/canonical-vocabularies.json" not in agents_text:
-        failures.append("AGENTS.md does not identify the canonical machine precedence policy")
+        failures.append("AGENTS.md does not identify the canonical machine vocabulary policy")
     if _agents_precedence_ids() != EXPECTED_PRECEDENCE_IDS:
         failures.append("AGENTS.md source-of-truth rendering diverges from canonical precedence IDs")
+    if _agents_approval_groups() != EXPECTED_GROUPS:
+        failures.append("AGENTS.md external-action rendering diverges from canonical approval groups")
 
     return failures
 
