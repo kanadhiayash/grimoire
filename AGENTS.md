@@ -50,16 +50,18 @@ python3 scripts/grimoire.py check
 
 ## Source-of-truth order
 
-1. Applicable law, platform safety, and system requirements
-2. Current explicit user instruction
-3. Exact approved plan and revision
-4. Repository contract, governance, security, privacy, active profile, and applicable architecture decisions
-5. Verified project facts, decisions, exceptions, and configuration
-6. Compiled Standards Orchestrator pack
-7. Neutral global instructions
-8. Explicit personal overlay
-9. Verified canonical memory
-10. Historical handoffs, external references, examples, and general knowledge
+Canonical machine precedence is `policies/canonical-vocabularies.json`. The list below is its human rendering.
+
+1. `platform_system`: applicable law, platform safety, and system requirements.
+2. `current_user_instruction`: current explicit user instruction for the task.
+3. `approved_task_plan`: exact approved plan and revision.
+4. `repository_contract`: repository contract, governance, security, privacy, active profile, and applicable architecture decisions.
+5. `project_instructions`: verified project facts, decisions, exceptions, configuration, and compiled project instructions or standards pack.
+6. `global_instructions`: neutral global instructions and explicit personal overlays that do not weaken neutral policy.
+7. `canonical_memory`: verified canonical decisions, risks, conflicts, and current state.
+8. `historical_handoff`: prior handoffs and archived context.
+9. `external_reference`: external prompts, examples, and operating references.
+10. `general_knowledge`: general model knowledge and recommendations.
 
 Same-level conflicts must be surfaced. Never choose silently by confidence, recency, or convenience.
 
