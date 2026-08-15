@@ -1,6 +1,7 @@
 import json
 import re
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -10,7 +11,7 @@ CHECKS = ROOT / "checks"
 if str(CHECKS) not in sys.path:
     sys.path.insert(0, str(CHECKS))
 
-from grimoire_2_findings_check import validate_findings  # noqa: E402
+import grimoire_2_findings_check as findings_check  # noqa: E402
 
 
 FINDINGS_PATH = ROOT / "docs" / "audits" / "2026-08-15" / "FINDINGS.json"
@@ -23,6 +24,21 @@ EXPECTED_FINDINGS = {
     "GRM2-P10-003": "standard_authoring_enforcement",
     "GRM2-P10-004": "stack_overlay_migration",
     "GRM2-P10-005": "official_source_provenance",
+    "GRM2-P10-006": "machine_contract_completeness",
+    "GRM2-P10-007": "domain_coverage_gate",
+    "GRM2-P10-008": "canonical_vocabulary",
+    "GRM2-P10-009": "canonical_vocabulary",
+    "GRM2-P10-010": "authority_precedence",
+    "GRM2-P10-011": "source_currentness",
+    "GRM2-P10-012": "legal_temporal_routing",
+    "GRM2-P10-013": "work_type_coverage",
+    "GRM2-P10-014": "work_type_coverage",
+    "GRM2-P10-015": "human_machine_parity",
+    "GRM2-P10-016": "contradiction_detection",
+    "GRM2-P10-017": "platform_matrix",
+    "GRM2-P10-018": "python_matrix",
+    "GRM2-P10-019": "human_ai_experience",
+    "GRM2-P10-020": "security_reporting",
 }
 
 ACTIVE_ZEREF_SCAN_PATHS = (
@@ -69,7 +85,26 @@ class Grimoire2BaselineTests(unittest.TestCase):
         self.assertTrue(FINDING_SCHEMA.is_file(), "audit finding schema is missing")
 
     def test_finding_register_passes_dependency_free_checker(self):
-        self.assertEqual(validate_findings(), [])
+        self.assertEqual(findings_check.validate_findings(), [])
+
+    def test_missing_accepted_finding_fails_dependency_free_checker(self):
+        document = load_json(FINDINGS_PATH)
+        document["findings"] = document["findings"][:-1]
+
+        with tempfile.TemporaryDirectory() as directory:
+            candidate = Path(directory) / "FINDINGS.json"
+            candidate.write_text(json.dumps(document), encoding="utf-8")
+            original = findings_check.FINDINGS_PATH
+            findings_check.FINDINGS_PATH = candidate
+            try:
+                failures = findings_check.validate_findings()
+            finally:
+                findings_check.FINDINGS_PATH = original
+
+        self.assertTrue(
+            any("accepted baseline finding set" in failure for failure in failures),
+            failures,
+        )
 
     def test_repository_visibility_matches_observed_public_state(self):
         index = load_json(ROOT / "REPOSITORY_INDEX.json")
@@ -147,8 +182,9 @@ class Grimoire2BaselineTests(unittest.TestCase):
 
     def test_required_baseline_findings_have_stable_gate_mapping(self):
         findings = load_findings()
+        self.assertEqual(set(findings), set(EXPECTED_FINDINGS))
+        self.assertEqual(len(findings), 20)
         for finding_id, gate in EXPECTED_FINDINGS.items():
-            self.assertIn(finding_id, findings)
             self.assertEqual(findings[finding_id].get("affected_gate"), gate)
 
 
